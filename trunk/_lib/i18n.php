@@ -44,6 +44,19 @@ class SlimStatI18nBase {
 			return $this->labels[$_field][$_key];
 		} elseif ( $_key == '' ) {
 			return $this->indeterminable;
+		} elseif ( $_field == 'language' && mb_strlen( $_key ) == 5 ) {
+			$language = mb_strtolower( mb_substr( $_key, 0, 2 ) );
+			$country = mb_strtoupper( mb_substr( $_key, 3, 2 ) );
+			
+			if ( array_key_exists( $language, $this->labels['language'] ) ) {
+				if ( array_key_exists( $country, $this->labels['country'] ) ) {
+					return sprintf( $this->language_country, $this->labels['language'][$language], $this->labels['country'][$country] );
+				} else {
+					return $this->labels['language'][$language];
+				}
+			} else {
+				return $_key;
+			}
 		} else {
 			return $_key;
 		}

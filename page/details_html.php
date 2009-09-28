@@ -488,10 +488,6 @@ function table_total( $_field ) {
 	foreach ( $curr as $key => $hits ) {
 		$new_filters[$_field] = $key;
 		
-		if ( $key == '' ) {
-			$key = $i18n->indeterminable;
-		}
-		
 		echo '<tr>';
 		// echo '<td>'.( $pos + 1 ).'</td>';
 		echo '<td class="first" title="'.htmlspecialchars( $key ).'"><span class="text">';
@@ -608,10 +604,6 @@ function table_percent( $_field ) {
 			$prev_pct = 0;
 		}
 		
-		if ( $key == '' ) {
-			$key = $i18n->indeterminable;
-		}
-		
 		echo '<tr>';
 		// echo '<td>'.( $pos + 1 ).'</td>';
 		echo '<td class="first"><span class="text">';
@@ -625,7 +617,7 @@ function table_percent( $_field ) {
 		echo '<td class="center" title="'.$curr_date_label.'">'.format_number( $curr_pct ).'</td>';
 		echo '<td class="center prev" title="'.$prev_date_label.'">'.format_number( $prev_pct ).'</td>';
 		echo '<td class="center last">';
-		if ( array_key_exists( $key, $prev ) || $key == $i18n->indeterminable ) {
+		if ( array_key_exists( $key, $prev ) ) {
 			if ( $prev_pct == $curr_pct ) {
 				echo '-';
 			} elseif ( $curr_pct > $prev_pct ) {
@@ -648,10 +640,6 @@ function table_percent( $_field ) {
 			}
 			
 			foreach ( $curr_data['version'][$key] as $key2 => $hits2 ) {
-				if ( $key2 == '' ) {
-					$key2 = $i18n->indeterminable;
-				}
-				
 				if ( $curr_total > 0 ) {
 					$curr_pct = $hits2 / $curr_total * 100;
 				} else {
@@ -666,16 +654,20 @@ function table_percent( $_field ) {
 				
 				echo '<tr class="detail detail_browser_'.preg_replace( '/[^a-z]/', '', mb_strtolower( $key ) ).'">';
 				// echo '<td>'.( $pos + 1 ).'</td>';
-				echo '<td class="first"><span class="text">'.htmlspecialchars( $key2 ).'</span></td>';
+				echo '<td class="first"><span class="text">'.htmlspecialchars( $i18n->label( 'version', $key2 ) ).'</span></td>';
 				echo '<td class="center">'.format_number( $curr_pct ).'</td>';
 				echo '<td class="center prev">'.format_number( $prev_pct ).'</td>';
 				echo '<td class="center last">';
-				if ( $prev_pct == $curr_pct ) {
+				if ( array_key_exists( $key, $prev_data['version'] ) && array_key_exists( $key2, $prev_data['version'][$key] ) ) {
+					if ( $prev_pct == $curr_pct ) {
+						echo '-';
+					} elseif ( $curr_pct > $prev_pct ) {
+						echo '<span class="up">↑ '.format_number( $curr_pct - $prev_pct ).'</span>';
+					} elseif ( $prev_pct > $curr_pct ) {
+						echo '<span class="dn">↓ '.format_number( $prev_pct - $curr_pct ).'</span>';
+					}
+				} else {
 					echo '-';
-				} elseif ( $curr_pct > $prev_pct ) {
-					echo '<span class="up">↑ '.format_number( $curr_pct - $prev_pct ).'</span>';
-				} elseif ( $prev_pct > $curr_pct ) {
-					echo '<span class="dn">↓ '.format_number( $prev_pct - $curr_pct ).'</span>';
 				}
 				echo '</td>';
 				echo '</tr>'."\n";

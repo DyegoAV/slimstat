@@ -36,15 +36,9 @@ function render_data_xml( $_data ) {
 		echo '<field name="'.htmlspecialchars( $field ).'">';
 		if ( $field == 'version' ) {
 			foreach ( $values as $browser => $browser_values ) {
-				if ( $browser == '' ) {
-					$browser = $i18n->indeterminable;
-				}
-				echo '<key name="'.htmlspecialchars( $browser ).'">';
+				echo '<key name="'.htmlspecialchars( $i18n->label( $field, $browser ) ).'">';
 				foreach ( $browser_values as $key => $value ) {
-					if ( $key == '' ) {
-						$key = $i18n->indeterminable;
-					}
-					echo '<value name="'.htmlspecialchars( $key ).'">'.intval( $value ).'</value>'."\n";
+					echo '<value name="'.htmlspecialchars( $i18n->label( 'version', $key ) ).'">'.intval( $value ).'</value>'."\n";
 				}
 				echo '</key>'."\n";
 			}

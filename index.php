@@ -44,8 +44,8 @@ $i18n = SlimStatI18n::get_instance();
 
 $mt_start = get_microtime();
 
-if ( file_exists( realpath( dirname( __FILE__ ) ).'/page/setup.php' ) ) {
-	require_once( realpath( dirname( __FILE__ ) ).'/page/setup.php' );
+if ( file_exists( realpath( dirname( __FILE__ ) ).'/page/setup.php' ) &&
+     include_once( realpath( dirname( __FILE__ ) ).'/page/setup.php' ) ) {
 	exit;
 }
 

@@ -35,5 +35,5 @@ header( 'Content-type: text/javascript' );
 
 ?>
 document.write('<img src="<?php echo $base_href; ?>/stats_js.php?ref=' + escape(document.referrer) + '&amp;url=' + escape(document.URL));
-document.write('&amp;res=' + escape(screen.width+'x'+screen.height) + '&amp;ttl=' + escape(document.title) + '" style="position:absolute;top:-10px;left:0"');
+document.write('&amp;res=' + escape(screen.width+'x'+screen.height) + '&amp;ttl=' + encodeURIComponent(document.title) + '" style="position:absolute;top:-10px;left:0"');
 document.writeln(' width="1" height="1" alt="" />');

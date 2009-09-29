@@ -190,7 +190,7 @@ while ( list( $visit ) = mysql_fetch_row( $select_old_result ) ) {
 		$end_yr = $row['yr'];
 		$end_resource = $row['resource'];
 		$end_ts = $row['dt'];
-		$resource .= $row['yr'].' '.$row['mo'].' '.$row['dy'].' '.$row['hr'].' '.$row['mi'].' '.$row['sc'].' '.$row['resource']."\n";
+		$resource .= $row['yr'].' '.$row['mo'].' '.$row['dy'].' '.$row['hr'].' '.$row['mi'].' '.$row['sc'].' '.$row['resource']." \n";
 		
 		$hits++;
 	}

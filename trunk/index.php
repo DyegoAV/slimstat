@@ -102,7 +102,14 @@ function filter_url( $_filters, $_first_separator='?' ) {
 
 function format_number( $_number, $_dp=1 ) {
 	$i18n =& SlimStatI18n::get_instance();
-	return number_format( $_number, $_dp, $i18n->decimal_point, $i18n->thousands_separator );
+	$str = number_format( $_number, $_dp, $i18n->decimal_point, $i18n->thousands_separator );
+	if ( $str == '0'.$i18n->decimal_point.'0' && $_dp == 1 ) {
+		$str2 = number_format( $_number, 2, $i18n->decimal_point, $i18n->thousands_separator );
+		if ( $str2 != '0'.$i18n->decimal_point.'00' ) {
+			return $str2;
+		}
+	}
+	return $str;
 }
 
 /**

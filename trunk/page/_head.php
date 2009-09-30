@@ -11,12 +11,8 @@
 	}
 	?></title>
 	<link rel="stylesheet" href="_css/screen.css" type="text/css" />
+	<!--[if lt IE 8]><link rel="stylesheet" href="_css/ie.css" type="text/css" /><![endif]-->
 	<link rel="alternate" href="?format=rss" title="" type="application/rss+xml" />
-	<!--[if lt IE 8]>
-	<style type="text/css">
-	table { border-collapse: collapse; }
-	</style>
-	<![endif]-->
 </head>
 <body>
 <div id="container">

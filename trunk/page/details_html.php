@@ -626,7 +626,7 @@ function table_percent( $_field ) {
 				echo '<span class="dn">↓ '.format_number( $prev_pct - $curr_pct ).'</span>';
 			}
 		} else {
-			echo '-';
+			echo '<span class="up">new</span>';
 		}
 		echo '</td>';
 		echo '</tr>'."\n";
@@ -667,7 +667,7 @@ function table_percent( $_field ) {
 						echo '<span class="dn">↓ '.format_number( $prev_pct - $curr_pct ).'</span>';
 					}
 				} else {
-					echo '-';
+					echo '<span class="up">new</span>';
 				}
 				echo '</td>';
 				echo '</tr>'."\n";

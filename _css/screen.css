@@ -51,7 +51,6 @@ h2 {
 	font-family: Georgia, 'Times New Roman', Times, serif;
 	font-size: 1.5em;
 	font-weight: bold;
-	min-height: 1.1111em;
 	line-height: 1.1111;
 	margin-top: 2.2222em;
 	margin-bottom: 0; }
@@ -93,7 +92,6 @@ tt, code {
 	font-size: 11px;
 	line-height: 1.8181em; }
 table {
-	/*border-collapse: collapse;*/
 	border-spacing: 0;
 	font-size: 12px;
 	margin: 0;
@@ -123,8 +121,6 @@ tbody tr.detail td {
 	border-bottom: none;
 	font-size: 0.8333em; }
 tbody td {
-	/*height: 1.6667em;
-	line-height: 1.6667;*/
 	height: 1.5833em;
 	line-height: 1.5833; }
 tbody tr.detail td {
@@ -233,8 +229,6 @@ tbody tr.detail td {
 			width: 68px; }
 .toggle, .external {
 	background-image: url('../_img/toggle.png');
-	/*background-color: #36c;
-	color: #fff !important;*/
 	display: inline-block !important;
 	float: left;
 	margin-right: 3px;
@@ -260,10 +254,9 @@ th.last, td.last {
 	position: absolute;
 	top: 0;
 	width: 980px;
-	z-index: 11; }
+	z-index: 5; }
 #head {
 	background-color: #eee;
-	/*height: 6.6667em;*/
 	left: 50%;
 	margin: 0 0 0 -490px;
 	padding: 0;
@@ -299,10 +292,12 @@ th.last, td.last {
 		color: #fff; }
 #title {
 	background-color: #fff;
+	height: 1.1111em;
 	left: 50%;
 	margin-top: 0;
 	margin-left: -490px;
-	padding: 10px 20px;
+	overflow: hidden;
+	padding: 0.5555em 20px;
 	position: fixed;
 	top: 3.8888em;
 	z-index: 10; }
@@ -312,17 +307,13 @@ th.last, td.last {
 		white-space: nowrap; }
 #main {
 	background: url('../_img/main.png') right bottom no-repeat;
-	margin-top: 100px;
+	margin-top: 8.3333em;
 	min-height: 33.3333em;
-	/*padding: 0;*/
 	width: 960px;
 	z-index: 1; }
 #content {
 	margin-top: 0;
-	/*margin-left: 0;*/
-	padding-left: 0;
-	padding-right: 0;
-	padding-bottom: 3.3333em;
+	padding: 0 0 3.3333em;
 	width: 720px; }
 #summary td, .summary td {
 	height: 3.1667em;
@@ -356,6 +347,7 @@ th.last, td.last {
 	padding-top: 1.6667em;
 	padding-bottom: 3.3333em;
 	position: fixed;
+	top: 8.3333em;
 	z-index: 10; }
 #sideinner {
 	margin-top: 0;
@@ -373,7 +365,6 @@ th.last, td.last {
 			overflow: hidden;
 			width: 160px; }
 		#side .calendar th {
-			/*background-color: #d2d2c8;*/
 			font-size: 1em;
 			text-shadow: none;
 			width: 23px; }
@@ -428,7 +419,7 @@ th.last, td.last {
 	clear: both;
 	margin: 0;
 	padding: 0;
-	position: relative;
+	/*position: relative;*/
 	width: 980px; }
 #footinner {
 	line-height: 1.6667;

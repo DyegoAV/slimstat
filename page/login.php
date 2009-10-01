@@ -30,7 +30,7 @@ function render_page() {
 
 <form action="./" method="post" class="grid12 first">
 
-<p><label for="username">User name</label><input type="text" name="username" value="" /></p>
+<p class="first"><label for="username">User name</label><input type="text" name="username" value="" /></p>
 
 <p><label for="password">Password</label><input type="password" name="password" value="" /></p>
 

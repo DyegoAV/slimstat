@@ -76,8 +76,13 @@ h3 {
 		text-shadow: none; }
 img, label {
 	display: block; }
+ol {
+	margin: 1.6667em 0;
+	padding: 0 0 0 30px; }
 p {
 	margin: 1.6667em 0; }
+	p.first {
+		margin-top: 0; }
 	#side p {
 		padding: 0 3px;
 		text-align: center; }
@@ -344,7 +349,7 @@ th.last, td.last {
 	margin-left: 245px;
 	min-height: 400px;
 	padding-right: 0;
-	padding-top: 1.6667em;
+	padding-top: 3.3333em;
 	padding-bottom: 3.3333em;
 	position: fixed;
 	top: 8.3333em;
@@ -359,8 +364,7 @@ th.last, td.last {
 		text-align: left; }
 	#side .calendar {
 		background-color: #d2d2c8;
-		color: #999;
-		margin-top: 1.6667em; }
+		color: #999; }
 		#side .calendar thead {
 			overflow: hidden;
 			width: 160px; }

@@ -42,8 +42,6 @@ if ( $query_string_page == 'js' ) {
 $config =& SlimStatConfig::get_instance();
 $i18n = SlimStatI18n::get_instance();
 
-$mt_start = get_microtime();
-
 if ( file_exists( realpath( dirname( __FILE__ ) ).'/page/setup.php' ) &&
      include_once( realpath( dirname( __FILE__ ) ).'/page/setup.php' ) ) {
 	exit;
@@ -80,7 +78,7 @@ function page_head() {
 }
 
 function page_foot() {
-	global $config, $mt_start;
+	global $config;
 	
 	include( realpath( dirname( __FILE__ ) ).'/page/_foot.php' );
 }
@@ -190,11 +188,6 @@ function logout() {
 	@setcookie( 'slimstatuser', '', time() + 31536000, '/', '' );
 	
 	request_login();
-}
-
-function get_microtime() {
-	list( $usec, $sec ) = explode( ' ', microtime() );
-	return (float)$usec + (float)$sec;
 }
 
 function sp2nb( $_str ) {

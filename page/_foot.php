@@ -1,14 +1,7 @@
 <div id="foot"><div id="footinner">
 <a href="http://wettone.com/code/slimstat">SlimStat</a> v<?php
 echo $config->app_version;
-?> © 2009 <a href="http://pieces-and-bits.com/">Pieces &amp; Bits</a> took <?php
-
-$mt_end = get_microtime();
-echo format_number( $mt_end - $mt_start, 3 );
-
-?> seconds and <?php
-echo format_number( memory_get_usage() / 1024 );
-?> KB of memory<br />
+?> © 2009 <a href="http://pieces-and-bits.com/">Pieces &amp; Bits</a><br />
 This product includes GeoLite data created by MaxMind, available from <a href="http://www.maxmind.com/">http://www.maxmind.com/</a>
 </div></div>
 

@@ -290,7 +290,7 @@ function save_cache_data( $_filters, $_data ) {
 }
 
 function load_data( $_filters ) {
-	global $config;
+	global $config, $i18n;
 	
 	$data = null;
 	
@@ -309,6 +309,10 @@ function load_data( $_filters ) {
 		$data = array_merge( load_hit_data( $_filters ), load_visit_data( $_filters ) );
 	}
 	
+	if ( array_key_exists( 'title', $data ) ) {
+		$i18n->labels['resource'] = array_merge( $i18n->labels['resource'], $data['title'] );
+	}
+	
 	// save data to cache
 	if ( $is_caching && is_period_past( $_filters ) && !$have_cache_data ) {
 		save_cache_data( $_filters, $data );
@@ -318,7 +322,7 @@ function load_data( $_filters ) {
 }
 
 function parse_data( $_result, $_fields, $_filters, $_init_time_fields=false ) {
-	global $config, $i18n, $is_filtering_visits_only;
+	global $config, $is_filtering_visits_only;
 	
 	$data = array();
 	
@@ -386,9 +390,11 @@ function parse_data( $_result, $_fields, $_filters, $_init_time_fields=false ) {
 			}
 		}
 		
-		if ( array_key_exists( 'title', $row ) && $row['title'] != '' &&
-		     array_key_exists( 'resource', $row ) && !array_key_exists( $row['resource'], $i18n->labels['resource'] ) ) {
-			$i18n->labels['resource'][ $row['resource'] ] = $row['title'];
+		if ( array_key_exists( 'title', $row ) && $row['title'] != '' && array_key_exists( 'resource', $row ) ) {
+			if ( !array_key_exists( 'title', $data ) ) {
+				$data['title'] = array();
+			}
+			$data['title'][ $row['resource'] ] = $row['title'];
 		}
 		
 		if ( array_key_exists( 'search_terms', $row ) && array_key_exists( 'referrer', $row ) ) {
@@ -433,8 +439,11 @@ function parse_data( $_result, $_fields, $_filters, $_init_time_fields=false ) {
 					// time was converted to local time above, no need to convert again
 					list( $yr, $mo, $dy, $hr, $mi, $sc, $resource, $title ) = @explode( ' ', $value, 8 );
 					
-					if ( $title != '' && !array_key_exists( $resource, $i18n->labels['resource'] ) ) {
-						$i18n->labels['resource'][$resource] = $title;
+					if ( $title != '' ) {
+						if ( !array_key_exists( 'title', $data ) ) {
+							$data['title'] = array();
+						}
+						$data['title'][$resource] = $title;
 					}
 					
 					$time_fields = array( 'yr' => $yr, 'mo' => $mo, 'dy' => $dy, 'hr' => $hr );

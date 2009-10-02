@@ -71,9 +71,7 @@ h3 {
 		font-size: 1em;
 		height: 1.666em;
 		line-height: 1.6667;
-		margin-top: 1.6667em;
-		padding: 0 8px;
-		text-shadow: none; }
+		padding: 0 8px; }
 img, label {
 	display: block; }
 ol {
@@ -83,9 +81,6 @@ p {
 	margin: 1.6667em 0; }
 	p.first {
 		margin-top: 0; }
-	#side p {
-		padding: 0 3px;
-		text-align: center; }
 pre {
 	background-color: #eee;
 	border: 1px solid #d2d2c8;
@@ -160,6 +155,10 @@ tbody tr.detail td {
 	float: left;
 	margin: 3.3334em 0 0;
 	padding: 0 10px; }
+	#sideinner .grid3 {
+		float: none;
+		margin-top: 1.6667em;
+		padding: 0; }
 .grid16, .grid16 table {
 	width: 940px; }
 .grid12, .grid12 table {
@@ -274,7 +273,7 @@ th.last, td.last {
 	height: 1.6667em;
 	left: 50%;
 	list-style: none;
-	margin: 0 0 0.8333em -490px;
+	margin: 0 0 0 -490px;
 	padding: 0 10px 0.8333em;
 	position: fixed;
 	top: 3.3333em;
@@ -296,13 +295,13 @@ th.last, td.last {
 		background-position: 0 -40px;
 		color: #fff; }
 #title {
-	background-color: #fff;
+	background: #fff url('../_img/title.png');
 	height: 1.1111em;
 	left: 50%;
 	margin-top: 0;
 	margin-left: -490px;
 	overflow: hidden;
-	padding: 0.5555em 20px;
+	padding: 0.5555em 20px 1.1111em;
 	position: fixed;
 	top: 3.8888em;
 	z-index: 10; }
@@ -347,7 +346,7 @@ th.last, td.last {
 	left: 50%;
 	margin-top: 0;
 	margin-left: 245px;
-	min-height: 400px;
+	min-height: 33.3333em;
 	padding-right: 0;
 	padding-top: 3.3333em;
 	padding-bottom: 3.3333em;
@@ -359,9 +358,6 @@ th.last, td.last {
 	overflow: hidden;
 	padding-left: 35px;
 	padding-right: 30px; }
-	#side p {
-		margin-top: 0;
-		text-align: left; }
 	#side .calendar {
 		background-color: #d2d2c8;
 		color: #999; }
@@ -370,7 +366,6 @@ th.last, td.last {
 			width: 160px; }
 		#side .calendar th {
 			font-size: 1em;
-			text-shadow: none;
 			width: 23px; }
 		#side .calendar th a, #side .calendar td a {
 			display: block;
@@ -400,6 +395,17 @@ th.last, td.last {
 			text-align: center !important; }
 		#side .calendar td.selected {
 			background-color: #d2d2c8; }
+	#side .grid3 p {
+		margin: 0 0 1.6667em; }
+	#side .grid3 p.text {
+		background: transparent url('../_img/delete.gif') no-repeat;
+		border-bottom: solid 1px #d2d2c8;
+		line-height: 1.5833;
+		margin: 0;
+		padding: 0 3px;
+		text-align: left; }
+	#side .grid3 p.text a {
+		padding-left: 15px; }
 #api, #api a {
 	background: transparent url('../_img/xml.gif') no-repeat;
 	display: block;
@@ -423,7 +429,6 @@ th.last, td.last {
 	clear: both;
 	margin: 0;
 	padding: 0;
-	/*position: relative;*/
 	width: 980px; }
 #footinner {
 	line-height: 1.6667;

@@ -19,8 +19,13 @@
 
 table {
 	border-collapse: collapse; }
+.toggle, .external {
+	display: block !important; }
 #head, #menu, #title {
-	position: relative; top: 0; }
+	left: 0;
+	margin-left: 0;
+	position: relative;
+	top: 0; }
 #main {
 	margin-top: -1.6667em; }
 #side {

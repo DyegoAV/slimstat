@@ -109,16 +109,16 @@ function render_page_html() {
 	calendar_widget();
 
 	if ( $has_filters ) {
-		echo '<h2>Filters <span class="prev">(select to remove)</span></h2>';
+		echo '<h2>Filters</h2>';
 	
 		foreach ( array_merge( array_keys( $config->hit_fields ), array_keys( $config->visit_fields ) ) as $key ) {
 			if ( array_key_exists( $key, $filters ) ) {
 				$new_filters = $filters;
 				unset( $new_filters[$key] );
-				echo '<h3>'.htmlspecialchars( ( array_key_exists( $key, $config->hit_fields ) ) ? $config->hit_fields[$key] : $config->visit_fields[$key] ).'</h3>'."\n";
+				echo '<div class="grid3"><h3>'.htmlspecialchars( ( array_key_exists( $key, $config->hit_fields ) ) ? $config->hit_fields[$key] : $config->visit_fields[$key] ).'</h3>'."\n";
 				echo '<p class="text"><a href="'.filter_url( $new_filters ).'">';
 				echo htmlspecialchars( $i18n->label( $key, $filters[$key] ) );
-				echo '</a></p>'."\n";
+				echo '</a></p></div>'."\n";
 			}
 		}
 	}

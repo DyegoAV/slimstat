@@ -1,4 +1,4 @@
-<?
+<?php
 
 /*
  * SlimStat: simple web analytics

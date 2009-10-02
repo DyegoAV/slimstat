@@ -43,7 +43,7 @@ $config =& SlimStatConfig::get_instance();
 $i18n = SlimStatI18n::get_instance();
 
 if ( file_exists( realpath( dirname( __FILE__ ) ).'/page/setup.php' ) &&
-     include_once( realpath( dirname( __FILE__ ) ).'/page/setup.php' ) ) {
+     @include_once( realpath( dirname( __FILE__ ) ).'/page/setup.php' ) ) {
 	exit;
 }
 

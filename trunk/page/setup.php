@@ -44,6 +44,20 @@ page_head();
 <h2 id="title" class="grid16">Setting up SlimStat</h2>
 
 <div id="main" class="grid16">
+
+<div id="side" class="grid4"><div id="sideinner" class="grid3 first">
+<p><?php echo sizeof( $steps ); ?> simple steps to complete your SlimStat installation.</p>
+
+<ol>
+<?php
+foreach ( $steps as $step_name ) {
+	echo '<li>'.htmlspecialchars( $step_name ).'</li>'."\n";
+}
+?>
+</ol>
+</div>
+</div>
+
 <div id="content" class="grid12 first">
 
 <div class="grid12 first">
@@ -296,19 +310,6 @@ if ( $step < ( sizeof( $steps ) - 1 ) ) {
 
 ?>
 </div></div>
-
-<div id="side" class="grid4"><div id="sideinner" class="grid3 first">
-<p><?php echo sizeof( $steps ); ?> simple steps to complete your SlimStat installation.</p>
-
-<ol>
-<?php
-foreach ( $steps as $step ) {
-	echo '<li>'.htmlspecialchars( $step ).'</li>'."\n";
-}
-?>
-</ol>
-</div>
-</div>
 
 </div>
 <?php

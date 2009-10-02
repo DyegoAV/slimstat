@@ -29,11 +29,51 @@ function render_page_html() {
 	
 	echo '<h2 id="title" class="grid16">'.$curr_date_label.' <span class="prev">compared with '.$prev_date_label.'</span></h2>'."\n";
 
-	// echo htmlspecialchars( $_SERVER['HTTP_USER_AGENT'] );
-
 	// main
 
 	echo '<div id="main" class="grid16">';
+	
+	// side
+
+	echo '<div id="side" class="grid4"><div id="sideinner" class="grid3 first">';
+
+	calendar_widget();
+
+	if ( $has_filters ) {
+		echo '<h2>Filters</h2>';
+	
+		foreach ( array_merge( array_keys( $config->hit_fields ), array_keys( $config->visit_fields ) ) as $key ) {
+			if ( array_key_exists( $key, $filters ) ) {
+				$new_filters = $filters;
+				unset( $new_filters[$key] );
+				echo '<div class="grid3"><h3>'.htmlspecialchars( ( array_key_exists( $key, $config->hit_fields ) ) ? $config->hit_fields[$key] : $config->visit_fields[$key] ).'</h3>'."\n";
+				echo '<p class="text"><a href="'.filter_url( $new_filters ).'">';
+				echo htmlspecialchars( $i18n->label( $key, $filters[$key] ) );
+				echo '</a></p></div>'."\n";
+			}
+		}
+	}
+	
+	echo '<h2 id="api"><a href="'.filter_url( $filters ).'&amp;format=xml">XML format</a></h2>'."\n";
+	
+	$rss_filters = $filters;
+	foreach ( array_keys( $config->time_fields ) as $time_field ) {
+		if ( array_key_exists( $time_field, $rss_filters ) ) {
+			unset( $rss_filters[$time_field] );
+		}
+	}
+	echo '<h2 id="feed"><a href="'.filter_url( $rss_filters );
+	if ( empty( $rss_filters ) ) {
+		echo '?';
+	} else {
+		echo '&amp;';
+	}
+	echo 'format=rss">RSS format</a></h2>'."\n";
+
+	echo '</div></div>'."\n"; // side
+
+	// content
+	
 	echo '<div id="content" class="grid12">';
 
 	table_summary();
@@ -101,45 +141,6 @@ function render_page_html() {
 	sources();
 	
 	echo '</div>'."\n"; // main
-
-	// filters
-
-	echo '<div id="side" class="grid4"><div id="sideinner" class="grid3 first">';
-
-	calendar_widget();
-
-	if ( $has_filters ) {
-		echo '<h2>Filters</h2>';
-	
-		foreach ( array_merge( array_keys( $config->hit_fields ), array_keys( $config->visit_fields ) ) as $key ) {
-			if ( array_key_exists( $key, $filters ) ) {
-				$new_filters = $filters;
-				unset( $new_filters[$key] );
-				echo '<div class="grid3"><h3>'.htmlspecialchars( ( array_key_exists( $key, $config->hit_fields ) ) ? $config->hit_fields[$key] : $config->visit_fields[$key] ).'</h3>'."\n";
-				echo '<p class="text"><a href="'.filter_url( $new_filters ).'">';
-				echo htmlspecialchars( $i18n->label( $key, $filters[$key] ) );
-				echo '</a></p></div>'."\n";
-			}
-		}
-	}
-	
-	echo '<h2 id="api"><a href="'.filter_url( $filters ).'&amp;format=xml">XML format</a></h2>'."\n";
-	
-	$rss_filters = $filters;
-	foreach ( array_keys( $config->time_fields ) as $time_field ) {
-		if ( array_key_exists( $time_field, $rss_filters ) ) {
-			unset( $rss_filters[$time_field] );
-		}
-	}
-	echo '<h2 id="feed"><a href="'.filter_url( $rss_filters );
-	if ( empty( $rss_filters ) ) {
-		echo '?';
-	} else {
-		echo '&amp;';
-	}
-	echo 'format=rss">RSS format</a></h2>'."\n";
-
-	echo '</div></div>'."\n"; // filters
 
 	echo '</div>'."\n"; // content
 	

@@ -25,6 +25,7 @@ page_head();
 
 <h2 id="title" class="grid16">Welcome to SlimStat</h2>
 <div id="main" class="grid16">
+<div id="side" class="grid4"></div>
 <div id="content" class="grid12">
 <div class="grid12">
 <p>Congratulations! You have successfully installed SlimStat.</p>
@@ -47,7 +48,7 @@ page_head();
 ?&gt;</pre>
 <p>Don’t use <em>both</em> examples, because then each hit will be counted twice.</p>
 
-</div></div><div id="side" class="grid4"></div></div>
+</div></div></div>
 
 <?php
 

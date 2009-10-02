@@ -26,6 +26,12 @@ function render_page() {
 <h2 id="title" class="grid16">Log in</h2>
 
 <div id="main" class="grid16">
+
+<div id="side" class="grid4"><div id="sideinner" class="grid3 first">
+<p>Please enter your login details.</p>
+</div>
+</div>
+
 <div id="content" class="grid12 first">
 
 <form action="./" method="post" class="grid12 first">
@@ -38,11 +44,6 @@ function render_page() {
 
 </form>
 
-</div>
-
-<div id="side" class="grid4"><div id="sideinner" class="grid3 first">
-<p>Please enter your login details.</p>
-</div>
 </div>
 
 </div>

@@ -29,7 +29,7 @@ if ( $config->sitename != '' && $config->sitename != 'sitename' ) {
 
 echo '<ul id="menu">'."\n";
 
-if ( $config->slimstat_use_auth ) {
+if ( $config->slimstat_use_auth && $query_string_page != 'setup' ) {
 	if ( check_login() ) {
 		echo '<li><a href="?logout">Log out</a></li>';
 	} else {
@@ -58,7 +58,7 @@ if ( $query_string_page == 'setup' ) {
 			if ( $page_dir_file == 'details' ) {
 				echo '<a href="./'.filter_url( $filters ).'">';
 			} else {
-				echo '<a href="?page='.htmlspecialchars( $page_dir_file ).filter_url( $new_filters, '&amp;' ).'">';
+				echo '<a href="?page='.htmlspecialchars( $page_dir_file ).filter_url( $filters, '&amp;' ).'">';
 			}
 			echo ucwords( htmlspecialchars( $page_dir_file ) ).'</a></li>';
 		}

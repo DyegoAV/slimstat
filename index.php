@@ -32,6 +32,9 @@ if ( array_key_exists( 'page', $_GET ) ) {
 } else {
 	$query_string_page = '';
 }
+if ( !file_exists( realpath( dirname( __FILE__ ) ).'/page/'.$query_string_page.'.php' ) ) {
+	$query_string_page = '';
+}
 
 if ( $query_string_page == 'js' ) {
 	// no need to connect to database, so do this first
@@ -42,8 +45,9 @@ if ( $query_string_page == 'js' ) {
 $config =& SlimStatConfig::get_instance();
 $i18n = SlimStatI18n::get_instance();
 
-if ( file_exists( realpath( dirname( __FILE__ ) ).'/page/setup.php' ) &&
-     @include_once( realpath( dirname( __FILE__ ) ).'/page/setup.php' ) ) {
+if ( file_exists( realpath( dirname( __FILE__ ) ).'/page/setup.php' ) ) {
+	$query_string_page = 'setup';
+	@include_once( realpath( dirname( __FILE__ ) ).'/page/setup.php' );
 	exit;
 }
 

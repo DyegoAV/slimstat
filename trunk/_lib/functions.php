@@ -31,6 +31,11 @@ class SlimStat {
 		return @mysql_connect( $config->db_server, $config->db_username, $config->db_password );
 	}
 	
+	/** Application version */
+	function app_version() {
+		return '2.0b3';
+	}
+	
 	/**
 	 * Confirms the existence of the GeoIP database (http://www.maxmind.com/)
 	 */

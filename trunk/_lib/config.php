@@ -106,9 +106,6 @@ class SlimStatConfig {
 	this is disabled */
 	var $log_crawlers = false;
 	
-	/** Application version */
-	var $app_version = '2.0b2';
-	
 	/** Maximum number of minutes between hits in a visit */
 	var $visit_length = 30;
 	

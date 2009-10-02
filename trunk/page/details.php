@@ -259,7 +259,7 @@ function save_cache_data( $_filters, $_data ) {
 	$query = 'INSERT INTO `'.SlimStat::esc( $config->db_database ).'`.`'.SlimStat::esc( $config->tbl_cache ).'` ';
 	$query .= '( `app_version`, `tz`, `yr`, `mo`, `dy`, `'.implode( '`, `', array_keys( $config->hit_fields ) );
 	$query .= '`, `'.implode( '`, `', array_keys( $config->visit_fields ) ).'`, `cache` ) VALUES ( \'';
-	$query .= SlimStat::esc( $config->app_version ).'\', \''.SlimStat::esc( $config->timezone ).'\', ';
+	$query .= SlimStat::esc( SlimStat::app_version() ).'\', \''.SlimStat::esc( $config->timezone ).'\', ';
 	foreach ( array( 'yr', 'mo', 'dy' ) as $key ) {
 		if ( array_key_exists( $key, $_filters ) ) {
 			$query .= '\''.SlimStat::esc( $_filters[$key] ).'\', ';

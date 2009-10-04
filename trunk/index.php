@@ -32,14 +32,15 @@ if ( array_key_exists( 'page', $_GET ) ) {
 } else {
 	$query_string_page = '';
 }
-if ( !file_exists( realpath( dirname( __FILE__ ) ).'/page/'.$query_string_page.'.php' ) ) {
-	$query_string_page = '';
-}
 
 if ( $query_string_page == 'js' ) {
 	// no need to connect to database, so do this first
 	require_once( realpath( dirname( __FILE__ ) ).'/_lib/js.php' );
 	exit;
+}
+
+if ( !file_exists( realpath( dirname( __FILE__ ) ).'/page/'.$query_string_page.'.php' ) ) {
+	$query_string_page = '';
 }
 
 $config =& SlimStatConfig::get_instance();

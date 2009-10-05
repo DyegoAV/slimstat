@@ -6,7 +6,7 @@
 <html lang="en">
 <head>
 	<title>SlimStat<?php
-	if ( $config->sitename != '' && $config->sitename != 'sitename' ) {
+	if ( $config->sitename != '' ) {
 		echo ' for '.htmlspecialchars( $config->sitename );
 	}
 	?></title>
@@ -19,7 +19,7 @@
 
 <div id="head">
 <h1><a href="./">SlimStat<?php
-if ( $config->sitename != '' && $config->sitename != 'sitename' ) {
+if ( $config->sitename != '' ) {
 	echo ' for '.htmlspecialchars( $config->sitename );
 }
 ?></a></h1>

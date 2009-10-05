@@ -48,7 +48,7 @@ class SlimStatConfig {
 	var $tbl_cache = 'slimstat_cache'; // Cache table
 	
 	/** The full name of your site */
-	var $sitename = 'sitename';
+	var $sitename = '';
 	
 	/** Username/password required to login to SlimStat */
 	var $slimstat_use_auth = false;

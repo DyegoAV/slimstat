@@ -22,7 +22,6 @@
 $steps = array(
 	'Connect to database',
 	'Create tables',
-	'Configure site name',
 	'Finish'
 );
 
@@ -252,29 +251,6 @@ if ( $step == -1 ) {
 			$hidden_field = $hidden_field_before;
 			
 		}
-	}
-}
-
-///////////////////////////////////////////////////// Configure display settings
-
-if ( $step == -1 ) {
-	if ( $config->sitename == 'sitename' ) {
-		$step = array_search( 'Configure site name', $steps );
-		step_header();
-		?>
-		<p>Almost there now. You need to specify the name of your site.</p>
-		<p>In <tt>_lib/config.php</tt>, edit this variable:</p>
-		<pre><?php
-		foreach ( $config_file_lines as $config_file_line ) {
-			if ( strstr( $config_file_line, 'var $sitename' ) ) {
-				echo htmlspecialchars( trim( $config_file_line ) );
-				break;
-			}
-		}
-		?></pre>
-		<p>Replace <tt><?php echo $config->sitename; ?></tt> with your own site’s name.</p>
-		<p>When you are done, click the button below.</p>
-		<?php
 	}
 }
 

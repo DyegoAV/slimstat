@@ -26,9 +26,17 @@ function render_page_rss() {
 	echo '<'.'?xml version="1.0" encoding="UTF-8"?'.">\n";
 	echo '<rss version="2.0">'."\n";
 	echo '<channel>'."\n";
-	echo '<title>SlimStat for '.$config->sitename.'</title>'."\n";
+	echo '<title>SlimStat';
+	if ( $config->sitename != '' ) {
+		echo ' for '.htmlspecialchars( $config->sitename );
+	}
+	echo '</title>'."\n";
 	echo '<link>http://'.$_SERVER['SERVER_NAME'].dirname( $_SERVER['PHP_SELF'] ).'/</link>'."\n";
-	echo '<description>SlimStat for '.$config->sitename.'</description>'."\n";
+	echo '<description>SlimStat';
+	if ( $config->sitename != '' ) {
+		echo ' for '.htmlspecialchars( $config->sitename );
+	}
+	echo '</description>'."\n";
 	echo '<pubDate>'.date( 'r', strtotime( date( 'Y-m-d 00:00:00' ) ) - 1 ).'</pubDate>'."\n";
 	echo '<lastBuildDate>'.date( 'r', strtotime( date( 'Y-m-d 00:00:00' ) ) - 1 ).'</lastBuildDate>'."\n";
 	echo '<docs>http://blogs.law.harvard.edu/tech/rss</docs>'."\n";

@@ -216,21 +216,21 @@ tbody tr.detail td {
 	.grid12 .text {
 		width: 520px; }
 	.grid10 .text {
-		width: 390px; }
+		width: 400px; }
 	.grid8 .text {
-		width: 270px; }
+		width: 280px; }
 	.grid7 .text {
-		width: 210px; }
+		width: 220px; }
 	.grid6 .text {
-		width: 150px; }
+		width: 160px; }
 		.grid6 .detail .text {
 			padding-left: 22px;
-			width: 128px; }
+			width: 138px; }
 	.grid5 .text {
-		width: 90px; }
+		width: 100px; }
 		.grid5 .detail .text {
 			padding-left: 22px;
-			width: 68px; }
+			width: 78px; }
 .toggle, .external {
 	background-image: url('../_img/toggle.png');
 	display: inline-block !important;

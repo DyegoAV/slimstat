@@ -19,7 +19,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-error_reporting( E_ALL );
+// set to E_ALL for debugging
+error_reporting( 0 );
 
 require_once( realpath( dirname( __FILE__ ) ).'/_lib/config.php' );
 require_once( realpath( dirname( __FILE__ ) ).'/_lib/i18n.php' );

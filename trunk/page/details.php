@@ -347,7 +347,7 @@ function parse_data( $_result, $_fields, $_filters, $_init_time_fields=false ) {
 					continue;
 				}
 				
-				list( $yr, $mo, $dy, $hr, $mi, $sc, $resource, $title ) = @explode( ' ', $value, 8 );
+				@list( $yr, $mo, $dy, $hr, $mi, $sc, $resource, $title ) = explode( ' ', $value, 8 );
 				$local_time = local_time_fields( array( 'yr' => $yr, 'mo' => $mo, 'dy' => $dy, 'hr' => $hr, 'mi' => $mi, 'sc' => $sc ) );
 				
 				if ( ( array_key_exists( 'yr', $_filters ) && $local_time['yr'] != $_filters['yr'] ) ||
@@ -437,7 +437,7 @@ function parse_data( $_result, $_fields, $_filters, $_init_time_fields=false ) {
 					}
 					
 					// time was converted to local time above, no need to convert again
-					list( $yr, $mo, $dy, $hr, $mi, $sc, $resource, $title ) = @explode( ' ', $value, 8 );
+					list( $yr, $mo, $dy, $hr, $mi, $sc, $resource, $title ) = explode( ' ', $value, 8 );
 					
 					if ( $title != '' ) {
 						if ( !array_key_exists( 'title', $data ) ) {

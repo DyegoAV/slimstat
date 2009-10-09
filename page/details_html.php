@@ -432,14 +432,14 @@ function table_resource_summary() {
 }
 
 function table_total( $_field ) {
-	global $config, $i18n, $filters, $curr_data, $prev_data, $curr_date_label, $prev_date_label;
+	global $config, $i18n, $is_iphone, $filters, $curr_data, $prev_data, $curr_date_label, $prev_date_label;
 	
 	if ( !array_key_exists( $_field, $curr_data ) || !array_key_exists( $_field, $prev_data ) ) {
 		return;
 	}
 	
 	$new_filters = $filters;
-	$max_rows = 50;
+	$max_rows = ( $is_iphone ) ? 10 : 50;
 	
 	$curr = $curr_data[$_field];
 	$prev = $prev_data[$_field];
@@ -534,14 +534,14 @@ function table_total( $_field ) {
 }
 
 function table_percent( $_field ) {
-	global $config, $i18n, $filters, $curr_data, $prev_data, $curr_date_label, $prev_date_label;
+	global $config, $i18n, $is_iphone, $filters, $curr_data, $prev_data, $curr_date_label, $prev_date_label;
 	
 	if ( !array_key_exists( $_field, $curr_data ) || !array_key_exists( $_field, $prev_data ) ) {
 		return;
 	}
 	
 	$new_filters = $filters;
-	$max_rows = 50;
+	$max_rows = ( $is_iphone ) ? 10 : 50;
 	
 	$curr = $curr_data[$_field];
 	$prev = $prev_data[$_field];
@@ -602,7 +602,7 @@ function table_percent( $_field ) {
 		echo '<tr>';
 		// echo '<td>'.( $pos + 1 ).'</td>';
 		echo '<td class="first"><span class="text">';
-		if ( $_field == 'browser' ) {
+		if ( $_field == 'browser' && !$is_iphone ) {
 			echo '<a class="toggle" title="" id="browser_'.preg_replace( '/[^a-z]/', '', mb_strtolower( $key ) );
 			echo '" href="#">+</a> ';
 		}
@@ -626,7 +626,7 @@ function table_percent( $_field ) {
 		echo '</td>';
 		echo '</tr>'."\n";
 		
-		if ( $_field == 'browser' && ( array_key_exists( $key, $curr_data['version'] ) || array_key_exists( $key, $prev_data['version'] ) ) ) {
+		if ( $_field == 'browser' && !$is_iphone && ( array_key_exists( $key, $curr_data['version'] ) || array_key_exists( $key, $prev_data['version'] ) ) ) {
 			if ( !array_key_exists( $key, $curr_data['version'] ) ) {
 				$curr_data['version'][$key] = array();
 				foreach ( $prev_data['version'][$key] as $key2 => $hits2 ) {

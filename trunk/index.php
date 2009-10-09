@@ -92,7 +92,16 @@ function page_foot() {
 function filter_url( $_filters, $_first_separator='?' ) {
 	$shown_first = false;
 	$str = '';
-	foreach ( $_filters as $key => $value ) {
+	$cleaned_filters = $_filters;
+	
+	if ( array_key_exists( 'yr', $_filters ) && $_filters['yr'] == date( 'Y' ) ) {
+		unset( $cleaned_filters['yr'] );
+		if ( array_key_exists( 'mo', $_filters ) && $_filters['mo'] == date( 'n' ) ) {
+			unset( $cleaned_filters['mo'] );
+		}
+	}
+	
+	foreach ( $cleaned_filters as $key => $value ) {
 		if ( $shown_first ) {
 			$str .= '&amp;';
 		} else {
@@ -101,6 +110,7 @@ function filter_url( $_filters, $_first_separator='?' ) {
 		}
 		$str .= 'filter_'.urlencode( $key ).'='.urlencode( $value );
 	}
+	
 	return $str;
 }
 

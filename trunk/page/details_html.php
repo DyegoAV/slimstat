@@ -47,14 +47,14 @@ function render_page_html() {
 				$new_filters = $filters;
 				unset( $new_filters[$key] );
 				echo '<div class="grid3"><h3>'.htmlspecialchars( ( array_key_exists( $key, $config->hit_fields ) ) ? $config->hit_fields[$key] : $config->visit_fields[$key] ).'</h3>'."\n";
-				echo '<p class="text"><a href="'.filter_url( $new_filters ).'">';
+				echo '<p class="text"><a href="./'.filter_url( $new_filters ).'">';
 				echo htmlspecialchars( $i18n->label( $key, $filters[$key] ) );
 				echo '</a></p></div>'."\n";
 			}
 		}
 	}
 	
-	echo '<h2 id="api"><a href="'.filter_url( $filters ).'&amp;format=xml">XML format</a></h2>'."\n";
+	echo '<h2 id="api"><a href="./?format=xml'.filter_url( $filters, '&amp;' ).'">XML format</a></h2>'."\n";
 	
 	$rss_filters = $filters;
 	foreach ( array_keys( $config->time_fields ) as $time_field ) {
@@ -62,13 +62,7 @@ function render_page_html() {
 			unset( $rss_filters[$time_field] );
 		}
 	}
-	echo '<h2 id="feed"><a href="'.filter_url( $rss_filters );
-	if ( empty( $rss_filters ) ) {
-		echo '?';
-	} else {
-		echo '&amp;';
-	}
-	echo 'format=rss">RSS format</a></h2>'."\n";
+	echo '<h2 id="feed"><a href="./?format=rss'.filter_url( $rss_filters, '&amp;' ).'">RSS format</a></h2>'."\n";
 
 	echo '</div></div>'."\n"; // side
 
@@ -495,7 +489,7 @@ function table_total( $_field ) {
 		if ( $_field == 'referrer' ) {
 			echo '<a class="external" title="'.htmlspecialchars( $key ).'" href="'.htmlspecialchars( $key ).'" rel="nofollow">&rarr;</a> ';
 		}
-		echo '<a href="'.filter_url( $new_filters ).'">';
+		echo '<a href="./'.filter_url( $new_filters ).'">';
 		echo htmlspecialchars( $i18n->label( $_field, $key ) );
 		echo '</a></span></td>';
 		echo '<td class="center" title="'.$curr_date_label.'">'.format_number( $hits, 0 ).'</td>';
@@ -612,7 +606,7 @@ function table_percent( $_field ) {
 			echo '<a class="toggle" title="" id="browser_'.preg_replace( '/[^a-z]/', '', mb_strtolower( $key ) );
 			echo '" href="#">+</a> ';
 		}
-		echo '<a href="'.filter_url( $new_filters ).'">';
+		echo '<a href="./'.filter_url( $new_filters ).'">';
 		echo htmlspecialchars( $i18n->label( $_field, $key ) );
 		echo '</a></span></td>';
 		echo '<td class="center" title="'.$curr_date_label.'">'.format_number( $curr_pct ).'</td>';
@@ -1074,11 +1068,11 @@ function calendar_widget() {
 	// ksort( $table );
 	
 	$prev = prev_period( $filters, true );
-	$prev_link = '<a href="'.filter_url( $prev ).'" title="'.date_label( $prev, false ).'">&larr;</a>';
+	$prev_link = '<a href="./'.filter_url( $prev ).'" title="'.date_label( $prev, false ).'">&larr;</a>';
 	
 	if ( $filters['yr'] < date( 'Y' ) || $filters['mo'] < date( 'n' ) ) {
 		$next = next_period( $filters, true );
-		$next_link = '<a href="'.filter_url( $next ).'" title="'.date_label( $next, false ).'">&rarr;</a>';
+		$next_link = '<a href="./'.filter_url( $next ).'" title="'.date_label( $next, false ).'">&rarr;</a>';
 	} else {
 		$next_link = '';
 	}
@@ -1089,7 +1083,7 @@ function calendar_widget() {
 	echo '<th>'.$prev_link.'</th>';
 	echo '<th colspan="5">';
 	if ( array_key_exists( 'dy', $filters ) ) {
-		echo '<a class="thismonth" href="'.filter_url( next_period( $prev ) ).'" title="';
+		echo '<a class="thismonth" href="./'.filter_url( next_period( $prev ) ).'" title="';
 		echo date_label( $filters, false ).'">'.sp2nb( date_label( $filters, false ) ).'</a>';
 	} else {
 		echo sp2nb( date_label( $filters, false ) );
@@ -1128,7 +1122,7 @@ function calendar_widget() {
 					echo $table[$w][$d];
 				} else {
 					$dy_filters['dy'] = $table[$w][$d];
-					echo '<a href="'.filter_url( $dy_filters ).'" title="';
+					echo '<a href="./'.filter_url( $dy_filters ).'" title="';
 					echo date_label( $filters, $table[$w][$d] ).'">'.$table[$w][$d].'</a>';
 				}
 			}

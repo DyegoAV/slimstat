@@ -50,7 +50,7 @@ function render_page_rss() {
 		
 		echo '<item>'."\n";
 		echo '<title>'.date_label( $filters ).'</title>'."\n";
-		echo '<link>http://'.$_SERVER['SERVER_NAME'].dirname( $_SERVER['PHP_SELF'] ).'/'.filter_url( $filters ).'</link>'."\n";
+		echo '<link>http://'.$_SERVER['SERVER_NAME'].urlencode( dirname( $_SERVER['PHP_SELF'] ) ).'/'.filter_url( $filters ).'</link>'."\n";
 		echo '<description>';
 		if ( array_key_exists( 'yr', $data ) ) {
 			echo 'Hits: '.array_sum( $data['yr'] ).'&lt;br /&gt;';
@@ -63,7 +63,7 @@ function render_page_rss() {
 		}
 		
 		echo '</description>'."\n";
-		echo '<guid isPermaLink="true">http://'.$_SERVER['SERVER_NAME'].dirname( $_SERVER['PHP_SELF'] ).'/'.filter_url( $filters ).'</guid>'."\n";
+		echo '<guid isPermaLink="true">http://'.$_SERVER['SERVER_NAME'].urlencode( dirname( $_SERVER['PHP_SELF'] ) ).'/'.filter_url( $filters ).'</guid>'."\n";
 		echo '<pubDate>'.date( 'r', mktime( 0, 0, 0, $filters['mo'], $filters['dy'] + 1, $filters['yr'] ) - 1 ).'</pubDate>'."\n";
 		echo '</item>'."\n\n";
 	}

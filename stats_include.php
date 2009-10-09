@@ -156,6 +156,7 @@ class SlimStatRecord {
 		}
 		
 		// attempt to update visit table
+		// if mysql_affected_rows() == 0, and referrer == this domain, look on /24 subnet 
 		// if mysql_affected_rows() == 0, do insert
 		
 		if ( $this->config->log_user_agents == true ) {
@@ -200,6 +201,41 @@ class SlimStatRecord {
 		// error_log( $query );
 		@mysql_query( $query, $connection );
 		// error_log( mysql_error( $connection ) );
+		
+		if ( mysql_affected_rows( $connection ) == 0 && $data['domain'] == mb_eregi_replace( '^www.', '', $_SERVER['SERVER_NAME'] ) ) {
+			list( $a, $b, $c, $d ) = explode( '.', $data['remote_ip'], 4 );
+			$subnet_ip = $a.'.'.$b.'.'.$c.'.';
+			
+			$query = 'UPDATE `'.SlimStat::esc( $this->config->db_database ).'`.`'.SlimStat::esc( $this->config->tbl_visits ).'`';
+			$query .= ' SET `hits` = `hits` + 1, `resource` = CONCAT( `resource`, \''.$time['yr'].' '.$time['mo'].' '.$time['dy'].' '.$time['hr'].' '.gmdate( 'i' ).' '.gmdate( 's' ).' '.$data['resource'].' '.$data['title'].'\n\' )';
+			$query .= ', `end_resource`=\''.SlimStat::esc( $data['resource'] ).'\', `end_ts`=\''.SlimStat::esc( $ts ).'\'';
+			$query .= ', `duration`=('.SlimStat::esc( $ts ).' - `start_ts`)';
+			foreach ( $time as $key => $value ) {
+				$query .= ', `end_'.$key.'`=\''.SlimStat::esc( $value ).'\'';
+			}
+			$query .= ' WHERE `remote_ip` LIKE \''.SlimStat::esc( $subnet_ip ).'%\'';
+			if ( $this->config->log_user_agents == true ) {
+				$query .= ' AND `user_agent`=\''.SlimStat::esc( $data['user_agent'] ).'\'';
+			} else {
+				foreach ( array( 'browser', 'version', 'platform' ) as $key ) {
+					if ( $data[$key] == null || $data[$key] == '' ) {
+						$query .= ' AND `'.$key.'` IS NULL';
+					} else {
+						$query .= ' AND `'.$key.'`=\''.SlimStat::esc( $data[$key] ).'\'';
+					}
+				}
+			}
+			$query .= ' AND ( `end_yr`>\''.$prev_time['yr'].'\' OR ( `end_yr`=\''.$prev_time['yr'].'\' AND (';
+			$query .= ' `end_mo`>\''.$prev_time['mo'].'\' OR ( `end_mo`=\''.$prev_time['mo'].'\' AND (';
+			$query .= ' `end_dy`>\''.$prev_time['dy'].'\' OR ( `end_dy`=\''.$prev_time['dy'].'\' AND (';
+			$query .= ' `end_hr`>\''.$prev_time['hr'].'\' OR ( `end_hr`=\''.$prev_time['hr'].'\' AND';
+			$query .= ' `end_mi`>=\''.$prev_time['mi'].'\' ) ) ) ) ) ) ) )';
+			$query .= ' LIMIT 1';
+		
+			// error_log( $query );
+			@mysql_query( $query, $connection );
+			// error_log( mysql_error( $connection ) );
+		}
 		
 		if ( mysql_affected_rows( $connection ) == 0 ) {
 			$query = 'INSERT INTO `'.SlimStat::esc( $this->config->db_database ).'`.`'.SlimStat::esc( $this->config->tbl_visits ).'` ( ';

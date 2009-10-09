@@ -59,7 +59,13 @@ if ( array_key_exists( 'dy', $filters ) ) { // do this after yr and mo are set
 	$filters['dy'] = valid_dy( $filters['dy'], $filters['mo'], $filters['yr'] );
 }
 
-$is_filtering_visits_only = ( array_key_exists( 'start_resource', $filters ) || array_key_exists( 'end_resource', $filters ) );
+$is_filtering_visits_only = false;
+foreach ( array_keys( $config->visit_fields ) as $key ) {
+	if ( array_key_exists( $key, $filters ) ) {
+		$is_filtering_visits_only = true;
+		break;
+	}
+}
 
 $prev_filters = prev_period( $filters );
 $curr_data = load_data( $filters );

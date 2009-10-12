@@ -937,7 +937,7 @@ function chart_hours() {
 	}
 	
 	$min = max( 0, floor( $min - ( $max * 0.05 ) ) );
-	$max = ceil( $max * 1.05 );
+	$max = max( 5, ceil( $max * 1.05 ) );
 	
 	echo '<div class="grid12">';
 	echo '<h3>Hits / hour</h3>';
@@ -1024,7 +1024,7 @@ function chart_days() {
 	}
 	
 	$scale_min = max( 0, floor( $min - ( $max * 0.05 ) ) );
-	$scale_max = ceil( $max * 1.05 );
+	$scale_max = max( 5, ceil( $max * 1.05 ) );
 	
 	echo '<div class="grid12">';
 	echo '<h3>Hits / day</h3>';

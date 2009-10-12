@@ -131,8 +131,9 @@ function render_page_html() {
 	if ( !array_key_exists( 'referrer', $filters ) ) {
 		table_total( 'referrer' );
 	}
-
-	sources();
+	if ( !array_key_exists( 'search_terms', $filters ) ) {
+		sources();
+	}
 	
 	echo '</div>'."\n"; // main
 
@@ -852,6 +853,13 @@ function chart_hits() {
 			$prev_labels[] = '';//urlencode( ( $key + 1 ).'+ ('.format_number( $value ).'%)' );
 			break;
 		}
+	}
+	
+	if ( empty( $prev_points ) ) {
+		$prev_points[] = 0;
+	}
+	if ( empty( $curr_points ) ) {
+		$curr_points[] = 0;
 	}
 	
 	echo '<div class="grid6" id="hits">';

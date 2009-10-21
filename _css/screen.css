@@ -298,7 +298,7 @@ th.last, td.last {
 		background-position: 0 -40px;
 		color: #fff; }
 #title {
-	background: #fff url('../_img/title.png');
+	background-color: #fff;
 	height: 1.1111em;
 	left: 50%;
 	margin-top: 0;

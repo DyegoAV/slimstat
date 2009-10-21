@@ -97,7 +97,10 @@ function render_page_html() {
 
 
 	echo '<h2 class="grid12">Visitors</h2>';
-
+	
+	if ( !array_key_exists( 'remote_ip', $filters ) ) {
+		table_total( 'remote_ip' );
+	}
 	if ( !array_key_exists( 'hits', $filters ) ) {
 		chart_hits();
 		// table_percent( 'hits' );
@@ -489,6 +492,8 @@ function table_total( $_field ) {
 		echo '<td class="first" title="'.htmlspecialchars( $key ).'"><span class="text">';
 		if ( $_field == 'referrer' ) {
 			echo '<a class="external" title="'.htmlspecialchars( $key ).'" href="'.htmlspecialchars( $key ).'" rel="nofollow">&rarr;</a> ';
+		} elseif ( $_field == 'remote_ip' ) {
+			echo '<a class="external" title="'.str_replace( '%i', $key, $config->whoisurl ).'" href="'.str_replace( '%i', $key, $config->whoisurl ).'" rel="nofollow">&rarr;</a> ';
 		}
 		echo '<a href="./'.filter_url( $new_filters ).'">';
 		echo htmlspecialchars( $i18n->label( $_field, $key ) );

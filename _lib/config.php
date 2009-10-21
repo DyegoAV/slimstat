@@ -62,6 +62,9 @@ class SlimStatConfig {
 	/** Which language to use. Default is 'en-gb' */
 	var $language = 'en-gb';
 	
+	/** Which URL to use for WHOIS lookups */
+	var $whoisurl = 'http://whois.domaintools.com/%i';
+	
 	/** Don’t log hits from referring domains containing these words */
 	var $spam_words = array(
 		'roulette', 'gambl', 'vegas', 'poker', 'casino', 'blackjack', 'omaha',

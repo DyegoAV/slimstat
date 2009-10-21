@@ -232,7 +232,6 @@ tbody tr.detail td {
 			padding-left: 22px;
 			width: 78px; }
 .toggle, .external {
-	background-image: url('../_img/toggle.png');
 	display: inline-block !important;
 	float: left;
 	margin-right: 3px;
@@ -241,6 +240,10 @@ tbody tr.detail td {
 	text-indent: -1000px;
 	vertical-align: bottom;
 	width: 15px; }
+.toggle {
+background-image: url('../_img/toggle.png'); }
+.external {
+background-image: url('../_img/external.png'); }
 th.first {
 	padding-left: 12px; }
 td.first {

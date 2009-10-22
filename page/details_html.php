@@ -204,9 +204,9 @@ function table_summary() {
 	echo '<td class="center numeric" title="'.$curr_date_label.'">'.format_number( $curr_ips, 0 ).'</td>';
 	echo '<td><span class="text">unique IPs</span></td>';
 	echo '<td class="center numeric" title="'.$curr_date_label.'">'.format_number( $curr_hits_per ).'</td>';
-	echo '<td><span class="text">hits / '.( ( array_key_exists( 'dy', $filters ) ) ? 'hour' : 'day' ).'</span></td>';
+	echo '<td><span class="text">hits ∕ '.( ( array_key_exists( 'dy', $filters ) ) ? 'hour' : 'day' ).'</span></td>';
 	echo '<td class="center numeric" title="'.$curr_date_label.'">'.format_number( $curr_visits_per ).'</td>';
-	echo '<td class="last"><span class="text">visits / '.( ( array_key_exists( 'dy', $filters ) ) ? 'hour' : 'day' ).'</span></td>';
+	echo '<td class="last"><span class="text">visits ∕ '.( ( array_key_exists( 'dy', $filters ) ) ? 'hour' : 'day' ).'</span></td>';
 	// echo '<td class="center numeric" title="'.$curr_date_label.'">'.format_number( $curr_bounce ).'%</td>';
 	// echo '<td class="last"><span class="text">bounce rate</span></td>';
 	echo '</tr>'."\n";
@@ -945,7 +945,7 @@ function chart_hours() {
 	$max = max( 5, ceil( $max * 1.05 ) );
 	
 	echo '<div class="grid12">';
-	echo '<h3>Hits / hour</h3>';
+	echo '<h3>Hits ∕ hour</h3>';
 	echo '<div class="tbody">';
 	echo '<img src="http://chart.apis.google.com/chart?';
 	echo 'chs=700x198';
@@ -1032,7 +1032,7 @@ function chart_days() {
 	$scale_max = max( 5, ceil( $max * 1.05 ) );
 	
 	echo '<div class="grid12">';
-	echo '<h3>Hits / day</h3>';
+	echo '<h3>Hits ∕ day</h3>';
 	echo '<div class="tbody">';
 	echo '<img src="http://chart.apis.google.com/chart?';
 	echo 'chs=700x198';

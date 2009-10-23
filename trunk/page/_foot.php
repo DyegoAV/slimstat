@@ -10,15 +10,21 @@ This product includes GeoLite data created by MaxMind, available from <a href="h
 <script type="text/javascript" src="_js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript">
 <!--
+var jDocument;
+var jTitle;
+
 function setTitleBackground() {
-	if (parseInt($(document).scrollTop()) < 20) {
-		$('#title').css('background-image', 'none');
+	if (parseInt(jDocument.scrollTop()) < 20) {
+		jTitle.css('background-image', 'none');
 	} else {
-		$('#title').css('background-image', 'url(\'./_img/title.png\')');
+		jTitle.css('background-image', 'url(\'./_img/title.png\')');
 	}
 }
 
 $(function() {
+	jDocument = $(document);
+	jTitle = $('#title');
+	
 	$('a.toggle').click(function() {
 		var toggle = $(this);
 		if (toggle.css('background-position').indexOf('-15') > -1) {
@@ -33,6 +39,7 @@ $(function() {
 		}
 		return false;
 	});
+	
 	$(window).scroll(function() {
 		setTitleBackground();
 	});

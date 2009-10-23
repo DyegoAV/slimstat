@@ -220,7 +220,7 @@ function table_summary() {
 	echo '<td class="center numeric first prev" title="'.$prev_date_label.'">'.format_number( $prev_hits, 0 ).'</td>';
 	echo '<td class="numeric">';
 	if ( $prev_hits == $curr_hits || $curr_hits == 0 || $prev_hits == 0 ) {
-		echo '-';
+		echo '—';
 	} elseif ( $curr_hits > $prev_hits ) {
 		echo '<span class="up">↑ '.format_percent( ( ( $curr_hits / $prev_hits ) - 1 ) * 100 ).'%</span>';
 	} elseif ( $prev_hits > $curr_hits ) {
@@ -233,7 +233,7 @@ function table_summary() {
 	echo '<td class="center numeric prev" title="'.$prev_date_label.'">'.format_number( $prev_visits, 0 ).'</td>';
 	echo '<td class="numeric">';
 	if ( $prev_visits == $curr_visits || $curr_visits == 0 || $prev_visits == 0 ) {
-		echo '-';
+		echo '—';
 	} elseif ( $curr_visits > $prev_visits ) {
 		echo '<span class="up">↑ '.format_percent( ( ( $curr_visits / $prev_visits ) - 1 ) * 100 ).'%</span>';
 	} elseif ( $prev_visits > $curr_visits ) {
@@ -246,7 +246,7 @@ function table_summary() {
 	echo '<td class="center numeric prev" title="'.$prev_date_label.'">'.format_number( $prev_ips, 0 ).'</td>';
 	echo '<td class="numeric">';
 	if ( $prev_ips == $curr_ips || $curr_ips == 0 || $prev_ips == 0 ) {
-		echo '-';
+		echo '—';
 	} elseif ( $curr_ips > $prev_ips ) {
 		echo '<span class="up">↑ '.format_percent( ( ( $curr_ips / $prev_ips ) - 1 ) * 100 ).'%</span>';
 	} elseif ( $prev_ips > $curr_ips ) {
@@ -259,7 +259,7 @@ function table_summary() {
 	echo '<td class="center numeric prev" title="'.$prev_date_label.'">'.format_number( $prev_hits_per ).'</td>';
 	echo '<td class="numeric">';
 	if ( $prev_hits_per == $curr_hits_per || $curr_hits_per == '0.0' || $prev_hits_per == '0.0' ) {
-		echo '-';
+		echo '—';
 	} elseif ( $curr_hits_per > $prev_hits_per ) {
 		echo '<span class="up">↑ '.format_percent( ( ( $curr_hits_per / $prev_hits_per ) - 1 ) * 100 ).'%</span>';
 	} elseif ( $prev_hits_per > $curr_hits_per ) {
@@ -272,7 +272,7 @@ function table_summary() {
 	echo '<td class="center numeric prev" title="'.$prev_date_label.'">'.format_number( $prev_visits_per ).'</td>';
 	echo '<td class="numeric last">';
 	if ( $prev_visits_per == $curr_visits_per || $curr_visits_per == 0 || $prev_visits_per == 0 ) {
-		echo '-';
+		echo '—';
 	} elseif ( $curr_visits_per > $prev_visits_per ) {
 		echo '<span class="up">↑ '.format_percent( ( ( $curr_visits_per / $prev_visits_per ) - 1 ) * 100 ).'%</span>';
 	} elseif ( $prev_visits_per > $curr_visits_per ) {
@@ -285,7 +285,7 @@ function table_summary() {
 	// echo '<td class="center numeric prev" title="'.$prev_date_label.'">'.format_number( $prev_bounce ).'%</td>';
 	// echo '<td class="numeric last">';
 	// if ( $prev_bounce == $curr_bounce ) {
-	// 	echo '-';
+	// 	echo '—';
 	// } elseif ( $curr_bounce > $prev_bounce ) {
 	// 	echo '<span class="dn">↑ '.format_percent( ( ( $curr_bounce / $prev_bounce ) - 1 ) * 100 ).'%</span>';
 	// } elseif ( $prev_bounce > $curr_bounce ) {
@@ -373,7 +373,7 @@ function table_resource_summary() {
 	echo '<td class="center numeric first prev">'.format_number( $prev_hits, 0 ).'</td>';
 	echo '<td class="numeric">';
 	if ( $prev_hits == $curr_hits || $curr_hits == 0 || $prev_hits == 0 ) {
-		echo '-';
+		echo '—';
 	} elseif ( $curr_hits > $prev_hits ) {
 		echo '<span class="up">↑ '.format_percent( ( ( $curr_hits / $prev_hits ) - 1 ) * 100 ).'%</span>';
 	} elseif ( $prev_hits > $curr_hits ) {
@@ -386,7 +386,7 @@ function table_resource_summary() {
 	echo '<td class="center numeric prev">'.format_number( $prev_start_hits, 0 ).'</td>';
 	echo '<td class="numeric">';
 	if ( $prev_start_hits == $curr_start_hits || $curr_start_hits == 0 || $prev_start_hits == 0 ) {
-		echo '-';
+		echo '—';
 	} elseif ( $curr_start_hits > $prev_start_hits ) {
 		echo '<span class="up">↑ '.format_percent( ( ( $curr_start_hits / $prev_start_hits ) - 1 ) * 100 ).'%</span>';
 	} elseif ( $prev_start_hits > $curr_start_hits ) {
@@ -399,7 +399,7 @@ function table_resource_summary() {
 	echo '<td class="center numeric prev">'.format_number( $prev_end_hits, 0 ).'</td>';
 	echo '<td class="numeric">';
 	if ( $prev_end_hits == $curr_end_hits || $curr_end_hits == 0 || $prev_end_hits == 0 ) {
-		echo '-';
+		echo '—';
 	} elseif ( $curr_end_hits > $prev_end_hits ) {
 		echo '<span class="up">↑ '.format_percent( ( ( $curr_end_hits / $prev_end_hits ) - 1 ) * 100 ).'%</span>';
 	} elseif ( $prev_end_hits > $curr_end_hits ) {
@@ -412,7 +412,7 @@ function table_resource_summary() {
 	echo '<td class="center numeric prev">'.format_percent( $prev_bounce_rate ).'%</td>';
 	echo '<td class="numeric">';
 	if ( $prev_bounce_rate == $curr_bounce_rate || $curr_bounce_rate == 0 || $prev_bounce_rate == 0 ) {
-		echo '-';
+		echo '—';
 	} elseif ( $curr_bounce_rate > $prev_bounce_rate ) {
 		echo '<span class="dn">↑ '.format_percent( $curr_bounce_rate - $prev_bounce_rate ).'%</span>';
 	} elseif ( $prev_bounce_rate > $curr_bounce_rate ) {
@@ -425,7 +425,7 @@ function table_resource_summary() {
 	echo '<td class="center numeric prev">'.format_percent( $prev_exit_rate ).'%</td>';
 	echo '<td class="numeric last">';
 	if ( $prev_exit_rate == $curr_exit_rate || $curr_exit_rate == 0 || $prev_exit_rate == 0 ) {
-		echo '-';
+		echo '—';
 	} elseif ( $curr_exit_rate > $prev_exit_rate ) {
 		echo '<span class="dn">↑ '.format_percent( $curr_exit_rate - $prev_exit_rate ).'%</span>';
 	} elseif ( $prev_exit_rate > $curr_exit_rate ) {
@@ -510,7 +510,7 @@ function table_total( $_field ) {
 		if ( array_key_exists( $key, $prev ) ) {
 			$prev_pos = array_search( $key, array_keys( $prev ) );
 			if ( $prev_pos == $pos ) {
-				echo '-';
+				echo '—';
 			} elseif ( $prev_pos > $pos ) {
 				echo '<span class="up">↑ '.( $prev_pos - $pos ).'</span>';
 			} elseif ( $pos > $prev_pos ) {
@@ -620,7 +620,7 @@ function table_percent( $_field ) {
 		echo '<td class="center last">';
 		if ( array_key_exists( $key, $prev ) ) {
 			if ( $prev_pct == $curr_pct ) {
-				echo '-';
+				echo '—';
 			} elseif ( $curr_pct > $prev_pct ) {
 				echo '<span class="up">↑ '.format_number( $curr_pct - $prev_pct ).'</span>';
 			} elseif ( $prev_pct > $curr_pct ) {
@@ -661,7 +661,7 @@ function table_percent( $_field ) {
 				echo '<td class="center last">';
 				if ( array_key_exists( $key, $prev_data['version'] ) && array_key_exists( $key2, $prev_data['version'][$key] ) ) {
 					if ( $prev_pct == $curr_pct ) {
-						echo '-';
+						echo '—';
 					} elseif ( $curr_pct > $prev_pct ) {
 						echo '<span class="up">↑ '.format_number( $curr_pct - $prev_pct ).'</span>';
 					} elseif ( $prev_pct > $curr_pct ) {

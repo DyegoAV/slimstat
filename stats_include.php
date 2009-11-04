@@ -449,6 +449,7 @@ class SlimStatRecord {
 				array( 'Safari', 'Safari', "Safari/([[:digit:]\.]+)", 1 ),
 				array( 'iCab', 'iCab', "iCab/([[:digit:]\.]+)", 1 ),
 				array( 'Konqueror', 'Konqueror', "Konqueror/([[:digit:]\.]+)", 1, 'Linux' ),
+				array( 'Midori', 'Midori', "Midori/([[:digit:]\.]+)",  1 ),
 				array( 'DoCoMo', 'DoCoMo', "DoCoMo/([[:digit:]\.]+)", 1 ),
 				array( 'Lynx', 'Lynx', "Lynx/([[:digit:]\.]+)", 1 ),
 				array( 'Links', 'Links', "\(([[:digit:]\.]+)", 1 ),

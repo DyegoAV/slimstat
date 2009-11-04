@@ -1,5 +1,5 @@
 <div id="foot"><div id="footinner">
-<a href="http://wettone.com/code/slimstat">SlimStat</a> v<?php
+<a href="http://slimstat.net/">SlimStat</a> v<?php
 echo SlimStat::app_version();
 ?> © 2009 <a href="http://pieces-and-bits.com/">Pieces &amp; Bits</a><br />
 This product includes GeoLite data created by MaxMind, available from <a href="http://www.maxmind.com/">http://www.maxmind.com/</a>

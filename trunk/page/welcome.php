@@ -28,7 +28,7 @@ page_head();
 <div id="side" class="grid4"></div>
 <div id="content" class="grid12">
 <div class="grid12">
-<p>Congratulations! You have successfully installed SlimStat.</p>
+<p class="first">Congratulations! You have successfully installed SlimStat.</p>
 <p>To get started, you need to include SlimStat in your site’s code for each page where you would like stats to be counted.</p>
 <p>You can use either JavaScript or PHP to do this.</p>
 <p>When you have done it, you’ll need to wait for people to start visiting your site.</p>
@@ -44,7 +44,7 @@ page_head();
 @include_once( $_SERVER['DOCUMENT_ROOT'].'<?php echo dirname( $_SERVER['SCRIPT_NAME'] ); ?>/stats_include.php' );
 ?&gt;</pre>
 <pre>&lt;?php
-@include_once( '<?php echo dirname( __FILE__ ); ?>/stats_include.php' );
+@include_once( '<?php echo dirname( dirname( __FILE__ ) ); ?>/stats_include.php' );
 ?&gt;</pre>
 <p>Don’t use <em>both</em> examples, because then each hit will be counted twice.</p>
 

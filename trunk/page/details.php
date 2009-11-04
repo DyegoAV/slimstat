@@ -650,5 +650,5 @@ function format_percent( $_percent ) {
 }
 
 function to1dp( $_number ) {
-	return round( $_number * 10 ) / 10;
+	return number_format( $_number, 1, '.', '' );
 }

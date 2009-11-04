@@ -436,7 +436,12 @@ class SlimStatRecord {
 				array( 'Opera Mini', 'Opera Mini', "Opera Mini( |/)([[:digit:]\.]+)", 2 ),
 				array( 'Opera', 'Opera', "Opera( |/)([[:digit:]\.]+)", 2 ),
 				array( 'MSIE', 'Internet Explorer', "MSIE ([[:digit:]\.]+)", 1 ),
+				array( 'Epiphany', 'Epiphany', "Epiphany/([[:digit:]\.]+)",  1 ),
+				array( 'Fennec', 'Fennec', "Fennec/([[:digit:]\.]+)",  1 ),
 				array( 'Firefox', 'Firefox', "Firefox/([[:digit:]\.]+)",  1 ),
+				array( 'Iceweasel', 'Iceweasel', "Iceweasel/([[:digit:]\.]+)",  1 ),
+				array( 'Minefield', 'Minefield', "Minefield/([[:digit:]\.]+)",  1 ),
+				array( 'Minimo', 'Minimo', "Minimo/([[:digit:]\.]+)",  1 ),
 				array( 'Flock', 'Flock', "Flock/([[:digit:]\.]+)",  1 ),
 				array( 'Firebird', 'Firebird', "Firebird/([[:digit:]\.]+)", 1 ),
 				array( 'Phoenix', 'Phoenix', "Phoenix/([[:digit:]\.]+)", 1 ),
@@ -446,6 +451,8 @@ class SlimStatRecord {
 				array( 'Thunderbird', 'Thunderbird', "Thunderbird/([[:digit:]\.]+)",  1 ),
 				array( 'Netscape', 'Netscape', "Netscape[0-9]?/([[:digit:]\.]+)", 1 ),
 				array( 'OmniWeb', 'OmniWeb', "OmniWeb/([[:digit:]\.]+)", 1 ),
+				array( 'Chrome', 'Chrome', "Chrome/([[:digit:]\.]+)", 1 ),
+				array( 'Chromium', 'Chromium', "Chromium/([[:digit:]\.]+)", 1 ),
 				array( 'Safari', 'Safari', "Safari/([[:digit:]\.]+)", 1 ),
 				array( 'iCab', 'iCab', "iCab/([[:digit:]\.]+)", 1 ),
 				array( 'Konqueror', 'Konqueror', "Konqueror/([[:digit:]\.]+)", 1, 'Linux' ),
@@ -455,7 +462,9 @@ class SlimStatRecord {
 				array( 'Links', 'Links', "\(([[:digit:]\.]+)", 1 ),
 				array( 'W3C_Validator', 'W3C Validator', "W3C_Validator/([[:digit:]\.]+)", 1 ),
 				array( 'ApacheBench', 'Apache Bench tool (ab)', "ApacheBench/(.*)$", 1 ),
-				array( 'lwp-request', 'libwww Perl library', "lwp-request/(.*)$", 1 )
+				array( 'lwp-request', 'libwww Perl library', "lwp-request/(.*)$", 1 ),
+				array( 'w3m', 'w3m', "w3m/([[:digit:]\.]+)", 1 )
+				array( 'Wget', 'Wget', "Wget/([[:digit:]\.]+)", 1 )
 			);
 			
 			foreach ( $sniffs as $sniff ) {

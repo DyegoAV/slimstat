@@ -463,7 +463,7 @@ class SlimStatRecord {
 				array( 'W3C_Validator', 'W3C Validator', "W3C_Validator/([[:digit:]\.]+)", 1 ),
 				array( 'ApacheBench', 'Apache Bench tool (ab)', "ApacheBench/(.*)$", 1 ),
 				array( 'lwp-request', 'libwww Perl library', "lwp-request/(.*)$", 1 ),
-				array( 'w3m', 'w3m', "w3m/([[:digit:]\.]+)", 1 )
+				array( 'w3m', 'w3m', "w3m/([[:digit:]\.]+)", 1 ),
 				array( 'Wget', 'Wget', "Wget/([[:digit:]\.]+)", 1 )
 			);
 			

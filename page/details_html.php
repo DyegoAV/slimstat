@@ -159,14 +159,14 @@ function table_summary() {
 	
 	if ( array_key_exists( 'dy', $filters ) ) {
 		if ( $filters['yr'] == gmdate( 'Y' ) && $filters['mo'] == gmdate( 'n' ) && $filters['dy'] == gmdate( 'j' ) ) {
-			$curr_per = gmdate( 'G' ) + 1;
+			$curr_per = gmdate( 'G' ) + ( ( gmdate( 'i' ) + 1 ) / 60 );
 		} else {
 			$curr_per = 24;
 		}
 		$prev_per = 24;
 	} else {
 		if ( $filters['yr'] == gmdate( 'Y' ) && $filters['mo'] == gmdate( 'n' ) ) {
-			$curr_per = gmdate( 'j' );
+			$curr_per = gmdate( 'j' ) - 1 + ( ( gmdate( 'G' ) + 1 ) / 24 );
 		} else {
 			$curr_per = days_in_month( $filters['mo'], $filters['yr'] );
 		}

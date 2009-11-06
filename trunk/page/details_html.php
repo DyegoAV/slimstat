@@ -20,7 +20,7 @@
  */
 
 function render_page_html() {
-	global $config, $i18n, $filters, $prev_filters, $has_filters, $curr_data;
+	global $config, $i18n, $filters, $prev_filters, $has_filters, $curr_data, $time_fields, $hit_fields, $visit_fields;
 	
 	page_head();
 	
@@ -42,11 +42,11 @@ function render_page_html() {
 	if ( $has_filters ) {
 		echo '<h2>Filters</h2>';
 	
-		foreach ( array_merge( array_keys( $config->hit_fields ), array_keys( $config->visit_fields ) ) as $key ) {
+		foreach ( array_merge( $hit_fields, $visit_fields ) as $key ) {
 			if ( array_key_exists( $key, $filters ) ) {
 				$new_filters = $filters;
 				unset( $new_filters[$key] );
-				echo '<div class="grid3"><h3>'.htmlspecialchars( ( array_key_exists( $key, $config->hit_fields ) ) ? $config->hit_fields[$key] : $config->visit_fields[$key] ).'</h3>'."\n";
+				echo '<div class="grid3"><h3>'.htmlspecialchars( $i18n->title( $key ) ).'</h3>'."\n";
 				echo '<p class="text"><a href="./'.filter_url( $new_filters ).'">';
 				echo htmlspecialchars( $i18n->label( $key, $filters[$key] ) );
 				echo '</a></p></div>'."\n";
@@ -57,7 +57,7 @@ function render_page_html() {
 	echo '<h2 id="api"><a href="./?format=xml'.filter_url( $filters, '&amp;' ).'">XML format</a></h2>'."\n";
 	
 	$rss_filters = $filters;
-	foreach ( array_keys( $config->time_fields ) as $time_field ) {
+	foreach ( $time_fields as $time_field ) {
 		if ( array_key_exists( $time_field, $rss_filters ) ) {
 			unset( $rss_filters[$time_field] );
 		}
@@ -86,12 +86,21 @@ function render_page_html() {
 
 	if ( !array_key_exists( 'resource', $filters ) ) {
 		table_total( 'resource' );
+	} else {
+		table_percent( 'prev_resource' );
+		table_percent( 'next_resource' );
 	}
+	
 	if ( !array_key_exists( 'start_resource', $filters ) ) {
 		table_total( 'start_resource' );
+	} else {	
+		table_percent( 'next_resource' );
 	}
+	
 	if ( !array_key_exists( 'end_resource', $filters ) ) {
 		table_total( 'end_resource' );
+	} else {	
+		table_percent( 'prev_resource' );
 	}
 
 
@@ -436,7 +445,7 @@ function table_resource_summary() {
 }
 
 function table_total( $_field ) {
-	global $config, $i18n, $is_iphone, $filters, $curr_data, $prev_data, $curr_date_label, $prev_date_label;
+	global $config, $i18n, $is_iphone, $filters, $curr_data, $prev_data, $curr_date_label, $prev_date_label, $hit_fields;
 	
 	if ( !array_key_exists( $_field, $curr_data ) || !array_key_exists( $_field, $prev_data ) ) {
 		return;
@@ -467,17 +476,17 @@ function table_total( $_field ) {
 		// echo '6';
 	} elseif ( $_field == 'referrer' ) {
 		echo '12';
-	} elseif ( stristr( $_field, 'resource' ) && ( array_key_exists( 'resource', $filters ) || array_key_exists( 'start_resource', $filters ) || array_key_exists( 'end_resource', $filters ) ) ) {
-		echo '12';
+	// } elseif ( stristr( $_field, 'resource' ) && ( array_key_exists( 'resource', $filters ) || array_key_exists( 'start_resource', $filters ) || array_key_exists( 'end_resource', $filters ) ) ) {
+		// echo '12';
 	} else {
 		echo '6';
 	}
 	echo ' table"><table>';
 	echo '<thead><tr>';
-	echo '<th class="first"><span class="text">'.( array_key_exists( $_field, $config->hit_fields ) ? $config->hit_fields[$_field] : $config->visit_fields[$_field] );
+	echo '<th class="first"><span class="text">'.htmlspecialchars( $i18n->title( $_field ) );
 	echo ' ('.sizeof( $curr ).')';
 	echo '</span></th>';
-	echo '<th class="center">'.( array_key_exists( $_field, $config->hit_fields ) ? 'Hits' : 'Visits' ).'</th>';
+	echo '<th class="center">'.( in_array( $_field, $hit_fields ) ? 'Hits' : 'Visits' ).'</th>';
 	echo '<th class="center">&nbsp;</th>';
 	echo '<th class="center last">&plusmn;</th>';
 	echo '</tr></thead></table>'."\n";
@@ -540,7 +549,7 @@ function table_total( $_field ) {
 }
 
 function table_percent( $_field ) {
-	global $config, $i18n, $is_iphone, $filters, $curr_data, $prev_data, $curr_date_label, $prev_date_label;
+	global $config, $i18n, $is_iphone, $filters, $curr_data, $prev_data, $curr_date_label, $prev_date_label, $hit_fields, $visit_fields;
 	
 	if ( !array_key_exists( $_field, $curr_data ) || !array_key_exists( $_field, $prev_data ) ) {
 		return;
@@ -575,7 +584,8 @@ function table_percent( $_field ) {
 	
 	echo '<div class="grid6 table"><table>';
 	echo '<thead><tr>';
-	echo '<th class="first"><span class="text">'.( array_key_exists( $_field, $config->hit_fields ) ? $config->hit_fields[$_field] : $config->visit_fields[$_field] );
+	echo '<th class="first"><span class="text">'.htmlspecialchars( $i18n->title( $_field ) );
+	echo ' ('.sizeof( $curr ).')';
 	echo '</span></th>';
 	echo '<th class="center">%</th>';
 	echo '<th class="center">&nbsp;</th>';
@@ -591,7 +601,11 @@ function table_percent( $_field ) {
 	
 	$pos = 0;
 	foreach ( $curr as $key => $hits ) {
-		$new_filters[$_field] = $key;
+		if ( $_field == 'prev_resource' || $_field == 'next_resource' ) {
+			$new_filters['resource'] = $key;
+		} else {
+			$new_filters[$_field] = $key;
+		}
 		
 		if ( $curr_total > 0 ) {
 			$curr_pct = $hits / $curr_total * 100;
@@ -612,9 +626,14 @@ function table_percent( $_field ) {
 			echo '<a class="toggle" title="" id="browser_'.preg_replace( '/[^a-z]/', '', mb_strtolower( $key ) );
 			echo '" href="#">+</a> ';
 		}
-		echo '<a href="./'.filter_url( $new_filters ).'">';
-		echo htmlspecialchars( $i18n->label( $_field, $key ) );
-		echo '</a></span></td>';
+		if ( $key != '' || ( $_field != 'prev_resource' && $_field != 'next_resource' ) ) {
+			echo '<a href="./'.filter_url( $new_filters ).'">';
+			echo htmlspecialchars( $i18n->label( $_field, $key ) );
+			echo '</a>';
+		} else {	
+			echo htmlspecialchars( $i18n->label( $_field, $key ) );
+		}
+		echo '</span></td>';
 		echo '<td class="center" title="'.$curr_date_label.'">'.format_number( $curr_pct ).'</td>';
 		echo '<td class="center prev" title="'.$prev_date_label.'">'.format_number( $prev_pct ).'</td>';
 		echo '<td class="center last">';

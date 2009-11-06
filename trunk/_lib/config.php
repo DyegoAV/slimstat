@@ -73,31 +73,6 @@ class SlimStatConfig {
 		'loan', 'mortgage', 'financ', 'rates', 'debt', 'dollar', 'cash',
 		'traffic', 'babes', 'valium' );
 	
-	var $time_fields = array(
-		'yr' => 'Year',
-		'mo' => 'Month',
-		'dy' => 'Day',
-		'hr' => 'Hour',
-		'mi' => 'Minute' );
-	
-	var $hit_fields = array(
-		'resource' => 'Pages',
-		'country' => 'Countries',
-		'language' => 'Languages',
-		'browser' => 'Browsers',
-		'version' => 'Versions',
-		'platform' => 'Operating systems',
-		'resolution' => 'Screen sizes' );
-	
-	var $visit_fields = array(
-		'remote_ip' => 'Visitors',
-		'search_terms' => 'Search terms',
-		'domain' => 'Domains',
-		'referrer' => 'Referrers',
-		'start_resource' => 'Entry pages',
-		'end_resource' => 'Exit pages',
-		'hits' => 'Hits' );
-	
 	/** Don’t log hits from these IP ranges */
 	var $ignored_ips = array();// '192.168.', '10.', '127.' );
 	

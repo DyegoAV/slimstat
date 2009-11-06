@@ -36,7 +36,12 @@ class SlimStatI18nBase {
 	}
 	
 	function label( $_field, $_key ) {
-		if ( $_field == 'start_resource' || $_field == 'end_resource' ) {
+		if ( ( $_field == 'prev_resource' || $_field == 'next_resource' ) && $_key == '' &&
+		     array_key_exists( $_field, $this->labels ) && array_key_exists( $_key, $this->labels[$_field] ) ) {
+			return $this->labels[$_field][$_key];
+		}
+		
+		if ( strstr( $_field, '_resource' ) ) {
 			$_field = 'resource';
 		}
 		
@@ -59,6 +64,14 @@ class SlimStatI18nBase {
 			}
 		} else {
 			return $_key;
+		}
+	}
+	
+	function title( $_field ) {
+		if ( array_key_exists( $_field, $this->titles ) ) {
+			return $this->titles[$_field];
+		} else {
+			return $_field;
 		}
 	}
 }

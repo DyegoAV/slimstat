@@ -30,6 +30,25 @@ class SlimStatI18n extends SlimStatI18nBase {
 	
 	var $language_country = '%s (%s)'; // e.g. 'English (United States)'
 	
+	var $titles = array(
+		'resource' => 'Pages',
+		'country' => 'Countries',
+		'language' => 'Languages',
+		'browser' => 'Browsers',
+		'version' => 'Versions',
+		'platform' => 'Operating systems',
+		'resolution' => 'Screen sizes',
+		'remote_ip' => 'Visitors',
+		'search_terms' => 'Search terms',
+		'domain' => 'Domains',
+		'referrer' => 'Referrers',
+		'start_resource' => 'Entry pages',
+		'end_resource' => 'Exit pages',
+		'hits' => 'Hits',
+		'prev_resource' => 'Previous pages',
+		'next_resource' => 'Next pages'
+	);
+	
 	var $labels = array(
 		// http://www.iso.org/iso/country_codes/iso_3166_code_lists/english_country_names_and_code_elements.htm
 		'country' => array(
@@ -468,7 +487,9 @@ class SlimStatI18n extends SlimStatI18nBase {
 			'zh-cn' => 'Chinese (Simplified)',
 			'zh-tw' => 'Chinese (Traditional)',
 			'zu' => 'Zulu'
-		)
+		),
+		'prev_resource' => array( '' => 'Entry' ),
+		'next_resource' => array( '' => 'Exit' )
 	);
 	
 	function SlimStatI18n() {

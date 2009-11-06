@@ -283,17 +283,19 @@ th.last, td.last {
 	width: 960px;
 	z-index: 10; }
 	#menu li {
+		background: url('../_img/menu_li_right.png') no-repeat right top;
 		float: right;
 		height: 1.6667em;
 		line-height: 1.6667;
-		overflow: hidden;
-		padding-right: 5px; }
+		margin-right: 5px;
+		overflow: hidden; }
 	#menu li a {
-		background: #d2d2c8 url('../_img/menu_li.png');
+		background: url('../_img/menu_li_left.png') no-repeat left top;
 		display: block;
 		padding: 0 10px;
-		text-align: center;
-		width: 50px; }
+		text-align: center; }
+	#menu li:hover, #menu li.selected {
+		background-position: right -40px; }
 	#menu li a:hover, #menu li.selected a {
 		background-position: 0 -40px;
 		color: #fff; }

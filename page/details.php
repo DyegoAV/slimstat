@@ -19,16 +19,22 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+// set up fields
+
+$time_fields = array( 'yr', 'mo', 'dy', 'hr', 'mi' );
+$hit_fields = array( 'resource', 'country', 'language', 'browser', 'version', 'platform', 'resolution' );
+$visit_fields = array( 'remote_ip', 'search_terms', 'domain', 'referrer', 'start_resource', 'end_resource', 'hits' );
+
 // set up filters
 
 $filters = array();
 $has_filters = false;
-foreach ( array_keys( $config->time_fields ) as $key ) {
+foreach ( $time_fields as $key ) {
 	if ( array_key_exists( 'filter_'.$key, $_GET ) ) {
 		$filters[$key] = $_GET['filter_'.$key];
 	}
 }
-foreach ( array_merge( array_keys( $config->hit_fields ), array_keys( $config->visit_fields ) ) as $key ) {
+foreach ( array_merge( $hit_fields, $visit_fields ) as $key ) {
 	if ( array_key_exists( 'filter_'.$key, $_GET ) ) {
 		$filters[$key] = $_GET['filter_'.$key];
 		$has_filters = true;
@@ -60,7 +66,7 @@ if ( array_key_exists( 'dy', $filters ) ) { // do this after yr and mo are set
 }
 
 $is_filtering_visits_only = false;
-foreach ( array_keys( $config->visit_fields ) as $key ) {
+foreach ( $visit_fields as $key ) {
 	if ( array_key_exists( $key, $filters ) ) {
 		$is_filtering_visits_only = true;
 		break;
@@ -107,7 +113,7 @@ function render_page() {
 // functions
 
 function load_cache_data( $_filters ) {
-	global $config, $connection;
+	global $config, $connection, $hit_fields, $visit_fields;
 	
 	$query = 'SELECT `cache` FROM `'.SlimStat::esc( $config->db_database ).'`.`'.SlimStat::esc( $config->tbl_cache ).'`';
 	$query .= ' WHERE `tz`=\''.SlimStat::esc( $config->timezone ).'\' AND `yr`=\''.SlimStat::esc( $_filters['yr'] ).'\'';
@@ -117,14 +123,14 @@ function load_cache_data( $_filters ) {
 	} else {
 		$query .= ' AND `dy`=\'0\'';
 	}
-	foreach ( array_keys( $config->hit_fields ) as $key ) {
+	foreach ( $hit_fields as $key ) {
 		if ( array_key_exists( $key, $_filters ) ) {
 			$query .= ' AND `'.SlimStat::esc( $key ).'`=\''.SlimStat::esc( urldecode( $_filters[$key] ) ).'\'';
 		} else {
 			$query .= ' AND `'.SlimStat::esc( $key ).'` IS NULL';
 		}
 	}
-	foreach ( array_keys( $config->visit_fields ) as $key ) {
+	foreach ( $visit_fields as $key ) {
 		if ( array_key_exists( $key, $_filters ) ) {
 			$query .= ' AND `'.SlimStat::esc( $key ).'`=\''.SlimStat::esc( $_filters[$key] ).'\'';
 		} elseif ( $key == 'hits' ) {
@@ -187,19 +193,19 @@ function get_date_clause( $_filters, $_yr_field, $_mo_field, $_dy_field, $_hr_fi
 }
 
 function load_hit_data( $_filters ) {
-	global $config, $connection, $is_filtering_visits_only;
+	global $config, $connection, $is_filtering_visits_only, $time_fields, $hit_fields;
 	
 	if ( $is_filtering_visits_only ) {
 		return array();
 	}
 	
-	$query = 'SELECT `'.implode( '`, `', array_merge( array_keys( $config->time_fields ), array_keys( $config->hit_fields ) ) ).'`, `title`, `hits` ';
+	$query = 'SELECT `'.implode( '`, `', array_merge( $time_fields, $hit_fields ) ).'`, `title`, `hits` ';
 	$query .= 'FROM `'.SlimStat::esc( $config->db_database ).'`.`'.SlimStat::esc( $config->tbl_hits ).'` ';
 	$query .= 'WHERE ';
 	
 	$query .= get_date_clause( $_filters, 'yr', 'mo', 'dy', 'hr', 'mi' );
 	
-	foreach ( array_keys( $config->hit_fields ) as $key ) {
+	foreach ( $hit_fields as $key ) {
 		if ( array_key_exists( $key, $_filters ) ) {
 			if ( $_filters[$key] != '' ) {
 				$query .= ' AND `'.SlimStat::esc( $key ).'`=\''.SlimStat::esc( $_filters[$key] ).'\'';
@@ -213,22 +219,26 @@ function load_hit_data( $_filters ) {
 	$result = mysql_query( $query, $connection );
 	// echo htmlspecialchars( mysql_error() );
 	
-	return parse_data( $result, $config->hit_fields, $_filters, true );
+	return parse_data( $result, $hit_fields, $_filters, true );
 }
 
 function load_visit_data( $_filters ) {
-	global $config, $connection, $is_filtering_visits_only;
+	global $config, $connection, $is_filtering_visits_only, $hit_fields, $visit_fields;
 	
-	$query = 'SELECT `start_yr`, `start_mo`, `start_dy`, `start_hr`, `'.implode( '`, `', array_keys( $config->visit_fields ) );
+	$query = 'SELECT `start_yr`, `start_mo`, `start_dy`, `start_hr`, `'.implode( '`, `', $visit_fields );
 	if ( $is_filtering_visits_only ) {
 		// $query .= '`, `resource';
-		$query .= '`, `'.implode( '`, `', array_keys( $config->hit_fields ) );
+		$query .= '`, `'.implode( '`, `', $hit_fields ).'` ';
+	} elseif ( array_key_exists( 'resource', $_filters ) ) {
+		$query .= '`, `resource` AS \'visit_resource\' ';
+	} else {
+		$query .= '` ';
 	}
-	$query .= '` FROM `'.SlimStat::esc( $config->db_database ).'`.`'.SlimStat::esc( $config->tbl_visits ).'` WHERE ';
+	$query .= 'FROM `'.SlimStat::esc( $config->db_database ).'`.`'.SlimStat::esc( $config->tbl_visits ).'` WHERE ';
 	
 	$query .= get_date_clause( $_filters, 'start_yr', 'start_mo', 'start_dy', 'start_hr', 'start_mi' );
 	
-	foreach ( array_keys( $config->hit_fields ) as $key ) {
+	foreach ( $hit_fields as $key ) {
 		if ( array_key_exists( $key, $_filters ) ) {
 			if ( $_filters[$key] == '' ) {
 				$query .= ' AND `'.SlimStat::esc( $key ).'` IS NULL';
@@ -239,7 +249,7 @@ function load_visit_data( $_filters ) {
 			}
 		}
 	}
-	foreach ( array_keys( $config->visit_fields ) as $key ) {
+	foreach ( $visit_fields as $key ) {
 		if ( array_key_exists( $key, $_filters ) ) {
 			if ( $_filters[$key] != '' ) {
 				$query .= ' AND `'.SlimStat::esc( $key ).'`=\''.SlimStat::esc( $_filters[$key] ).'\'';
@@ -253,18 +263,20 @@ function load_visit_data( $_filters ) {
 	$result = mysql_query( $query, $connection );
 	// echo htmlspecialchars( mysql_error() );
 	if ( $is_filtering_visits_only ) {
-		return parse_data( $result, array_merge( $config->visit_fields, $config->hit_fields ), $_filters, true );
+		return parse_data( $result, array_merge( $visit_fields, $hit_fields ), $_filters, true );
+	} elseif ( array_key_exists( 'resource', $_filters ) ) {
+		return parse_data( $result, array_merge( $visit_fields, array( 'visit_resource' ) ), $_filters );
 	} else {
-		return parse_data( $result, $config->visit_fields, $_filters );
+		return parse_data( $result, $visit_fields, $_filters );
 	}
 }
 
 function save_cache_data( $_filters, $_data ) {
-	global $config, $connection;
+	global $config, $connection, $hit_fields, $visit_fields;
 	
 	$query = 'INSERT INTO `'.SlimStat::esc( $config->db_database ).'`.`'.SlimStat::esc( $config->tbl_cache ).'` ';
-	$query .= '( `app_version`, `tz`, `yr`, `mo`, `dy`, `'.implode( '`, `', array_keys( $config->hit_fields ) );
-	$query .= '`, `'.implode( '`, `', array_keys( $config->visit_fields ) ).'`, `cache` ) VALUES ( \'';
+	$query .= '( `app_version`, `tz`, `yr`, `mo`, `dy`, `'.implode( '`, `', $hit_fields );
+	$query .= '`, `'.implode( '`, `', $visit_fields ).'`, `cache` ) VALUES ( \'';
 	$query .= SlimStat::esc( SlimStat::app_version() ).'\', \''.SlimStat::esc( $config->timezone ).'\', ';
 	foreach ( array( 'yr', 'mo', 'dy' ) as $key ) {
 		if ( array_key_exists( $key, $_filters ) ) {
@@ -273,14 +285,14 @@ function save_cache_data( $_filters, $_data ) {
 			$query .= '\'0\', ';
 		}
 	}
-	foreach ( array_keys( $config->hit_fields ) as $key ) {
+	foreach ( $hit_fields as $key ) {
 		if ( array_key_exists( $key, $_filters ) ) {
 			$query .= '\''.SlimStat::esc( $_filters[$key] ).'\', ';
 		} else {
 			$query .= 'NULL, ';
 		}
 	}
-	foreach ( array_keys( $config->visit_fields ) as $key ) {
+	foreach ( $visit_fields as $key ) {
 		if ( array_key_exists( $key, $_filters ) ) {
 			$query .= '\''.SlimStat::esc( $_filters[$key] ).'\', ';
 		} elseif ( $key == 'hits' ) {
@@ -328,11 +340,11 @@ function load_data( $_filters ) {
 }
 
 function parse_data( $_result, $_fields, $_filters, $_init_time_fields=false ) {
-	global $config, $is_filtering_visits_only;
+	global $config, $is_filtering_visits_only, $time_fields, $hit_fields, $visit_fields;
 	
 	$data = array();
 	
-	foreach ( array_keys( $_fields ) as $field ) {
+	foreach ( $_fields as $field ) {
 		if ( !array_key_exists( $field, $data ) ) {
 			$data[$field] = array();
 		}
@@ -413,7 +425,7 @@ function parse_data( $_result, $_fields, $_filters, $_init_time_fields=false ) {
 			}
 		}
 		
-		foreach ( array_keys( $_fields ) as $field ) {
+		foreach ( $_fields as $field ) {
 			if ( !array_key_exists( $field, $row ) ) {
 				continue;
 			}
@@ -435,6 +447,12 @@ function parse_data( $_result, $_fields, $_filters, $_init_time_fields=false ) {
 					$data[$field][$browser][$value] = $row['hits'];
 				}
 			} elseif ( $field == 'resource' && $is_filtering_visits_only ) {
+				if ( array_key_exists( 'start_resource', $_filters ) ) {
+					parse_next_prev_resources( $data, $value, $_filters['start_resource'] );
+				} elseif ( array_key_exists( 'end_resource', $_filters ) ) {
+					parse_next_prev_resources( $data, $value, $_filters['end_resource'] );
+				}
+				
 				$values = explode( "\n", $value );
 				$resources = array();
 				foreach ( $values as $value ) {
@@ -452,9 +470,9 @@ function parse_data( $_result, $_fields, $_filters, $_init_time_fields=false ) {
 						$data['title'][$resource] = $title;
 					}
 					
-					$time_fields = array( 'yr' => $yr, 'mo' => $mo, 'dy' => $dy, 'hr' => $hr );
+					$hit_time_fields = array( 'yr' => $yr, 'mo' => $mo, 'dy' => $dy, 'hr' => $hr );
 					
-					foreach ( $time_fields as $time_field => $time_value ) {
+					foreach ( $hit_time_fields as $time_field => $time_value ) {
 						if ( !array_key_exists( $time_field, $data ) ) {
 							$data[$time_field] = array();
 						}
@@ -486,7 +504,9 @@ function parse_data( $_result, $_fields, $_filters, $_init_time_fields=false ) {
 						$data['path'][$value] = 1;
 					}
 				}*/
-			} elseif ( array_key_exists( $field, $config->visit_fields ) || $is_filtering_visits_only ) {
+			} elseif ( $field == 'visit_resource' ) {
+				parse_next_prev_resources( $data, $value, $_filters['resource'] );
+			} elseif ( in_array( $field, $visit_fields ) || $is_filtering_visits_only ) {
 				if ( $is_filtering_visits_only &&
 					 ( ( array_key_exists( 'yr', $_filters ) && $local_start_time['yr'] != $_filters['yr'] ) ||
 				       ( array_key_exists( 'mo', $_filters ) && $local_start_time['mo'] != $_filters['mo'] ) ||
@@ -510,14 +530,14 @@ function parse_data( $_result, $_fields, $_filters, $_init_time_fields=false ) {
 		}
 	}
 	
-	foreach ( array_keys( $config->time_fields ) as $field ) {
+	foreach ( $time_fields as $field ) {
 		if ( array_key_exists( $field, $data ) ) {
 			ksort( $data[$field] );
 		} elseif ( $_init_time_fields ) {
 			$data[$field] = array();
 		}
 	}
-	foreach ( array_keys( $config->hit_fields ) as $field ) {
+	foreach ( array_merge( $_fields, array( 'prev_resource', 'next_resource' ) ) as $field ) {
 		if ( array_key_exists( $field, $data ) ) {
 			if ( $field == 'version' ) {
 				foreach ( array_keys( $data[$field] ) as $browser ) {
@@ -528,15 +548,80 @@ function parse_data( $_result, $_fields, $_filters, $_init_time_fields=false ) {
 			}
 		}
 	}
-	foreach ( array_keys( $config->visit_fields ) as $field ) {
+	/*foreach ( $hit_fields as $field ) {
+		if ( array_key_exists( $field, $data ) ) {
+			if ( $field == 'version' ) {
+				foreach ( array_keys( $data[$field] ) as $browser ) {
+					arsort( $data[$field][$browser] );
+				}
+			} else {
+				arsort( $data[$field] );
+			}
+		}
+	}
+	foreach ( $visit_fields as $field ) {
 		if ( array_key_exists( $field, $data ) ) {
 			arsort( $data[$field] );
 		}
-	}
+	}*/
 	
 	// echo '</pre>'."\n";
 	
 	return $data;
+}
+
+function parse_next_prev_resources( &$_data, &$_visit_resource, &$_resource ) {
+	if ( !array_key_exists( 'prev_resource', $_data ) ) {
+		$_data['prev_resource'] = array();
+	}
+	if ( !array_key_exists( 'next_resource', $_data ) ) {
+		$_data['next_resource'] = array();
+	}
+
+	$visit_resources = explode( "\n", $_visit_resource );
+	$resources = array();
+	foreach ( $visit_resources as $visit_resource ) {
+		if ( $visit_resource == '' ) {
+			continue;
+		}
+
+		list( $yr, $mo, $dy, $hr, $mi, $sc, $resource, $title ) = explode( ' ', $visit_resource, 8 );
+		
+		if ( $title != '' ) {
+			if ( !array_key_exists( 'title', $_data ) ) {
+				$_data['title'] = array();
+			}
+			$_data['title'][$resource] = $title;
+		}
+		
+		if ( $resource != '' ) {
+			$resources[] = $resource;
+		}
+	}
+	
+	for ( $resource_pos=0; $resource_pos<sizeof( $resources ); $resource_pos++ ) {
+		if ( $resources[$resource_pos] == $_resource ) {
+			$prev_resource = '';
+			$next_resource = '';
+			if ( $resource_pos > 0 ) {
+				$prev_resource = $resources[$resource_pos - 1];
+			}
+			if ( $resource_pos < sizeof( $resources ) - 1 ) {
+				$next_resource = $resources[$resource_pos + 1];
+			}
+
+			if ( array_key_exists( $prev_resource, $_data['prev_resource'] ) ) {
+				$_data['prev_resource'][$prev_resource]++;
+			} else {
+				$_data['prev_resource'][$prev_resource] = 1;
+			}
+			if ( array_key_exists( $next_resource, $_data['next_resource'] ) ) {
+				$_data['next_resource'][$next_resource]++;
+			} else {
+				$_data['next_resource'][$next_resource] = 1;
+			}
+		}
+	}
 }
 
 function is_period_past( $_filters ) {

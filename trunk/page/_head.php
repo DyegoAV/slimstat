@@ -10,8 +10,15 @@
 		echo ' for '.htmlspecialchars( $config->sitename );
 	}
 	?></title>
-	<link rel="stylesheet" href="_css/screen.css" type="text/css" />
-	<!--[if lt IE 8]><link rel="stylesheet" href="_css/ie.css" type="text/css" /><![endif]-->
+	<?
+	if ( $GLOBALS['is_handheld'] ) {
+		echo "\t".'<meta name="viewport" content="width=360" />'."\n";
+		echo "\t".'<link rel="stylesheet" href="_css/handheld.css" type="text/css" />'."\n";
+	} else {
+		echo "\t".'<link rel="stylesheet" href="_css/screen.css" type="text/css" />'."\n";
+		echo "\t".'<!--[if lt IE 8]><link rel="stylesheet" href="_css/ie.css" type="text/css" /><![endif]-->'."\n";
+	}
+	?>
 	<link rel="alternate" href="?format=rss" title="" type="application/rss+xml" />
 </head>
 <body>

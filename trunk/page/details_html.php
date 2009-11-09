@@ -39,6 +39,8 @@ function render_page_html() {
 
 	calendar_widget();
 
+	echo '<div id="filters" class="grid3">'."\n";
+	
 	if ( $has_filters ) {
 		echo '<h2>Filters</h2>';
 	
@@ -64,7 +66,7 @@ function render_page_html() {
 	}
 	echo '<h2 id="feed"><a href="./?format=rss'.filter_url( $rss_filters, '&amp;' ).'">RSS format</a></h2>'."\n";
 
-	echo '</div></div>'."\n"; // side
+	echo '</div></div></div>'."\n"; // side
 
 	// content
 	
@@ -155,7 +157,7 @@ function render_page_html() {
 }
 
 function table_summary() {
-	global $filters, $prev_filters, $curr_data, $prev_data, $curr_date_label, $prev_date_label;
+	global $filters, $prev_filters, $curr_data, $prev_data, $curr_date_label, $prev_date_label, $is_handheld;
 	
 	$curr_hits = array_sum( $curr_data['yr'] );
 	$prev_hits = array_sum( $prev_data['yr'] );
@@ -201,32 +203,15 @@ function table_summary() {
 	
 	echo '<div class="grid12" id="summary">';
 	echo '<h3>Summary</h3>';
-	echo '<div class="tbody"><table><tbody>'."\n";
-	
-	// current
-	
-	echo '<tr>';
-	echo '<td class="center numeric first" title="'.$curr_date_label.'">'.format_number( $curr_hits, 0 ).'</td>';
-	echo '<td><span class="text">hits</span></td>';
-	echo '<td class="center numeric" title="'.$curr_date_label.'">'.format_number( $curr_visits, 0 ).'</td>';
-	echo '<td><span class="text">visits</span></td>';
-	echo '<td class="center numeric" title="'.$curr_date_label.'">'.format_number( $curr_ips, 0 ).'</td>';
-	echo '<td><span class="text">unique IPs</span></td>';
-	echo '<td class="center numeric" title="'.$curr_date_label.'">'.format_number( $curr_hits_per ).'</td>';
-	echo '<td><span class="text">hits ∕ '.( ( array_key_exists( 'dy', $filters ) ) ? 'hour' : 'day' ).'</span></td>';
-	echo '<td class="center numeric" title="'.$curr_date_label.'">'.format_number( $curr_visits_per ).'</td>';
-	echo '<td class="last"><span class="text">visits ∕ '.( ( array_key_exists( 'dy', $filters ) ) ? 'hour' : 'day' ).'</span></td>';
-	// echo '<td class="center numeric" title="'.$curr_date_label.'">'.format_number( $curr_bounce ).'%</td>';
-	// echo '<td class="last"><span class="text">bounce rate</span></td>';
-	echo '</tr>'."\n";
-	
-	// previous
-	
-	echo '<tr>';
+	echo '<div class="tbody">'."\n";
 	
 	// hits
 	
-	echo '<td class="center numeric first prev" title="'.$prev_date_label.'">'.format_number( $prev_hits, 0 ).'</td>';
+	echo '<table><tbody><tr>';
+	echo '<td class="center numeric" title="'.$curr_date_label.'">'.format_number( $curr_hits, 0 ).'</td>';
+	echo '<td><span class="text">hits</span></td>';
+	echo '</tr><tr>';
+	echo '<td class="center numeric prev" title="'.$prev_date_label.'">'.format_number( $prev_hits, 0 ).'</td>';
 	echo '<td class="numeric">';
 	if ( $prev_hits == $curr_hits || $curr_hits == 0 || $prev_hits == 0 ) {
 		echo '—';
@@ -236,9 +221,14 @@ function table_summary() {
 		echo '<span class="dn">↓ '.format_percent( ( 1 - ( $curr_hits / $prev_hits ) ) * 100 ).'%</span>';
 	}
 	echo '</td>';
+	echo '</tr></tbody></table>'."\n";
 	
 	// visits
 	
+	echo '<table><tbody><tr>';
+	echo '<td class="center numeric" title="'.$curr_date_label.'">'.format_number( $curr_visits, 0 ).'</td>';
+	echo '<td><span class="text">visits</span></td>';
+	echo '</tr><tr>';
 	echo '<td class="center numeric prev" title="'.$prev_date_label.'">'.format_number( $prev_visits, 0 ).'</td>';
 	echo '<td class="numeric">';
 	if ( $prev_visits == $curr_visits || $curr_visits == 0 || $prev_visits == 0 ) {
@@ -249,9 +239,14 @@ function table_summary() {
 		echo '<span class="dn">↓ '.format_percent( ( 1 - ( $curr_visits / $prev_visits ) ) * 100 ).'%</span>';
 	}
 	echo '</td>';
+	echo '</tr></tbody></table>'."\n";
 	
 	// IPs
 	
+	echo '<table><tbody><tr>';
+	echo '<td class="center numeric" title="'.$curr_date_label.'">'.format_number( $curr_ips, 0 ).'</td>';
+	echo '<td><span class="text">unique IPs</span></td>';
+	echo '</tr><tr>';
 	echo '<td class="center numeric prev" title="'.$prev_date_label.'">'.format_number( $prev_ips, 0 ).'</td>';
 	echo '<td class="numeric">';
 	if ( $prev_ips == $curr_ips || $curr_ips == 0 || $prev_ips == 0 ) {
@@ -262,9 +257,14 @@ function table_summary() {
 		echo '<span class="dn">↓ '.format_percent( ( 1 - ( $curr_ips / $prev_ips ) ) * 100 ).'%</span>';
 	}
 	echo '</td>';
+	echo '</tr></tbody></table>'."\n";
 	
 	// hits per hour/day
 	
+	echo '<table><tbody><tr>';
+	echo '<td class="center numeric" title="'.$curr_date_label.'">'.format_number( $curr_hits_per ).'</td>';
+	echo '<td><span class="text">hits ∕ '.( ( array_key_exists( 'dy', $filters ) ) ? 'hour' : 'day' ).'</span></td>';
+	echo '</tr><tr>';
 	echo '<td class="center numeric prev" title="'.$prev_date_label.'">'.format_number( $prev_hits_per ).'</td>';
 	echo '<td class="numeric">';
 	if ( $prev_hits_per == $curr_hits_per || $curr_hits_per == '0.0' || $prev_hits_per == '0.0' ) {
@@ -275,9 +275,14 @@ function table_summary() {
 		echo '<span class="dn">↓ '.format_percent( ( 1 - ( $curr_hits_per / $prev_hits_per ) ) * 100 ).'%</span>';
 	}
 	echo '</td>';
+	echo '</tr></tbody></table>'."\n";
 	
 	// visits per hour/day
 	
+	echo '<table><tbody><tr>';
+	echo '<td class="center numeric" title="'.$curr_date_label.'">'.format_number( $curr_visits_per ).'</td>';
+	echo '<td class="last"><span class="text">visits ∕ '.( ( array_key_exists( 'dy', $filters ) ) ? 'hour' : 'day' ).'</span></td>';
+	echo '</tr><tr>';
 	echo '<td class="center numeric prev" title="'.$prev_date_label.'">'.format_number( $prev_visits_per ).'</td>';
 	echo '<td class="numeric last">';
 	if ( $prev_visits_per == $curr_visits_per || $curr_visits_per == 0 || $prev_visits_per == 0 ) {
@@ -288,22 +293,29 @@ function table_summary() {
 		echo '<span class="dn">↓ '.format_percent( ( 1 - ( $curr_visits_per / $prev_visits_per ) ) * 100 ).'%</span>';
 	}
 	echo '</td>';
+	echo '</tr></tbody></table>'."\n";
 	
 	// bounce rate
 	
-	// echo '<td class="center numeric prev" title="'.$prev_date_label.'">'.format_number( $prev_bounce ).'%</td>';
-	// echo '<td class="numeric last">';
-	// if ( $prev_bounce == $curr_bounce ) {
-	// 	echo '—';
-	// } elseif ( $curr_bounce > $prev_bounce ) {
-	// 	echo '<span class="dn">↑ '.format_percent( ( ( $curr_bounce / $prev_bounce ) - 1 ) * 100 ).'%</span>';
-	// } elseif ( $prev_bounce > $curr_bounce ) {
-	// 	echo '<span class="up">↓ '.format_percent( ( 1 - ( $curr_bounce / $prev_bounce ) ) * 100 ).'%</span>';
-	// }
-	// echo '</td>';
-	echo '</tr>'."\n";
+	if ( $is_handheld ) {
+		echo '<table><tbody><tr>';
+		echo '<td class="center numeric" title="'.$curr_date_label.'">'.format_number( $curr_bounce ).'%</td>';
+		echo '<td class="last"><span class="text">bounce rate</span></td>';
+		echo '</tr><tr>';
+		echo '<td class="center numeric prev" title="'.$prev_date_label.'">'.format_number( $prev_bounce ).'%</td>';
+		echo '<td class="numeric last">';
+		if ( $prev_bounce == $curr_bounce || $curr_bounce == 0 || $prev_bounce == 0 ) {
+			echo '—';
+		} elseif ( $curr_bounce > $prev_bounce ) {
+			echo '<span class="dn">↑ '.format_percent( ( ( $curr_bounce / $prev_bounce ) - 1 ) * 100 ).'%</span>';
+		} elseif ( $prev_bounce > $curr_bounce ) {
+			echo '<span class="up">↓ '.format_percent( ( 1 - ( $curr_bounce / $prev_bounce ) ) * 100 ).'%</span>';
+		}
+		echo '</td>';
+		echo '</tr></tbody></table>'."\n";
+	}
 	
-	echo '</tbody></table></div></div>'."\n";
+	echo '</div></div>'."\n";
 }
 
 function table_resource_summary() {
@@ -356,30 +368,15 @@ function table_resource_summary() {
 	
 	echo '<div class="grid12 summary">';
 	echo '<h3>'.htmlspecialchars( $i18n->label( 'resource', $filters['resource'] ) ).'</h3>';
-	echo '<div class="tbody"><table><tbody>';
-	
-	// current
-	
-	echo '<tr>';
-	echo '<td class="center numeric first">'.format_number( $curr_hits, 0 ).'</td>';
-	echo '<td><span class="text">hits</span></td>';
-	echo '<td class="center numeric">'.format_number( $curr_start_hits, 0 ).'</td>';
-	echo '<td><span class="text">as entry page</span></td>';
-	echo '<td class="center numeric">'.format_number( $curr_end_hits, 0 ).'</td>';
-	echo '<td><span class="text">as exit page</span></td>';
-	echo '<td class="center numeric">'.format_percent( $curr_bounce_rate ).'%</td>';
-	echo '<td><span class="text">bounce rate</span></td>';
-	echo '<td class="center numeric">'.format_percent( $curr_exit_rate ).'%</td>';
-	echo '<td class="last"><span class="text">exit rate</span></td>';
-	echo '</tr>'."\n";
-	
-	// previous
-	
-	echo '<tr>';
+	echo '<div class="tbody">';
 	
 	// hits
 	
-	echo '<td class="center numeric first prev">'.format_number( $prev_hits, 0 ).'</td>';
+	echo '<table><tbody><tr>';
+	echo '<td class="center numeric">'.format_number( $curr_hits, 0 ).'</td>';
+	echo '<td><span class="text">hits</span></td>';
+	echo '</tr><tr>';
+	echo '<td class="center numeric prev">'.format_number( $prev_hits, 0 ).'</td>';
 	echo '<td class="numeric">';
 	if ( $prev_hits == $curr_hits || $curr_hits == 0 || $prev_hits == 0 ) {
 		echo '—';
@@ -389,9 +386,14 @@ function table_resource_summary() {
 		echo '<span class="dn">↓ '.format_percent( ( 1 - ( $curr_hits / $prev_hits ) ) * 100 ).'%</span>';
 	}
 	echo '</td>';
+	echo '</tr></tbody></table>'."\n";
 	
 	// hits as start page
 	
+	echo '<table><tbody><tr>';
+	echo '<td class="center numeric">'.format_number( $curr_start_hits, 0 ).'</td>';
+	echo '<td><span class="text">as entry page</span></td>';
+	echo '</tr><tr>';
 	echo '<td class="center numeric prev">'.format_number( $prev_start_hits, 0 ).'</td>';
 	echo '<td class="numeric">';
 	if ( $prev_start_hits == $curr_start_hits || $curr_start_hits == 0 || $prev_start_hits == 0 ) {
@@ -402,9 +404,14 @@ function table_resource_summary() {
 		echo '<span class="dn">↓ '.format_percent( ( 1 - ( $curr_start_hits / $prev_start_hits ) ) * 100 ).'%</span>';
 	}
 	echo '</td>';
+	echo '</tr></tbody></table>'."\n";
 	
 	// hits as exit page
 	
+	echo '<table><tbody><tr>';
+	echo '<td class="center numeric">'.format_number( $curr_end_hits, 0 ).'</td>';
+	echo '<td><span class="text">as exit page</span></td>';
+	echo '</tr><tr>';
 	echo '<td class="center numeric prev">'.format_number( $prev_end_hits, 0 ).'</td>';
 	echo '<td class="numeric">';
 	if ( $prev_end_hits == $curr_end_hits || $curr_end_hits == 0 || $prev_end_hits == 0 ) {
@@ -415,9 +422,14 @@ function table_resource_summary() {
 		echo '<span class="dn">↓ '.format_percent( ( 1 - ( $curr_end_hits / $prev_end_hits ) ) * 100 ).'%</span>';
 	}
 	echo '</td>';
+	echo '</tr></tbody></table>'."\n";
 	
 	// bounce rate
 	
+	echo '<table><tbody><tr>';
+	echo '<td class="center numeric">'.format_percent( $curr_bounce_rate ).'%</td>';
+	echo '<td><span class="text">bounce rate</span></td>';
+	echo '</tr><tr>';
 	echo '<td class="center numeric prev">'.format_percent( $prev_bounce_rate ).'%</td>';
 	echo '<td class="numeric">';
 	if ( $prev_bounce_rate == $curr_bounce_rate || $curr_bounce_rate == 0 || $prev_bounce_rate == 0 ) {
@@ -428,9 +440,14 @@ function table_resource_summary() {
 		echo '<span class="up">↓ '.format_percent( $prev_bounce_rate - $curr_bounce_rate ).'%</span>';
 	}
 	echo '</td>';
+	echo '</tr></tbody></table>'."\n";
 	
 	// exit rate
 	
+	echo '<table><tbody><tr>';
+	echo '<td class="center numeric">'.format_percent( $curr_exit_rate ).'%</td>';
+	echo '<td class="last"><span class="text">exit rate</span></td>';
+	echo '</tr><tr>';
 	echo '<td class="center numeric prev">'.format_percent( $prev_exit_rate ).'%</td>';
 	echo '<td class="numeric last">';
 	if ( $prev_exit_rate == $curr_exit_rate || $curr_exit_rate == 0 || $prev_exit_rate == 0 ) {
@@ -441,18 +458,20 @@ function table_resource_summary() {
 		echo '<span class="up">↓ '.format_percent( $prev_exit_rate - $curr_exit_rate ).'%</span>';
 	}
 	echo '</td>';
-	echo '</tr></tbody></table></div></div>'."\n";
+	echo '</tr></tbody></table>'."\n";
+	
+	echo '</div></div>'."\n";
 }
 
 function table_total( $_field ) {
-	global $config, $i18n, $is_iphone, $filters, $curr_data, $prev_data, $curr_date_label, $prev_date_label, $hit_fields;
+	global $config, $i18n, $is_handheld, $filters, $curr_data, $prev_data, $curr_date_label, $prev_date_label, $hit_fields;
 	
 	if ( !array_key_exists( $_field, $curr_data ) || !array_key_exists( $_field, $prev_data ) ) {
 		return;
 	}
 	
 	$new_filters = $filters;
-	$max_rows = ( $is_iphone ) ? 10 : 50;
+	$max_rows = ( $is_handheld ) ? 10 : 50;
 	
 	$curr = $curr_data[$_field];
 	$prev = $prev_data[$_field];
@@ -484,7 +503,7 @@ function table_total( $_field ) {
 	echo ' table"><table>';
 	echo '<thead><tr>';
 	echo '<th class="first"><span class="text">'.htmlspecialchars( $i18n->title( $_field ) );
-	echo ' ('.sizeof( $curr ).')';
+	echo ' ('.$curr_size.')';
 	echo '</span></th>';
 	echo '<th class="center">'.( in_array( $_field, $hit_fields ) ? 'Hits' : 'Visits' ).'</th>';
 	echo '<th class="center">&nbsp;</th>';
@@ -549,14 +568,14 @@ function table_total( $_field ) {
 }
 
 function table_percent( $_field ) {
-	global $config, $i18n, $is_iphone, $filters, $curr_data, $prev_data, $curr_date_label, $prev_date_label, $hit_fields, $visit_fields;
+	global $config, $i18n, $is_handheld, $filters, $curr_data, $prev_data, $curr_date_label, $prev_date_label, $hit_fields, $visit_fields;
 	
 	if ( !array_key_exists( $_field, $curr_data ) || !array_key_exists( $_field, $prev_data ) ) {
 		return;
 	}
 	
 	$new_filters = $filters;
-	$max_rows = ( $is_iphone ) ? 10 : 50;
+	$max_rows = ( $is_handheld ) ? 10 : 50;
 	
 	$curr = $curr_data[$_field];
 	$prev = $prev_data[$_field];
@@ -585,7 +604,7 @@ function table_percent( $_field ) {
 	echo '<div class="grid6 table"><table>';
 	echo '<thead><tr>';
 	echo '<th class="first"><span class="text">'.htmlspecialchars( $i18n->title( $_field ) );
-	echo ' ('.sizeof( $curr ).')';
+	echo ' ('.$curr_size.')';
 	echo '</span></th>';
 	echo '<th class="center">%</th>';
 	echo '<th class="center">&nbsp;</th>';
@@ -622,7 +641,7 @@ function table_percent( $_field ) {
 		echo '<tr>';
 		// echo '<td>'.( $pos + 1 ).'</td>';
 		echo '<td class="first"><span class="text">';
-		if ( $_field == 'browser' && !$is_iphone ) {
+		if ( $_field == 'browser' && !$is_handheld ) {
 			echo '<a class="toggle" title="" id="browser_'.preg_replace( '/[^a-z]/', '', mb_strtolower( $key ) );
 			echo '" href="#">+</a> ';
 		}
@@ -651,7 +670,7 @@ function table_percent( $_field ) {
 		echo '</td>';
 		echo '</tr>'."\n";
 		
-		if ( $_field == 'browser' && !$is_iphone && ( array_key_exists( $key, $curr_data['version'] ) || array_key_exists( $key, $prev_data['version'] ) ) ) {
+		if ( $_field == 'browser' && !$is_handheld && ( array_key_exists( $key, $curr_data['version'] ) || array_key_exists( $key, $prev_data['version'] ) ) ) {
 			if ( !array_key_exists( $key, $curr_data['version'] ) ) {
 				$curr_data['version'][$key] = array();
 				foreach ( $prev_data['version'][$key] as $key2 => $hits2 ) {
@@ -903,7 +922,9 @@ function chart_hits() {
 }
 
 function chart_hours() {
-	global $filters, $curr_data, $prev_data;
+	global $filters, $curr_data, $prev_data, $is_handheld;
+	
+	$width = ( $is_handheld ) ? 340 : 700;
 	
 	$curr = $curr_data['hr'];
 	$prev = $prev_data['hr'];
@@ -967,7 +988,7 @@ function chart_hours() {
 	echo '<h3>Hits ∕ hour</h3>';
 	echo '<div class="tbody">';
 	echo '<img src="http://chart.apis.google.com/chart?';
-	echo 'chs=700x198';
+	echo 'chs='.$width.'x198';
 	echo '&amp;chd=t:'.implode( ',', $prev_points ).'|'.implode( ',', $curr_points );
 	echo '&amp;chds='.$min.','.$max.','.$min.','.$max;
 	echo '&amp;chco=CCCCCC,333333';
@@ -983,12 +1004,14 @@ function chart_hours() {
 	echo '&amp;chxl=0:|00|01|02|03|04|05|06|07|08|09|10|11|12|13|14|15|16|17|18|19|20|21|22|23';
 	echo '&amp;chxr=1,'.$min.','.$max;
 	echo '&amp;cht=lc';
-	echo '" alt="" width="700" height="198" />';
+	echo '" alt="" width="'.$width.'" height="198" />';
 	echo '</div></div>';
 }
 
 function chart_days() {
-	global $filters, $curr_data, $prev_data;
+	global $filters, $curr_data, $prev_data, $is_handheld;
+	
+	$width = ( $is_handheld ) ? 340 : 700;
 	
 	$curr = ( array_key_exists( 'dy', $curr_data ) ) ? $curr_data['dy'] : array();
 	$prev = ( array_key_exists( 'dy', $prev_data ) ) ? $prev_data['dy'] : array();
@@ -1054,7 +1077,7 @@ function chart_days() {
 	echo '<h3>Hits ∕ day</h3>';
 	echo '<div class="tbody">';
 	echo '<img src="http://chart.apis.google.com/chart?';
-	echo 'chs=700x198';
+	echo 'chs='.$width.'x198';
 	echo '&amp;chd=t:'.implode( ',', $prev_points ).'|'.implode( ',', $curr_points );
 	echo '&amp;chds='.$scale_min.','.$scale_max.','.$scale_min.','.$scale_max;
 	echo '&amp;chco=CCCCCC,333333';
@@ -1072,7 +1095,7 @@ function chart_days() {
 	}
 	echo '&amp;chxr=1,'.$scale_min.','.$scale_max;
 	echo '&amp;cht=lc';
-	echo '" alt="" width="700" height="198" />';
+	echo '" alt="" width="'.$width.'" height="198" />';
 	echo '</div></div>';
 }
 

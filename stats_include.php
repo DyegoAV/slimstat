@@ -279,7 +279,7 @@ class SlimStatRecord {
 	 */
 	function _determine_remote_ip() {
 		$remote_addr = $_SERVER['REMOTE_ADDR'];
-		if ( ( $remote_addr == '127.0.0.1' || $remote_addr == $_SERVER['SERVER_ADDR'] ) &&
+		if ( ( $remote_addr == '127.0.0.1' || $remote_addr == '::1' || $remote_addr == $_SERVER['SERVER_ADDR'] ) &&
 		     array_key_exists( 'HTTP_X_FORWARDED_FOR', $_SERVER ) && $_SERVER['HTTP_X_FORWARDED_FOR'] != '' ) {
 			// There may be multiple comma-separated IPs for the X-Forwarded-For header
 			// if the traffic is passing through more than one explicit proxy. Take the

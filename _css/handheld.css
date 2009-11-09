@@ -25,16 +25,13 @@ body {
 	color: #333;
 	font: 12px/1.6667 Helvetica, Arial, sans-serif;
 	margin: 0 auto;
-	min-width: 980px;
 	padding: 0;
-	width: 980px; }
+	width: 360px; }
 a {
 	color: #369;
 	outline: none;
 	text-decoration: none; }
 	a:visited {
-		color: #69c; }
-	a:hover {
 		color: #69c; }
 h1 {
 	color: #333;
@@ -44,7 +41,7 @@ h1 {
 	height: 1.25em;
 	line-height: 1.25;
 	margin: 0;
-	padding: 0.4166em 20px 0;
+	padding: 0.4166em 10px 0;
 	text-align: left; }
 h2 {
 	color: #333;
@@ -126,8 +123,6 @@ tbody td {
 tbody tr.detail td {
 	height: 1.7em;
 	line-height: 1.7; }
-#content tbody tr:hover td {
-	background-color: #ffc; }
 
 /******************************************************************* =classes */
 
@@ -159,17 +154,7 @@ tbody tr.detail td {
 		float: none;
 		margin-top: 1.6667em;
 		padding: 0; }
-.grid16, .grid16 table {
-	width: 940px; }
-.grid12, .grid12 table {
-	width: 700px; }
-.grid10, .grid10 table {
-	width: 580px; }
-.grid8, .grid8 table {
-	width: 460px; }
-.grid7, .grid7 table {
-	width: 400px; }
-.grid6, .grid6 table {
+.grid16, .grid16 table, .grid12, .grid12 table, .grid10, .grid10 table, .grid8, .grid8 table, .grid7, .grid7 table, .grid6, .grid6 table {
 	width: 340px; }
 .grid5, .grid5 table {
 	width: 280px; }
@@ -187,11 +172,7 @@ tbody tr.detail td {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap; }
-.grid12 table, .grid12 h3 {
-	background-position: left -440px; }
-.grid7 table, .grid7 h3 {
-	background-position: left -240px; }
-.grid6 table, .grid6 h3 {
+.grid12 table, .grid12 h3, .grid7 table, .grid7 h3, .grid6 table, .grid6 h3 {
 	background-position: left -200px; }
 .grid5 table, .grid5 h3 {
 	background-position: left -160px; }
@@ -200,17 +181,9 @@ tbody tr.detail td {
 .grid3 table, .grid3 h3 {
 	background-position: left -80px; }
 
-.table {
-	height: 20em;
-	overflow: hidden; }
 .tbody {
 	border-bottom: solid 2px #d2d2c8;
-	height: 16.5em;
-	overflow-x: hidden;
-	overflow-y: auto;
 	width: 100%; }
-	.tbody:hover {
-		background-color: #f9f9f9; }
 	.tbody table {
 		background: none; }
 .text {
@@ -218,21 +191,13 @@ tbody tr.detail td {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap; }
-	.grid12 .text {
-		width: 520px; }
-	.grid10 .text {
-		width: 400px; }
-	.grid8 .text {
-		width: 280px; }
-	.grid7 .text {
-		width: 220px; }
-	.grid6 .text {
-		width: 160px; }
+	.grid12 .text, .grid10 .text, .grid8 .text, .grid7 .text, .grid6 .text {
+		width: 178px; }
 		.grid6 .detail .text {
 			padding-left: 22px;
 			width: 138px; }
 	.grid5 .text {
-		width: 100px; }
+		width: 118px; }
 		.grid5 .detail .text {
 			padding-left: 22px;
 			width: 78px; }
@@ -253,39 +218,28 @@ th.first {
 	padding-left: 12px; }
 td.first {
 	padding-left: 12px; }
-th.last, td.last {
-	padding-right: 18px; }
 
 /*********************************************************************** =ids */
 
 #container {
 	background-color: #fff;
-	left: 50%;
-	margin: 0 0 0 -490px;
+	margin: 0;
 	padding: 0;
-	position: absolute;
-	top: 0;
-	width: 980px;
+	width: 360px;
 	z-index: 5; }
 #head {
 	background-color: #eee;
-	left: 50%;
-	margin: 0 0 0 -490px;
+	margin: 0;
 	padding: 0;
-	position: fixed;
-	top: 0;
-	width: 980px;
+	width: 360px;
 	z-index: 10; }
 #menu {
-	background: #eee url('../_img/menu.png');
+	background-color: #eee;
 	height: 1.6667em;
-	left: 50%;
 	list-style: none;
-	margin: 0 0 0 -490px;
-	padding: 0 10px 0.8333em;
-	position: fixed;
-	top: 3.3333em;
-	width: 960px;
+	margin: 0;
+	padding: 0 10px;
+	width: 340px;
 	z-index: 10; }
 	#menu li {
 		background: url('../_img/menu_li_right.png') no-repeat right top;
@@ -299,46 +253,41 @@ th.last, td.last {
 		display: block;
 		padding: 0 10px;
 		text-align: center; }
-	#menu li:hover, #menu li.selected {
+	#menu li.selected {
 		background-position: right -40px; }
-	#menu li a:hover, #menu li.selected a {
+	#menu li.selected a {
 		background-position: 0 -40px;
 		color: #fff; }
 #title {
 	background-color: #fff;
-	height: 1.1111em;
-	left: 50%;
+	line-height: 1.1111em;
 	margin-top: 0;
-	margin-left: -490px;
-	overflow: hidden;
-	padding: 0.5555em 20px 1.1111em;
-	position: fixed;
-	top: 3.8888em;
+	margin-left: 0;
+	padding: 1.1111em 10px;
 	z-index: 10; }
 	#title span, #side h2 span {
 		font-size: 0.6667em;
 		line-height: 1.6667em;
 		white-space: nowrap; }
 #main {
-	background: url('../_img/main.png') right bottom no-repeat;
-	margin-top: 8.3333em;
-	min-height: 33.3333em;
-	width: 960px;
+	margin-top: 0;
+	padding: 0;
+	width: 360px;
 	z-index: 1; }
 #content {
 	margin-top: 0;
 	padding: 0 0 3.3333em;
-	width: 720px; }
+	width: 360px; }
 #summary td, .summary td {
 	height: 3.1667em;
 	line-height: 3.1667;
-	width: 70px; }
+	width: 60px; }
 	#summary .tbody, .summary .tbody {
-		height: 6.5em;
+		height: 19.5em;
 		overflow: hidden; }
 	#summary .tbody table, .summary .tbody table {
 		float: left;
-		width: 140px; }
+		width: 170px; }
 	#summary .numeric, .summary .numeric {
 		font-size: 1.1667em;
 		font-weight: bold;
@@ -351,29 +300,21 @@ th.last, td.last {
 	#summary .last, .summary .last {
 		padding-right: 0; }
 	#summary .text, .summary .text {
-		width: 70px; }
+		width: 77px; }
 #hits img {
 	float: left; }
 #side {
-	background: url('../_img/filters.png') no-repeat;
-	left: 50%;
 	margin-top: 0;
-	margin-left: 245px;
-	min-height: 33.3333em;
-	padding-right: 0;
-	padding-top: 3.3333em;
-	padding-bottom: 3.3333em;
-	position: fixed;
-	top: 8.3333em;
-	z-index: 10; }
+	padding: 0;
+	width: 360px; }
 #sideinner {
 	margin-top: 0;
-	overflow: hidden;
-	padding-left: 35px;
-	padding-right: 30px; }
+	width: 340px; }
 	#side .calendar {
 		background-color: #d2d2c8;
-		color: #999; }
+		color: #999;
+		float: left;
+		margin-top: 1.6667em; }
 		#side .calendar thead {
 			overflow: hidden;
 			width: 160px; }
@@ -388,14 +329,9 @@ th.last, td.last {
 			width: 22px; }
 		#side .calendar th a.thismonth {
 			width: 115px; }
-		#side .calendar th a:hover {
-			color: #06c; }
 		#side .calendar td {
 			background-color: #eee;
 			width: 23px; }
-		#side .calendar td a:hover {
-			background-color: #ffc;
-			color: #06c; }
 		#side .calendar a {
 			color: #06c;
 			text-decoration: none; }
@@ -408,45 +344,31 @@ th.last, td.last {
 			text-align: center !important; }
 		#side .calendar td.selected {
 			background-color: #d2d2c8; }
-#filters { }
-	#filters p {
+	#side .grid3 p {
 		margin: 0 0 1.6667em; }
-	#filters p.text {
+	#side .grid3 p.text {
 		background: transparent url('../_img/delete.gif') no-repeat;
 		border-bottom: solid 1px #d2d2c8;
 		line-height: 1.5833;
 		margin: 0;
 		padding: 0 3px;
 		text-align: left; }
-	#filters p.text a {
+	#side .grid3 p.text a {
 		padding-left: 15px; }
-	#filters p.text:hover {
-		background-color: #ffc;
-		color: #06c; }
-#api, #api a {
-	background: transparent url('../_img/xml.gif') no-repeat;
-	display: block;
-	height: 14px;
-	line-height: 14px;
-	min-height: 14px;
-	overflow: hidden;
-	text-indent: -1000px;
-	width: 36px; }
-#feed, #feed a {
-	background: transparent url('../_img/feed.png') no-repeat;
-	display: block;
-	height: 14px;
-	line-height: 14px;
-	min-height: 14px;
-	overflow: hidden;
-	text-indent: -1000px;
-	width: 14px; }
+#side #filters {
+	float: left;
+	margin-top: 0;
+	padding: 0 0 0 20px; }
+#api {
+	display: none; }
+#feed {
+	display: none; }
 #foot {
-	background: #eee url('../_img/footer.png') no-repeat;
+	background-color: #eee;
 	clear: both;
 	margin: 0;
 	padding: 0;
-	width: 980px; }
+	width: 360px; }
 #footinner {
 	line-height: 1.6667;
 	margin: 0;

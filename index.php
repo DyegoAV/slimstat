@@ -47,7 +47,7 @@ if ( !file_exists( realpath( dirname( __FILE__ ) ).'/page/'.$query_string_page.'
 $config =& SlimStatConfig::get_instance();
 $i18n = SlimStatI18n::get_instance();
 
-$is_iphone = is_iphone();
+$is_handheld = is_handheld();
 
 if ( file_exists( realpath( dirname( __FILE__ ) ).'/page/setup.php' ) ) {
 	$query_string_page = 'setup';
@@ -212,6 +212,6 @@ function sp2nb( $_str ) {
 	return str_replace( ' ', '&nbsp;', $_str );
 }
 
-function is_iphone() {
+function is_handheld() {
 	return strstr( $_SERVER['HTTP_USER_AGENT'], 'iPhone' ) || strstr( $_SERVER['HTTP_USER_AGENT'], 'MobileSafari' );
 }

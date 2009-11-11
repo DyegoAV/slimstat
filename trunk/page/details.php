@@ -441,10 +441,19 @@ function parse_data( $_result, $_fields, $_filters, $_init_time_fields=false ) {
 				if ( !array_key_exists( $browser, $data[$field] ) ) {
 					$data[$field][$browser] = array();
 				}
-				if ( array_key_exists( $value, $data[$field][$browser] ) ) {
-					$data[$field][$browser][$value] += $row['hits'];
+				
+				if ( $is_filtering_visits_only ) {
+					if ( array_key_exists( $value, $data[$field][$browser] ) ) {
+						$data[$field][$browser][$value]++;
+					} else {
+						$data[$field][$browser][$value] = 1;
+					}
 				} else {
-					$data[$field][$browser][$value] = $row['hits'];
+					if ( array_key_exists( $value, $data[$field][$browser] ) ) {
+						$data[$field][$browser][$value] += $row['hits'];
+					} else {
+						$data[$field][$browser][$value] = $row['hits'];
+					}
 				}
 			} elseif ( $field == 'resource' && $is_filtering_visits_only ) {
 				if ( array_key_exists( 'start_resource', $_filters ) ) {

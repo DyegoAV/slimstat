@@ -75,5 +75,16 @@ class SlimStat {
 
 		return $value;
 	}
-
+	
+	function local_time_fields( $_fields ) {
+		$gmdate = gmmktime(
+			$_fields['hr'],
+			( array_key_exists( 'mi', $_fields ) ) ? $_fields['mi'] : 0,
+			( array_key_exists( 'sc', $_fields ) ) ? $_fields['sc'] : 0,
+			$_fields['mo'],
+			$_fields['dy'],
+			$_fields['yr'] );
+		list( $yr, $mo, $dy, $hr, $mi, $sc ) = explode( ' ', date( 'Y n j G i s', $gmdate ) );
+		return array( 'yr' => $yr, 'mo' => $mo, 'dy' => $dy, 'hr' => $hr, 'mi' => $mi, 'sc' => $sc );
+	}
 }

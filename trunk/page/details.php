@@ -355,7 +355,7 @@ function parse_data( $_result, $_fields, $_filters, $_init_time_fields=false ) {
 	
 	while ( $row = mysql_fetch_assoc( $_result ) ) {
 		if ( $is_filtering_visits_only ) {
-			$local_start_time = local_time_fields( array( 'yr' => $row['start_yr'], 'mo' => $row['start_mo'], 'dy' => $row['start_dy'], 'hr' => $row['start_hr'], 0, 0 ) );
+			$local_start_time = SlimStat::local_time_fields( array( 'yr' => $row['start_yr'], 'mo' => $row['start_mo'], 'dy' => $row['start_dy'], 'hr' => $row['start_hr'], 0, 0 ) );
 			
 			$values = explode( "\n", $row['resource'] );
 			$hits = 0;
@@ -366,7 +366,7 @@ function parse_data( $_result, $_fields, $_filters, $_init_time_fields=false ) {
 				}
 				
 				@list( $yr, $mo, $dy, $hr, $mi, $sc, $resource, $title ) = explode( ' ', $value, 8 );
-				$local_time = local_time_fields( array( 'yr' => $yr, 'mo' => $mo, 'dy' => $dy, 'hr' => $hr, 'mi' => $mi, 'sc' => $sc ) );
+				$local_time = SlimStat::local_time_fields( array( 'yr' => $yr, 'mo' => $mo, 'dy' => $dy, 'hr' => $hr, 'mi' => $mi, 'sc' => $sc ) );
 				
 				if ( ( array_key_exists( 'yr', $_filters ) && $local_time['yr'] != $_filters['yr'] ) ||
 				     ( array_key_exists( 'mo', $_filters ) && $local_time['mo'] != $_filters['mo'] ) ||
@@ -394,7 +394,7 @@ function parse_data( $_result, $_fields, $_filters, $_init_time_fields=false ) {
 		// convert to local time
 		if ( array_key_exists( 'yr', $row ) && array_key_exists( 'mo', $row ) &&
 		     array_key_exists( 'dy', $row ) && array_key_exists( 'hr', $row ) ) {
-			$local_time = local_time_fields( $row );
+			$local_time = SlimStat::local_time_fields( $row );
 			foreach ( $local_time as $field => $value ) {
 				if ( !array_key_exists( $field, $data ) ) {
 					$data[$field] = array();
@@ -721,18 +721,6 @@ function next_period( $_query_fields, $_ignore_dy=false ) {
 	}
 
 	return $next_fields;
-}
-
-function local_time_fields( $_fields ) {
-	$gmdate = gmmktime(
-		$_fields['hr'],
-		( array_key_exists( 'mi', $_fields ) ) ? $_fields['mi'] : 0,
-		( array_key_exists( 'sc', $_fields ) ) ? $_fields['sc'] : 0,
-		$_fields['mo'],
-		$_fields['dy'],
-		$_fields['yr'] );
-	list( $yr, $mo, $dy, $hr, $mi, $sc ) = explode( ' ', date( 'Y n j G i s', $gmdate ) );
-	return array( 'yr' => $yr, 'mo' => $mo, 'dy' => $dy, 'hr' => $hr, 'mi' => $mi, 'sc' => $sc );
 }
 
 function format_percent( $_percent ) {

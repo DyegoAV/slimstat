@@ -148,6 +148,9 @@ tbody tr.detail td {
 	font-size: 0.8333em;
 	height: 1.7em;
 	line-height: 1.7; }
+.accent {
+	background-color: #eee;
+	color: #999; }
 .detail {
 	display: none; }
 .grid1, .grid2, .grid3, .grid4, .grid5, .grid6, .grid7, .grid8,
@@ -183,7 +186,7 @@ tbody tr.detail td {
 .grid4 table, .grid4 h3, .grid5 table, .grid5 h3, .grid6 table, .grid6 h3,
 .grid7 table, .grid7 h3, .grid8 table, .grid8 h3, .grid9 table, .grid9 h3,
 .grid10 table, .grid10 h3, .grid11 table, .grid11 h3, .grid12 table, .grid12 h3 {
-	background: #d2d2c8 url('../_img/h3.png') no-repeat;
+	background: url('../_img/h3.png') no-repeat;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap; }
@@ -236,15 +239,23 @@ tbody tr.detail td {
 		.grid5 .detail .text {
 			padding-left: 22px;
 			width: 78px; }
+	.grid12 .truncate {
+		width: 220px !important; }
+	.right .text {
+		float: right; }
 .toggle, .external {
 	display: inline-block !important;
 	float: left;
 	margin-right: 3px;
 	overflow: hidden;
 	padding: 0;
-	text-indent: -1000px;
+	text-indent: 1000px;
 	vertical-align: bottom;
 	width: 15px; }
+	.right .toggle, .right .external {
+		float: right;
+		margin-left: 3px;
+		margin-right: 0; }
 .toggle {
 background-image: url('../_img/toggle.png'); }
 .external {
@@ -430,7 +441,7 @@ th.last, td.last {
 	line-height: 14px;
 	min-height: 14px;
 	overflow: hidden;
-	text-indent: -1000px;
+	text-indent: 1000px;
 	width: 36px; }
 #feed, #feed a {
 	background: transparent url('../_img/feed.png') no-repeat;
@@ -439,7 +450,7 @@ th.last, td.last {
 	line-height: 14px;
 	min-height: 14px;
 	overflow: hidden;
-	text-indent: -1000px;
+	text-indent: 1000px;
 	width: 14px; }
 #foot {
 	background: #eee url('../_img/footer.png') no-repeat;

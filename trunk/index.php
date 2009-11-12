@@ -92,6 +92,10 @@ function page_foot() {
 }
 
 function filter_url( $_filters, $_first_separator='?' ) {
+	if ( !is_array( $_filters ) ) {
+		return '';
+	}
+	
 	$shown_first = false;
 	$str = '';
 	$cleaned_filters = $_filters;

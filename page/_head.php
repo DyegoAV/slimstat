@@ -1,5 +1,24 @@
 <?php
 
+/*
+ * SlimStat: simple web analytics
+ * Copyright (C) 2009 Pieces & Bits Limited
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
+
 @header( 'Content-Type: text/html; charset=UTF-8' );
 
 ?><!DOCTYPE html>
@@ -10,13 +29,15 @@
 		echo ' for '.htmlspecialchars( $config->sitename );
 	}
 	?></title>
-	<?
+	<?php
 	if ( $GLOBALS['is_handheld'] ) {
 		echo "\t".'<meta name="viewport" content="width=360" />'."\n";
 		echo "\t".'<link rel="stylesheet" href="_css/handheld.css" type="text/css" />'."\n";
 	} else {
 		echo "\t".'<link rel="stylesheet" href="_css/screen.css" type="text/css" />'."\n";
 		echo "\t".'<!--[if lt IE 8]><link rel="stylesheet" href="_css/ie.css" type="text/css" /><![endif]-->'."\n";
+		echo "\t".'<script type="text/javascript" src="_js/jquery-1.3.2.min.js"></script>'."\n";
+		echo "\t".'<script type="text/javascript" src="_js/screen.js"></script>'."\n";
 	}
 	?>
 	<link rel="alternate" href="?format=rss" title="" type="application/rss+xml" />
@@ -65,7 +86,12 @@ if ( $query_string_page == 'setup' ) {
 			if ( $page_dir_file == 'details' ) {
 				echo '<a href="./'.filter_url( $filters ).'">';
 			} else {
-				echo '<a href="?page='.htmlspecialchars( $page_dir_file ).filter_url( $filters, '&amp;' ).'">';
+				$filter_url = filter_url( $filters, '&amp;' );
+				if ( $filter_url == '' ) {
+					echo '<a href="?'.htmlspecialchars( $page_dir_file ).'">';
+				} else {
+					echo '<a href="?page='.htmlspecialchars( $page_dir_file ).$filter_url.'">';
+				}
 			}
 			echo ucwords( htmlspecialchars( $page_dir_file ) ).'</a></li>';
 		}

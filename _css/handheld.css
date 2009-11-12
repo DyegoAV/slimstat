@@ -168,7 +168,7 @@ tbody tr.detail td {
 .grid4 table, .grid4 h3, .grid5 table, .grid5 h3, .grid6 table, .grid6 h3,
 .grid7 table, .grid7 h3, .grid8 table, .grid8 h3, .grid9 table, .grid9 h3,
 .grid10 table, .grid10 h3, .grid11 table, .grid11 h3, .grid12 table, .grid12 h3 {
-	background: #d2d2c8 url('../_img/h3.png') no-repeat;
+	background: url('../_img/h3.png') no-repeat;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap; }
@@ -207,7 +207,7 @@ tbody tr.detail td {
 	margin-right: 3px;
 	overflow: hidden;
 	padding: 0;
-	text-indent: -1000px;
+	text-indent: 1000px;
 	vertical-align: bottom;
 	width: 15px; }
 .toggle {

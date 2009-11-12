@@ -91,6 +91,9 @@ class SlimStatRecord {
 		);
 		
 		$connection = SlimStat::connect();
+		if ( !$connection ) {
+			return;
+		}
 		
 		// attempt to detect spam
 		

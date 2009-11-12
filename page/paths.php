@@ -21,8 +21,6 @@
 
 page_head();
 
-error_reporting( E_ALL );
-
 echo '<h2 id="title" class="grid16">Paths taken by recent visitors</h2>'."\n";
 
 // main

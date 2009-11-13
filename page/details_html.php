@@ -731,7 +731,7 @@ function table_percent( $_field ) {
 }
 
 function map() {
-	global $curr_data;
+	global $curr_data, $is_handheld;
 	
 	// map
 	$first_value = -1;
@@ -749,18 +749,58 @@ function map() {
 		}
 		$rounded_value = round( $value / $first_value * 100 );
 		$country_values[] = $rounded_value;
+		
+		if ( sizeof( $country_keys ) == 50 ) {
+			break;
+		}
 	}
-	echo '<div class="grid6">';
-	echo '<h3>Map</h3>';
+	
+	$max_key = reset( $country_keys );
+	$max_value = $curr_data['country'][$max_key];
+	$min_key = end( $country_keys );
+	$min_value = $curr_data['country'][$min_key];
+	
+	$map_src = 'http://chart.apis.google.com/chart?';
+	$map_src .= 'chs=340x170&cht=t';
+	$map_src .= '&chco=ffffff,d9ffd9,007700';
+	$map_src .= '&chld='.implode( '', $country_keys );
+	$map_src .= '&chd=t:'.implode( ',', $country_values );
+	$map_src .= '&chf=bg,s,f9f9f9&chtm=';
+	
+	echo '<div class="grid6" id="map">';
+	if ( $is_handheld ) {
+		echo '<h3>Map</h3>';
+	} else {
+		echo '<h3>';
+		echo '<form style="float:right"><select name="region">';
+		echo '<option value="africa">Africa</option>';
+		echo '<option value="asia">Asia</option>';
+		echo '<option value="europe">Europe</option>';
+		echo '<option value="middle_east">Middle East</option>';
+		echo '<option value="south_america">South America</option>';
+		echo '<option value="world" selected="true">World</option>';
+		echo '</select></form>';
+		echo 'Map</h3>';
+		echo '<script type="text/javascript">'."\n";
+		echo 'var mapRegion = "world";'."\n";
+	    echo 'var mapSrc = "'.$map_src.'";'."\n";
+		echo '$(function() {'."\n";
+		echo "\t".'$("#map select").change(function() {'."\n";
+		echo "\t\t".'mapRegion = $(this).val();'."\n";
+		echo "\t\t".'$("#map img").attr("src", mapSrc + mapRegion);'."\n";
+		echo "\t\t".'$(this).blur();'."\n";
+		echo "\t".'});'."\n";
+		echo '});'."\n";
+		echo '</script>';
+	}
 	echo '<div class="tbody">';
-	echo '<img src="http://chart.apis.google.com/chart?';
-	echo 'chs=330x170&amp;cht=t&amp;chtm=world';
-	echo '&amp;chco=ffffff,eeeeee,333333';
-	echo '&amp;chld='.implode( '', array_slice( $country_keys, 0, 20 ) );
-	echo '&amp;chd=t:'.implode( ',', array_slice( $country_values, 0, 20 ) );
-	echo '&amp;chf=bg,s,ffffff';
-	echo '" alt="" width="330" height="170" style="margin:14px 5px" />';
+	echo '<img src="'.htmlspecialchars( $map_src ).'world" alt="" width="340" height="170" style="margin: 4px 0" />';
+	echo '<table><tbody><tr><td class="first">Visits ';
+	echo format_number( $min_value, 0 ).' <span>&nbsp;</span> '.format_number( $max_value, 0 );
+	echo '</td></tr></tbody></table>';
 	echo '</div></div>';
+	?>
+	<?php
 }
 
 function sources() {

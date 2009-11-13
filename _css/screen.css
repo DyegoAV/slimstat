@@ -212,7 +212,7 @@ tbody tr.detail td {
 	overflow-x: hidden;
 	overflow-y: auto;
 	width: 100%; }
-	.tbody:hover {
+	.tbody:hover, #map .tbody {
 		background-color: #f9f9f9; }
 	.tbody table {
 		background: none; }
@@ -363,8 +363,13 @@ th.last, td.last {
 		padding-right: 0; }
 	#summary .text, .summary .text {
 		width: 70px; }
-#hits img {
-	float: left; }
+#map span {
+	background-image:url('../_img/map.png');
+	border: solid 1px #ccc;
+	display: inline-block;
+	height: 11px;
+	vertical-align: middle;
+	width: 70px; }
 #side {
 	background: url('../_img/filters.png') no-repeat;
 	left: 50%;

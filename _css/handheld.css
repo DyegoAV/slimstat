@@ -301,8 +301,15 @@ td.first {
 		padding-right: 0; }
 	#summary .text, .summary .text {
 		width: 77px; }
-#hits img {
-	float: left; }
+#map .tbody {
+	background-color: #f9f9f9; }
+#map span {
+	background-image:url('../_img/map.png');
+	border: solid 1px #ccc;
+	display: inline-block;
+	height: 11px;
+	vertical-align: middle;
+	width: 70px; }
 #side {
 	margin-top: 0;
 	padding: 0;

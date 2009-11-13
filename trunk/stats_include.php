@@ -373,7 +373,7 @@ class SlimStatRecord {
 					}
 					
 					if ( isset( $q[ $sniff[1] ] ) ) {
-						$search_terms = trim( stripslashes( utf8_decode( $q[ $sniff[1] ] ) ) );
+						$search_terms = trim( stripslashes( $q[ $sniff[1] ] ) );
 						break;
 					}
 				}

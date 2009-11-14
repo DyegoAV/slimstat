@@ -257,6 +257,11 @@ if ( $step == -1 ) {
 ///////////////////////////////////////////////////////////////////////// Finish
 
 if ( $step == -1 ) {
+	// remove old data from cache
+	$query = 'DELETE FROM `'.SlimStat::esc( $config->db_database ).'`.`'.SlimStat::esc( $config->tbl_cache ).'` ';
+	$query .= 'WHERE `app_version`<>\''.SlimStat::esc( SlimStat::app_version() ).'\'';
+	@mysql_query( $query, $connection );
+	
 	$step = array_search( 'Finish', $steps );
 	step_header();
 	?>

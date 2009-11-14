@@ -344,10 +344,8 @@ function parse_data( $_result, $_fields, $_filters, $_init_time_fields=false ) {
 	
 	$data = array();
 	
-	foreach ( $_fields as $field ) {
-		if ( !array_key_exists( $field, $data ) ) {
-			$data[$field] = array();
-		}
+	foreach ( array_merge( $_fields, array( 'prev_resource', 'next_resource' ) ) as $field ) {
+		$data[$field] = array();
 	}
 	$data['source'] = array( 'search_terms' => 0, 'referrer' => 0, 'direct' => 0 );
 	
@@ -501,18 +499,6 @@ function parse_data( $_result, $_fields, $_filters, $_init_time_fields=false ) {
 						$resources[] = $resource;
 					}
 				}
-				
-				/*if ( !empty( $resources ) ) {
-					$value = implode( ' ', $resources );
-					if ( !array_key_exists( 'path', $data ) ) {
-						$data['path'] = array();
-					}
-					if ( array_key_exists( $value, $data['path'] ) ) {
-						$data['path'][$value]++;
-					} else {
-						$data['path'][$value] = 1;
-					}
-				}*/
 			} elseif ( $field == 'visit_resource' ) {
 				parse_next_prev_resources( $data, $value, $_filters['resource'] );
 			} elseif ( in_array( $field, $visit_fields ) || $is_filtering_visits_only ) {
@@ -557,22 +543,6 @@ function parse_data( $_result, $_fields, $_filters, $_init_time_fields=false ) {
 			}
 		}
 	}
-	/*foreach ( $hit_fields as $field ) {
-		if ( array_key_exists( $field, $data ) ) {
-			if ( $field == 'version' ) {
-				foreach ( array_keys( $data[$field] ) as $browser ) {
-					arsort( $data[$field][$browser] );
-				}
-			} else {
-				arsort( $data[$field] );
-			}
-		}
-	}
-	foreach ( $visit_fields as $field ) {
-		if ( array_key_exists( $field, $data ) ) {
-			arsort( $data[$field] );
-		}
-	}*/
 	
 	// echo '</pre>'."\n";
 	
@@ -580,13 +550,6 @@ function parse_data( $_result, $_fields, $_filters, $_init_time_fields=false ) {
 }
 
 function parse_next_prev_resources( &$_data, &$_visit_resource, &$_resource ) {
-	if ( !array_key_exists( 'prev_resource', $_data ) ) {
-		$_data['prev_resource'] = array();
-	}
-	if ( !array_key_exists( 'next_resource', $_data ) ) {
-		$_data['next_resource'] = array();
-	}
-
 	$visit_resources = explode( "\n", $_visit_resource );
 	$resources = array();
 	foreach ( $visit_resources as $visit_resource ) {

@@ -69,6 +69,8 @@ if ( $query_string_page == 'setup' ) {
 	echo '<li class="selected"><a href="?setup">Setup</a></li>';
 } elseif ( $query_string_page == 'welcome' ) {
 	echo '<li class="selected"><a href="?welcome">Welcome</a></li>';
+} elseif ( $config->slimstat_use_auth && !check_login() ) {
+	// do nothing
 } elseif ( $page_dir_handle = opendir( realpath( dirname( __FILE__ ) ) ) ) {
 	while ( false !== ( $page_dir_file = readdir( $page_dir_handle ) ) ) {
 		if ( $page_dir_file{0} != '.' &&

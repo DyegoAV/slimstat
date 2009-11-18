@@ -72,6 +72,12 @@ h3 {
 		height: 1.666em;
 		line-height: 1.6667;
 		padding: 0 8px; }
+fieldset {
+	border: none;
+	margin: 0;
+	padding: 0; }
+	fieldset p {
+		padding: 0 12px; }
 img, label {
 	display: block;
 	border: none; }
@@ -213,7 +219,7 @@ tbody tr.detail td {
 	overflow-x: hidden;
 	overflow-y: auto;
 	width: 100%; }
-	.tbody:hover, #map .tbody {
+	.tbody:hover, #map .tbody, fieldset {
 		background-color: #f9f9f9; }
 	.tbody table {
 		background: none; }
@@ -267,6 +273,8 @@ td.first {
 	padding-left: 12px; }
 th.last, td.last {
 	padding-right: 18px; }
+.input {
+	width: 44%; }
 
 /*********************************************************************** =ids */
 

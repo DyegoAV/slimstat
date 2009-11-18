@@ -40,10 +40,6 @@ if ( $query_string_page == 'js' ) {
 	exit;
 }
 
-if ( !file_exists( realpath( dirname( __FILE__ ) ).'/page/'.$query_string_page.'.php' ) ) {
-	$query_string_page = '';
-}
-
 $config =& SlimStatConfig::get_instance();
 $i18n = SlimStatI18n::get_instance();
 
@@ -64,6 +60,10 @@ if ( $config->slimstat_use_auth ) {
 		request_login();
 		exit;
 	}
+}
+
+if ( !file_exists( realpath( dirname( __FILE__ ) ).'/page/'.$query_string_page.'.php' ) ) {
+	$query_string_page = '';
 }
 
 $connection = SlimStat::connect();

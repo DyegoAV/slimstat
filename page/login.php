@@ -27,21 +27,23 @@ function render_page() {
 
 <div id="main" class="grid16">
 
-<div id="side" class="grid4"><div id="sideinner" class="grid3 first">
-<p>Please enter your login details.</p>
+<div id="side" class="grid4"><div id="sideinner" class="grid3">
+<p class="first"></p>
 </div>
 </div>
 
-<div id="content" class="grid12 first">
+<div id="content" class="grid12">
 
-<form action="./" method="post" class="grid12 first">
+<form action="./" method="post" class="grid6">
+<h3>Please enter your login details</h3>
 
-<p class="first"><label for="username">User name</label><input type="text" name="username" value="" /></p>
+<fieldset class="tbody">
+<p><label for="username">User name</label><input type="text" name="username" value="" class="input" /></p>
 
-<p><label for="password">Password</label><input type="password" name="password" value="" /></p>
+<p><label for="password">Password</label><input type="password" name="password" value="" class="input" /></p>
 
 <p><input type="submit" value="Log in" /></p>
-
+</fieldset>
 </form>
 
 </div>

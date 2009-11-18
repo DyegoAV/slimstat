@@ -554,16 +554,6 @@ function table_total( $_field ) {
 		if ( $pos >= $max_rows ) break;
 	}
 	
-	// while ( $pos < 10 ) {
-	// 	echo '<tr>';
-	// 	echo '<td>&nbsp;</td>';
-	// 	echo '<td>&nbsp;</td>';
-	// 	echo '<td>&nbsp;</td>';
-	// 	echo '<td>&nbsp;</td>';
-	// 	echo '</tr>'."\n";
-	// 	$pos++;
-	// }
-
 	echo '</tbody></table></div></div>'."\n";
 }
 
@@ -611,12 +601,6 @@ function table_percent( $_field ) {
 	echo '<th class="center last">&plusmn;</th>';
 	echo '</tr></thead></table>'."\n";
 	echo '<div class="tbody"><table><tbody>'."\n";
-	
-	if ( empty( $curr_data[$_field] ) && empty( $prev_data[$_field] ) ) {
-		echo '<tr>';
-		echo '<td class="first"><em>(none)</em></td>';
-		echo '</tr>'."\n";
-	}
 	
 	$pos = 0;
 	foreach ( $curr as $key => $hits ) {
@@ -717,16 +701,6 @@ function table_percent( $_field ) {
 		if ( $pos >= $max_rows ) break;
 	}
 	
-	// while ( $pos < 10 ) {
-	// 	echo '<tr>';
-	// 	echo '<td>&nbsp;</td>';
-	// 	echo '<td>&nbsp;</td>';
-	// 	echo '<td>&nbsp;</td>';
-	// 	echo '<td>&nbsp;</td>';
-	// 	echo '</tr>'."\n";
-	// 	$pos++;
-	// }
-
 	echo '</tbody></table></div></div>'."\n";
 }
 

@@ -47,12 +47,21 @@ if ( $result = mysql_query( $query, $connection ) ) {
 
 // draw table
 
+$col1_w = ( $is_handheld ) ? 240 : 230;
+$col2_w = ( $is_handheld ) ?  88 : 75;
+$col3_w = ( $is_handheld ) ? 115 : 120;
+$col4_w = ( $is_handheld ) ? 137 : 145;
+$col5_w = ( $is_handheld ) ?  88 : 100;
+
 echo '<table><thead>'."\n";
-echo '<tr><th class="first" style="width:230px">'.$i18n->title( 'remote_ip' ).'</th>'."\n";
-echo '<th class="center" style="width:75px">When</th>'."\n";
-echo '<th class="center" style="width:120px">'.$i18n->title( 'browser' ).'</th>'."\n";
-echo '<th class="center" style="width:145px">'.$i18n->title( 'platform' ).'</th>'."\n";
-echo '<th class="center last" style="width:100px">'.$i18n->title( 'country' ).'</th></tr></thead></table>'."\n";
+echo '<tr><th class="first" colspan="2" style="width:'.$col1_w.'px">'.$i18n->title( 'remote_ip' ).'</th>'."\n";
+echo '<th class="center" style="width:'.$col2_w.'px">When</th>'."\n";
+if ( !$is_handheld ) {
+	echo '<th class="center" style="width:'.$col3_w.'px">'.$i18n->title( 'browser' ).'</th>'."\n";
+	echo '<th class="center" style="width:'.$col4_w.'px">'.$i18n->title( 'platform' ).'</th>'."\n";
+	echo '<th class="center last" style="width:'.$col5_w.'px">'.$i18n->title( 'country' ).'</th>';
+}
+echo '</tr></thead></table>'."\n";
 
 echo '<div class="tbody"><table><tbody>'."\n";
 
@@ -87,18 +96,21 @@ foreach ( $visits as $visit ) {
 	$start_ts = date( 'H:i', $start_ts );
 	$end_ts = date( 'H:i', $end_ts );
 	
-	echo '<tr>'."\n".'<td class="first accent" style="width:230px; max-width:230px">';
+	echo '<tr>'."\n".'<td class="first accent" colspan="2" style="width:'.$col1_w.'px; max-width:'.$col1_w.'px">';
 	echo '<a class="external" title="'.str_replace( '%i', $visit['remote_ip'], $config->whoisurl ).'" href="'.str_replace( '%i', $visit['remote_ip'], $config->whoisurl ).'" rel="nofollow">&rarr;</a> ';
 	echo htmlspecialchars( $visit['remote_ip'] ).'</td>'."\n";
-	echo '<td class="center accent" style="width:75px; max-width:75px">';
+	echo '<td class="center accent" style="width:'.$col2_w.'px; max-width:'.$col2_w.'px">';
 	echo ( ( $start_ts == $end_ts ) ? $start_ts : $start_ts.'–'.$end_ts );
 	echo '</td>'."\n";
-	echo '<td class="center accent" style="width:120px; max-width:120px">'.htmlspecialchars( $visit['browser'] );
+	if ( $is_handheld ) {
+		echo '</tr><tr>';
+	}
+	echo '<td class="center accent" style="width:'.$col3_w.'px; max-width:'.$col3_w.'px">'.htmlspecialchars( $visit['browser'] );
 	if ( $visit['version'] != $i18n->indeterminable ) {
 		echo ' '.htmlspecialchars( $visit['version'] );
 	}
-	echo '</td>'."\n".'<td class="center accent" style="width:145px; max-width:145px">'.htmlspecialchars( $visit['platform'] ).'</td>'."\n";
-	echo '<td class="center last accent" style="width:100px; max-width:100px">'.htmlspecialchars( $i18n->label( 'country', $visit['country'] ) ).'</td></tr>'."\n";
+	echo '</td>'."\n".'<td class="center accent" style="width:'.$col4_w.'px; max-width:'.$col4_w.'px">'.htmlspecialchars( $visit['platform'] ).'</td>'."\n";
+	echo '<td class="center last accent" style="width:'.$col5_w.'px; max-width:'.$col5_w.'px">'.htmlspecialchars( $i18n->label( 'country', $visit['country'] ) ).'</td></tr>'."\n";
 	
 	$prev_ts = '';
 	foreach ( $hits as $hit ) {
@@ -110,7 +122,7 @@ foreach ( $visits as $visit ) {
 		$local_time = SlimStat::local_time_fields( array( 'yr' => $yr, 'mo' => $mo, 'dy' => $dy, 'hr' => $hr, 'mi' => $mi, 'sc' => $sc ) );
 		$dt = mktime( $local_time['hr'], $local_time['mi'], $local_time['sc'], $local_time['mo'], $local_time['dy'], $local_time['yr'] );
 		
-		echo '<tr>'."\n".'<td class="first"><span class="text truncate">';
+		echo '<tr>'."\n".'<td class="first" colspan="2"><span class="text truncate">';
 		echo '<a href="'.$resource.'" class="external"';
 		echo ' title="'.htmlspecialchars( $resource ).'">&rarr;</a>';
 		echo '<a href="./'.filter_url( array( 'resource' => $resource ) );
@@ -128,7 +140,7 @@ foreach ( $visits as $visit ) {
 			echo '<td class="center">&nbsp;</td>'."\n";
 		}
 		
-		if ( $prev_ts == '' && $visit['referrer'] != '' ) {
+		if ( $prev_ts == '' && $visit['referrer'] != '' && !$is_handheld ) {
 			echo '<td colspan="3" class="right last">';
 			echo '<a href="'.$visit['referrer'].'" class="external" rel="nofollow"';
 			echo ' title="'.htmlspecialchars( $visit['referrer'] ).'">&rarr;</a>';
@@ -143,7 +155,7 @@ foreach ( $visits as $visit ) {
 				echo '>'.htmlspecialchars( $visit['domain'] ).'</a>';
 			}
 			echo '</span></td>'."\n";
-		} else {
+		} elseif ( !$is_handheld ) {
 			echo '<td colspan="3" class="last">&nbsp;</td>'."\n";
 		}
 		echo '</tr>'."\n";

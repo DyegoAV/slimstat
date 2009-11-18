@@ -144,6 +144,9 @@ tbody tr.detail td {
 	font-size: 0.8333em;
 	height: 1.7em;
 	line-height: 1.7; }
+.accent {
+	background-color: #eee;
+	color: #999; }
 .detail {
 	display: none; }
 .grid1, .grid2, .grid3, .grid4, .grid5, .grid6, .grid7, .grid8,

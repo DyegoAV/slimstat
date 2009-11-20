@@ -313,7 +313,8 @@ td.first {
 	#summary .text, .summary .text {
 		width: 77px; }
 #map .tbody {
-	background-color: #f9f9f9; }
+	background-color: #f9f9f9;
+	padding-top: 1px; }
 #map span {
 	background-image:url('../_img/map.png');
 	border: solid 1px #ccc;

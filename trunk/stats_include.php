@@ -33,7 +33,7 @@ class SlimStatRecord {
 		}
 		
 		$data = array();
-		$data['remote_ip'] = $this->_determine_remote_ip();
+		$data['remote_ip'] = mb_substr( $this->_determine_remote_ip(), 0, 15 );
 		// check whether to ignore this hit
 		foreach ( $this->config->ignored_ips as $ip ) {
 			if ( mb_strpos( $data['remote_ip'], $ip ) === 0 ) {
@@ -44,20 +44,22 @@ class SlimStatRecord {
 		
 		$data['referrer'] = ( isset( $_SERVER['HTTP_REFERER'] ) ) ? $_SERVER['HTTP_REFERER'] : '';
 		$url = parse_url( $data['referrer'] );
+		$data['referrer'] = mb_substr( $data['referrer'], 0, 255 );
 		
-		$data['country']  = $this->_determine_country( $data['remote_ip'] );
-		$data['language'] = $this->_determine_language();
+		$data['country']  = $this->_determine_country( $data['remote_ip'] ); // always 2 chars, no need to truncate
+		$data['language'] = mb_substr( $this->_determine_language(), 0, 255 );
 		$data['domain']   = ( isset( $url['host'] ) ) ? mb_eregi_replace( '^www.', '', $url['host'] ) : '';
+		$data['domain']   = mb_substr( $data['domain'], 0, 255 );
 		
-		$data['search_terms'] = $this->_determine_search_terms( $url );
+		$data['search_terms'] = mb_substr( $this->_determine_search_terms( $url ), 0, 255 );
 		
 		$data['resolution'] = '';
 		if ( array_key_exists( 'slimstat_resolution', $GLOBALS ) ) {
-			$data['resolution'] = $GLOBALS['slimstat_resolution'];
+			$data['resolution'] = mb_substr( $GLOBALS['slimstat_resolution'], 0, 10 );
 		}
 		$data['title'] = '';
 		if ( array_key_exists( 'slimstat_title', $GLOBALS ) ) {
-			$data['title'] = $GLOBALS['slimstat_title'];
+			$data['title'] = mb_substr( $GLOBALS['slimstat_title'], 0, 255 );
 		}
 		
 		if ( isset( $_SERVER['REQUEST_URI'] ) ) {
@@ -70,12 +72,16 @@ class SlimStatRecord {
 			$data['resource'] = $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'];
 		} elseif ( isset( $_SERVER['PHP_SELF'] ) ) {
 			$data['resource'] = $_SERVER['PHP_SELF'];
+		} else {
+			$data['resource'] = '';
 		}
+		$data['resource'] = mb_substr( $data['resource'], 0, 255 );
 		
 		$browser = $this->_parse_user_agent( $_SERVER['HTTP_USER_AGENT'] );
-		$data['platform'] = $browser['platform'];
-		$data['browser']  = $browser['browser'];
-		$data['version']  = SlimStat::parse_version( $browser['version'] );
+		$data['platform'] = mb_substr( $browser['platform'], 0, 50 );
+		$data['browser']  = mb_substr( $browser['browser'], 0, 50 );
+		$data['version']  = mb_substr( SlimStat::parse_version( $browser['version'] ), 0, 15 );
+		
 		// check whether to ignore this hit
 		if ( $data['browser'] == 'Crawler' && $this->config->log_crawlers == false ) {
 			return;
@@ -163,7 +169,7 @@ class SlimStatRecord {
 		// if mysql_affected_rows() == 0, do insert
 		
 		if ( $this->config->log_user_agents == true ) {
-			$data['user_agent'] = SlimStat::esc( $_SERVER['HTTP_USER_AGENT'] );
+			$data['user_agent'] = SlimStat::esc( mb_substr( $_SERVER['HTTP_USER_AGENT'], 0, 255 ) );
 		}
 		
 		$prev_ts = $ts - ( $this->config->visit_length * 60 );

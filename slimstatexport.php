@@ -254,3 +254,13 @@ while ( list( $visit ) = mysql_fetch_row( $select_old_result ) ) {
 		echo 'Error: '.mysql_error( $connection )."\n";
 	}
 }
+
+// empty cache (in case of old data showing zeroes)
+
+echo 'Emptying cache...'."\n";
+
+$cache_query = 'DELETE FROM `'.SlimStat::esc( $config->db_database ).'`.`'.SlimStat::esc( $config->tbl_cache ).'` ';
+$cache_query .= 'WHERE `app_version`<>\''.SlimStat::esc( SlimStat::app_version() ).'\'';
+@mysql_query( $cache_query, $connection );
+
+echo 'Done.'."\n";

@@ -38,7 +38,7 @@ class SlimStatI18n extends SlimStatI18nBase {
 		'version' => 'Versions',
 		'platform' => 'Operating systems',
 		'resolution' => 'Screen sizes',
-		'remote_ip' => 'Visitors',
+		'remote_ip' => 'IP addresses',
 		'search_terms' => 'Search terms',
 		'domain' => 'Domains',
 		'referrer' => 'Referrers',

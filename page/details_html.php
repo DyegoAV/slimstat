@@ -20,7 +20,7 @@
  */
 
 function render_page_html() {
-	global $config, $i18n, $filters, $prev_filters, $has_filters, $curr_data, $time_fields, $hit_fields, $visit_fields;
+	global $config, $i18n, $filters, $prev_filters, $has_filters, $curr_data, $time_fields, $hit_fields, $visit_fields, $is_handheld;
 	
 	page_head();
 	
@@ -41,19 +41,50 @@ function render_page_html() {
 
 	echo '<div id="filters" class="grid3">'."\n";
 	
-	if ( $has_filters ) {
-		echo '<h2>Filters</h2>';
+	if ( $is_handheld ) {
+		if ( $has_filters ) {
+			echo '<h2>Filters</h2>';
 	
-		foreach ( array_merge( $hit_fields, $visit_fields ) as $key ) {
-			if ( array_key_exists( $key, $filters ) ) {
-				$new_filters = $filters;
-				unset( $new_filters[$key] );
-				echo '<div class="grid3"><h3>'.htmlspecialchars( $i18n->title( $key ) ).'</h3>'."\n";
-				echo '<p class="text"><a href="./'.filter_url( $new_filters ).'">';
-				echo htmlspecialchars( $i18n->label( $key, $filters[$key] ) );
-				echo '</a></p></div>'."\n";
+			foreach ( array_merge( $hit_fields, $visit_fields ) as $key ) {
+				if ( array_key_exists( $key, $filters ) ) {
+					$new_filters = $filters;
+					unset( $new_filters[$key] );
+					echo '<div class="grid3"><h3>'.htmlspecialchars( $i18n->title( $key ) ).'</h3>'."\n";
+					echo '<p class="text"><a href="./'.filter_url( $new_filters ).'">';
+					echo htmlspecialchars( $i18n->label( $key, $filters[$key] ) );
+					echo '</a></p></div>'."\n";
+				}
 			}
 		}
+	} else {
+		echo '<form id="filtersform">'."\n";
+
+		filter_select( 'yr' );
+		filter_select( 'mo' );
+		filter_select( 'dy' );
+	
+		echo '<h2>Content</h2>';
+	
+		filter_select( 'resource' );
+		filter_select( 'start_resource' );
+		filter_select( 'end_resource' );
+	
+		echo '<h2>Visitors</h2>';
+	
+		filter_select( 'remote_ip' );
+		filter_select( 'browser' );
+		filter_select( 'platform' );
+		filter_select( 'resolution' );
+		filter_select( 'country' );
+		filter_select( 'language' );
+	
+		echo '<h2>Referrers</h2>';
+	
+		filter_select( 'search_terms' );
+		filter_select( 'domain' );
+		filter_select( 'referrer' );
+	
+		echo '</form>'."\n";
 	}
 	
 	echo '<h2 id="api"><a href="./?format=xml'.filter_url( $filters, '&amp;' ).'">XML format</a></h2>'."\n";
@@ -154,6 +185,63 @@ function render_page_html() {
 	echo '</div>'."\n"; // content
 	
 	page_foot();
+}
+
+function filter_select( $_key ) {
+	global $i18n, $filters, $curr_data, $time_fields;
+	
+	echo '<p';
+	if ( in_array( $_key, $time_fields ) ) {
+		echo ' style="display:none"';
+	}
+	echo '><select name="filter_'.$_key.'" style="width:100%">';
+	if ( !in_array( $_key, $time_fields ) ) {
+		echo '<option value="">— '.htmlspecialchars( $i18n->title( $_key ) ).' —</option>';
+	}
+	
+	if ( $_key == 'yr' ) {
+		echo '<option value="'.( $filters['yr'] - 1 ).'">'.( $filters['yr'] - 1 ).'</option>';
+		echo '<option value="'.$filters['yr'].'" selected="true">'.$filters['yr'].'</option>';
+		echo '<option value="'.( $filters['yr'] + 1 ).'">'.( $filters['yr'] + 1 ).'</option>';
+	} elseif ( $_key == 'mo' ) {
+		for ( $mo=1; $mo<13; $mo++ ) {
+			if ( $mo == $filters['mo'] ) {
+				echo '<option value="'.$mo.'" selected="true">'.$mo.'</option>';
+			} else {
+				echo '<option value="'.$mo.'">'.$mo.'</option>';
+			}
+		}
+	} elseif ( $_key == 'dy' ) {
+		for ( $dy=1; $dy<32; $dy++ ) {
+			if ( $dy == $filters['dy'] ) {
+				echo '<option value="'.$dy.'" selected="true">'.$dy.'</option>';
+			} else {
+				echo '<option value="'.$dy.'">'.$dy.'</option>';
+			}
+		}
+	} elseif ( array_key_exists( $_key, $filters ) ) {
+		$new_filters = $filters;
+		unset( $new_filters[$_key] );
+		$unfiltered_curr_data = load_data( $new_filters );
+		$x = 0;
+		foreach ( array_keys( $unfiltered_curr_data[$_key] ) as $value ) {
+			if ( $value == $filters[$_key] ) {
+				echo '<option value="'.htmlspecialchars( $value ).'" selected="true">'.htmlspecialchars( $i18n->label( $_key, $value ) ).'</option>';
+			} else {
+				echo '<option value="'.htmlspecialchars( $value ).'">'.htmlspecialchars( $i18n->label( $_key, $value ) ).'</option>';
+			}
+			$x++;
+			if ( $x == 50 ) { break; }
+		}
+	} else {
+		$x = 0;
+		foreach ( array_keys( $curr_data[$_key] ) as $value ) {
+			echo '<option value="'.htmlspecialchars( $value ).'">'.htmlspecialchars( $i18n->label( $_key, $value ) ).'</option>';
+			$x++;
+			if ( $x == 50 ) { break; }
+		}
+	}	
+	echo '</select></p>'."\n";
 }
 
 function table_summary() {
@@ -489,18 +577,12 @@ function table_total( $_field ) {
 	}
 	
 	echo '<div class="grid';
-	if ( $_field == 'resource' ) {
+	if ( $_field == 'resource' || $_field == 'referrer' ) {
 		echo '12';
-	// } elseif ( stristr( $_field, 'resource' ) ) {
-		// echo '6';
-	} elseif ( $_field == 'referrer' ) {
-		echo '12';
-	// } elseif ( stristr( $_field, 'resource' ) && ( array_key_exists( 'resource', $filters ) || array_key_exists( 'start_resource', $filters ) || array_key_exists( 'end_resource', $filters ) ) ) {
-		// echo '12';
 	} else {
 		echo '6';
 	}
-	echo ' table"><table>';
+	echo ' filter filter_'.htmlspecialchars( $_field ).' table"><table>';
 	echo '<thead><tr>';
 	echo '<th class="first"><span class="text">'.htmlspecialchars( $i18n->title( $_field ) );
 	echo ' ('.$curr_size.')';
@@ -591,7 +673,7 @@ function table_percent( $_field ) {
 		$prev_total += $hits;
 	}
 	
-	echo '<div class="grid6 table"><table>';
+	echo '<div class="grid6 filter filter_'.htmlspecialchars( $_field ).' table"><table>';
 	echo '<thead><tr>';
 	echo '<th class="first"><span class="text">'.htmlspecialchars( $i18n->title( $_field ) );
 	echo ' ('.$curr_size.')';
@@ -1010,11 +1092,7 @@ function chart_hours() {
 	echo '&amp;chma=0,0,10,0';
 	echo '&amp;chxt=x,y';
 	echo '&amp;chxs=0,333333,10,0,t|1,333333,10,1,t';
-	// echo '&amp;chm=o,00CC00,1,'.$max_index.',7|o,CC0000,1,'.$min_index.',7';
-	/* B,EEEEEE,0,0,0| */ echo '&amp;chm=o,00CC00,1,'.$max_index.',7';//|t'.$curr_max.',009900,1,'.$max_index.',10';
-	if ( $min_index != $max_index ) {
-		echo '|o,CC0000,1,'.$min_index.',7';//|t'.$curr_min.',990000,1,'.$min_index.',10';
-	}
+	echo '&amp;chm=o,333333,1,-1,9|o,FFFFFF,1,-1,5|o,CCCCCC,0,-1,5,-1|o,FF3333,1,'.$min_index.',5|o,00CC00,1,'.$max_index.',5';
 	echo '&amp;chxl=0:|00|01|02|03|04|05|06|07|08|09|10|11|12|13|14|15|16|17|18|19|20|21|22|23';
 	echo '&amp;chxr=1,'.$min.','.$max;
 	echo '&amp;cht=lc';
@@ -1047,11 +1125,12 @@ function chart_days() {
 	$curr = ( array_key_exists( 'dy', $curr_data ) ) ? $curr_data['dy'] : array();
 	$prev = ( array_key_exists( 'dy', $prev_data ) ) ? $prev_data['dy'] : array();
 	
+	$prev_max_dy = days_in_month( $filters['mo'] - 1, $filters['yr'] );
 	$curr_max_dy = days_in_month( $filters['mo'], $filters['yr'] );
+	$x_max = max( $curr_max_dy, $prev_max_dy );
 	if ( $filters['mo'] == date( 'n' ) && $filters['yr'] == date( 'Y' ) ) {
 		$curr_max_dy = date( 'j' );
 	}
-	$prev_max_dy = days_in_month( $filters['mo'] - 1, $filters['yr'] );
 	$max_dy = max( $curr_max_dy, $prev_max_dy );
 	
 	$curr_points = array();
@@ -1061,7 +1140,7 @@ function chart_days() {
 	$min_index = 1;
 	$prev_points = array();
 	
-	for ( $dy=1; $dy<=$max_dy; $dy++ ) {
+	for ( $dy=1; $dy<=$x_max; $dy++ ) {
 		if ( array_key_exists( $dy, $curr ) ) {
 			$curr_points[] = $curr[$dy];
 			if ( $curr[$dy] > $max ) {
@@ -1074,7 +1153,7 @@ function chart_days() {
 			}
 		} elseif ( $dy <= $curr_max_dy ) {
 			$curr_points[] = 0;
-			if ( $min != 0 /*&& $dy <= $curr_max_dy*/ ) {
+			if ( $min != 0 ) {
 				$min = 0;
 				$min_index = $dy;
 			}
@@ -1085,7 +1164,7 @@ function chart_days() {
 	$curr_max = $max;
 	$curr_min = $min;
 	
-	for ( $dy=1; $dy<=$max_dy; $dy++ ) {
+	for ( $dy=1; $dy<=$x_max; $dy++ ) {
 		if ( array_key_exists( $dy, $prev ) ) {
 			$prev_points[] = $prev[$dy];
 			if ( $prev[$dy] > $max ) {
@@ -1096,6 +1175,9 @@ function chart_days() {
 			}
 		} elseif ( $dy <= $prev_max_dy ) {
 			$prev_points[] = 0;
+			if ( $min != 0 ) {
+				$min = 0;
+			}
 		} else {
 			$prev_points[] = -1;
 		}
@@ -1116,12 +1198,9 @@ function chart_days() {
 	echo '&amp;chma=0,0,10,0';
 	echo '&amp;chxt=x,y';
 	echo '&amp;chxs=0,333333,10,0,t|1,333333,10,1,t';
-	/* B,EEEEEE,0,0,0| */ echo '&amp;chm=o,00CC00,1,'.( $max_index - 1 ).',7';//|t'.$curr_max.',009900,1,'.( $max_index - 1 ).',10';
-	if ( $min_index != $max_index ) {
-		echo '|o,CC0000,1,'.( $min_index - 1 ).',7';//|t'.$curr_min.',990000,1,'.( $min_index - 1 ).',10';
-	}
+	echo '&amp;chm=o,333333,1,-1,9|o,FFFFFF,1,-1,5|o,CCCCCC,0,-1,5,-1|o,FF3333,1,'.( $min_index - 1 ).',5|o,00CC00,1,'.( $max_index - 1 ).',5';
 	echo '&amp;chxl=0:';
-	for ( $dy=1; $dy<=$max_dy; $dy++ ) {
+	for ( $dy=1; $dy<=$x_max; $dy++ ) {
 		echo '|'.$dy;
 	}
 	echo '&amp;chxr=1,'.$scale_min.','.$scale_max;

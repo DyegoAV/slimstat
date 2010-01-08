@@ -123,6 +123,7 @@ function load_cache_data( $_filters ) {
 	} else {
 		$query .= ' AND `dy`=\'0\'';
 	}
+	$query .= ' AND `app_version`=\''.SlimStat::esc( SlimStat::app_version() ).'\'';
 	foreach ( $hit_fields as $key ) {
 		if ( array_key_exists( $key, $_filters ) ) {
 			$query .= ' AND `'.SlimStat::esc( $key ).'`=\''.SlimStat::esc( urldecode( $_filters[$key] ) ).'\'';
@@ -141,7 +142,7 @@ function load_cache_data( $_filters ) {
 	}
 	// echo htmlspecialchars( $query )."<br />\n";
 	$result = mysql_query( $query, $connection );
-	echo htmlspecialchars( mysql_error() );
+	// echo htmlspecialchars( mysql_error() );
 	if ( mysql_num_rows( $result ) > 0 ) {
 		list( $data_serialized ) = mysql_fetch_row( $result );
 		return unserialize( gzinflate( $data_serialized ) );
@@ -608,7 +609,11 @@ function valid_hr( $_hr ) {
 }
 
 function valid_dy( $_dy, $_mo, $_yr ) {
-	return max( 1, min( date( 'j', gmmktime( 12, 0, 0, $_mo + 1, 0, $_yr ) ), intval( $_dy ) ) );
+	$dy = max( 1, min( date( 'j', gmmktime( 12, 0, 0, $_mo + 1, 0, $_yr ) ), intval( $_dy ) ) );
+	if ( $_yr == date( 'Y' ) && $_mo == date( 'n' ) ) {
+		$dy = min( date( 'j' ), $dy );
+	}
+	return $dy;
 }
 
 function valid_mo( $_mo ) {

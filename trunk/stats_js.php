@@ -22,9 +22,9 @@
 include_once( realpath( dirname( __FILE__ ) ).'/_lib/config.php' );
 
 if ( isset( $_GET['ref'] ) && isset( $_GET['url'] ) && isset( $_GET['res'] ) && isset( $_GET['ttl'] ) ) {
-	$_SERVER['HTTP_REFERER'] = $_GET['ref'];
+	$_SERVER['HTTP_REFERER'] = rawurldecode( $_GET['ref'] );
 	
-	$url = @parse_url( $_GET['url'] );
+	$url = @parse_url( rawurldecode( $_GET['url'] ) );
 	$slimstat_resolution = $_GET['res'];
 	$slimstat_title = $_GET['ttl'];
 	if ( isset( $url['path'] ) ) {

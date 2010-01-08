@@ -42,7 +42,7 @@
 	?>
 	<link rel="alternate" href="?format=rss" title="" type="application/rss+xml" />
 </head>
-<body>
+<body id="<?php echo $query_string_page; ?>page">
 <div id="container">
 
 <div id="head">

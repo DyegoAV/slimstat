@@ -44,14 +44,14 @@ class SlimStatRecord {
 		
 		$data['referrer'] = ( isset( $_SERVER['HTTP_REFERER'] ) ) ? $_SERVER['HTTP_REFERER'] : '';
 		$url = parse_url( $data['referrer'] );
-		$data['referrer'] = mb_substr( $data['referrer'], 0, 255 );
+		$data['referrer'] = mb_substr( SlimStat::utf8_encode( $data['referrer'] ), 0, 255 );
 		
 		$data['country']  = $this->_determine_country( $data['remote_ip'] ); // always 2 chars, no need to truncate
 		$data['language'] = mb_substr( $this->_determine_language(), 0, 255 );
 		$data['domain']   = ( isset( $url['host'] ) ) ? mb_eregi_replace( '^www.', '', $url['host'] ) : '';
 		$data['domain']   = mb_substr( $data['domain'], 0, 255 );
 		
-		$data['search_terms'] = mb_substr( $this->_determine_search_terms( $url ), 0, 255 );
+		$data['search_terms'] = mb_substr( SlimStat::utf8_encode( $this->_determine_search_terms( $url ) ), 0, 255 );
 		
 		$data['resolution'] = '';
 		if ( array_key_exists( 'slimstat_resolution', $GLOBALS ) ) {
@@ -59,7 +59,7 @@ class SlimStatRecord {
 		}
 		$data['title'] = '';
 		if ( array_key_exists( 'slimstat_title', $GLOBALS ) ) {
-			$data['title'] = mb_substr( $GLOBALS['slimstat_title'], 0, 255 );
+			$data['title'] = mb_substr( SlimStat::utf8_encode( $GLOBALS['slimstat_title'] ), 0, 255 );
 		}
 		
 		if ( isset( $_SERVER['REQUEST_URI'] ) ) {
@@ -75,7 +75,7 @@ class SlimStatRecord {
 		} else {
 			$data['resource'] = '';
 		}
-		$data['resource'] = mb_substr( $data['resource'], 0, 255 );
+		$data['resource'] = mb_substr( SlimStat::utf8_encode( $data['resource'] ), 0, 255 );
 		
 		$browser = $this->_parse_user_agent( $_SERVER['HTTP_USER_AGENT'] );
 		$data['platform'] = mb_substr( $browser['platform'], 0, 50 );

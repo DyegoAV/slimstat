@@ -28,12 +28,18 @@ class SlimStat {
 	function connect() {
 		$config =& SlimStatConfig::get_instance();
 		
-		return @mysql_connect( $config->db_server, $config->db_username, $config->db_password );
+		$connection = @mysql_connect( $config->db_server, $config->db_username, $config->db_password );
+		
+		if ( $connection ) {
+			@mysql_query( 'SET NAMES utf8', $connection );
+		}
+		
+		return $connection;
 	}
 	
 	/** Application version */
 	function app_version() {
-		return '2.0';
+		return '2.1b1';
 	}
 	
 	/**
@@ -86,5 +92,14 @@ class SlimStat {
 			$_fields['yr'] );
 		list( $yr, $mo, $dy, $hr, $mi, $sc ) = explode( ' ', date( 'Y n j G i s', $gmdate ) );
 		return array( 'yr' => $yr, 'mo' => $mo, 'dy' => $dy, 'hr' => $hr, 'mi' => $mi, 'sc' => $sc );
+	}
+	
+	function utf8_encode( $_str ) {
+		$encoding = mb_detect_encoding( $_str );
+		if ( strtoupper( $encoding ) == 'UTF-8' ) {
+			return $_str;
+		} else {
+			return iconv( $encoding, 'UTF-8', $_str );
+		}
 	}
 }

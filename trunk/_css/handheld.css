@@ -158,11 +158,9 @@ tbody tr.detail td {
 	display: none; }
 .grid1, .grid2, .grid3, .grid4, .grid5, .grid6, .grid7, .grid8,
 .grid9, .grid10, .grid11, .grid12, .grid13, .grid14, .grid15, .grid16 {
-	float: left;
 	margin: 3.3334em 0 0;
 	padding: 0 10px; }
 	#sideinner .grid3 {
-		float: none;
 		margin-top: 1.6667em;
 		padding: 0; }
 .grid16, .grid16 table, .grid12, .grid12 table, .grid10, .grid10 table, .grid8, .grid8 table, .grid7, .grid7 table, .grid6, .grid6 table {
@@ -286,6 +284,7 @@ td.first {
 	width: 360px;
 	z-index: 1; }
 #content {
+	clear: left;
 	margin-top: 0;
 	padding: 0 0 3.3333em;
 	width: 360px; }
@@ -333,7 +332,8 @@ td.first {
 		background-color: #d2d2c8;
 		color: #999;
 		float: left;
-		margin-top: 1.6667em; }
+		margin-top: 1.6667em;
+		margin-bottom: 3.3333em; }
 		#side .calendar thead {
 			overflow: hidden;
 			width: 160px; }

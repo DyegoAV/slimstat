@@ -22,7 +22,7 @@
 require_once( realpath( dirname( __FILE__ ) ).'/_lib/config.php' );
 require_once( realpath( dirname( __FILE__ ) ).'/_lib/functions.php' );
 
-header( 'Content-type: text/plain' );
+header( 'Content-type: text/plain; charset=UTF-8' );
 
 $config = SlimStatConfig::get_instance();
 
@@ -260,7 +260,7 @@ while ( list( $visit ) = mysql_fetch_row( $select_old_result ) ) {
 echo 'Emptying cache...'."\n";
 
 $cache_query = 'DELETE FROM `'.SlimStat::esc( $config->db_database ).'`.`'.SlimStat::esc( $config->tbl_cache ).'` ';
-$cache_query .= 'WHERE `app_version`<>\''.SlimStat::esc( SlimStat::app_version() ).'\'';
+$cache_query .= 'WHERE `app_version`=\''.SlimStat::esc( SlimStat::app_version() ).'\'';
 @mysql_query( $cache_query, $connection );
 
 echo 'Done.'."\n";

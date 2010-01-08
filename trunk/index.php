@@ -47,8 +47,9 @@ $is_handheld = is_handheld();
 
 if ( file_exists( realpath( dirname( __FILE__ ) ).'/page/setup.php' ) ) {
 	$query_string_page = 'setup';
-	@include_once( realpath( dirname( __FILE__ ) ).'/page/setup.php' );
-	exit;
+	if ( @include_once( realpath( dirname( __FILE__ ) ).'/page/setup.php' ) ) {
+		exit;
+	}
 }
 
 if ( $config->slimstat_use_auth ) {
@@ -67,8 +68,6 @@ if ( !file_exists( realpath( dirname( __FILE__ ) ).'/page/'.$query_string_page.'
 }
 
 $connection = SlimStat::connect();
-
-ob_start( 'ob_gzhandler' );
 
 if ( $query_string_page == '' || !file_exists( realpath( dirname( __FILE__ ) ).'/page/'.$query_string_page.'.php' ) ) {
 	$query_string_page = 'details';

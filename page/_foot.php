@@ -2,7 +2,7 @@
 
 /*
  * SlimStat: simple web analytics
- * Copyright (C) 2009 Pieces & Bits Limited
+ * Copyright (C) 2010 Pieces & Bits Limited
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@
 ?><div id="foot"><div id="footinner">
 <a href="http://slimstat.net/">SlimStat</a> v<?php
 echo SlimStat::app_version();
-?> © 2009 <a href="http://pieces-and-bits.com/">Pieces &amp; Bits</a><br />
+?> © 2010 <a href="http://pieces-and-bits.com/">Pieces &amp; Bits</a><br />
 This product includes GeoLite data created by MaxMind, available from <a href="http://www.maxmind.com/?rId=piecesandbits">http://www.maxmind.com/</a>
 </div></div>
 

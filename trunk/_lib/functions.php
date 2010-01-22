@@ -39,7 +39,7 @@ class SlimStat {
 	
 	/** Application version */
 	function app_version() {
-		return '2.1b1';
+		return '2.1';
 	}
 	
 	/**

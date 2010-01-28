@@ -426,6 +426,7 @@ class SlimStatRecord {
 		     mb_eregi( 'bot', $_ua ) ||
 		     mb_eregi( 'bloglines', $_ua ) ||
 		     mb_eregi( 'dtaagent', $_ua ) ||
+		     mb_eregi( 'feedfetcher', $_ua ) ||
 		     mb_eregi( 'ia_archiver', $_ua ) ||
 		     mb_eregi( 'java', $_ua ) ||
 		     mb_eregi( 'larbin', $_ua ) ||

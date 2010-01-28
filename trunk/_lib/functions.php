@@ -96,7 +96,7 @@ class SlimStat {
 	
 	function utf8_encode( $_str ) {
 		$encoding = mb_detect_encoding( $_str );
-		if ( strtoupper( $encoding ) == 'UTF-8' ) {
+		if ( $encoding == false || strtoupper( $encoding ) == 'UTF-8' || strtoupper( $encoding ) == 'ASCII' ) {
 			return $_str;
 		} else {
 			return iconv( $encoding, 'UTF-8', $_str );

@@ -259,14 +259,17 @@ td.first {
 		overflow: hidden; }
 	#menu li a {
 		background: url('../_img/menu_li_left.png') no-repeat left top;
+		color: #999;
 		display: block;
 		padding: 0 10px;
-		text-align: center; }
+		text-align: center;
+		text-shadow: #fff 0 1px 0; }
 	#menu li.selected {
 		background-position: right -40px; }
 	#menu li.selected a {
 		background-position: 0 -40px;
-		color: #fff; }
+		color: #fff;
+		text-shadow: #666 0 1px 0; }
 #title {
 	background-color: #fff;
 	line-height: 1.1111em;
@@ -288,6 +291,8 @@ td.first {
 	margin-top: 0;
 	padding: 0 0 3.3333em;
 	width: 360px; }
+	#content div:first-child {
+		margin-top: 0; }
 #summary td, .summary td {
 	height: 3.1667em;
 	line-height: 3.1667;
@@ -377,6 +382,7 @@ td.first {
 #side #filters {
 	float: left;
 	margin-top: 0;
+	margin-bottom: 3.3333em;
 	padding: 0 0 0 20px; }
 #api {
 	display: none; }

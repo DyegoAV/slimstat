@@ -29,7 +29,11 @@ echo '<div id="main" class="grid16">';
 
 // side
 
-echo '<div id="side" class="grid4"><div id="sideinner" class="grid3 first"></div></div>'."\n";
+if ( !$is_handheld ) {
+	echo '<div id="side" class="grid4"><div id="sideinner" class="grid3 first">'."\n";
+	echo '<p class="first">Your visitors’ detailed navigation on your website.</p>'."\n";
+	echo '</div></div>'."\n";
+}
 
 echo '<div id="content" class="grid12"><div class="grid12">';
 
@@ -49,12 +53,12 @@ if ( $result = mysql_query( $query, $connection ) ) {
 
 $col1_w = ( $is_handheld ) ? 240 : 230;
 $col2_w = ( $is_handheld ) ?  88 : 75;
-$col3_w = ( $is_handheld ) ? 115 : 120;
-$col4_w = ( $is_handheld ) ? 137 : 145;
+$col3_w = ( $is_handheld ) ? 137 : 120;
+$col4_w = ( $is_handheld ) ? 115 : 145;
 $col5_w = ( $is_handheld ) ?  88 : 100;
 
 echo '<table><thead>'."\n";
-echo '<tr><th class="first" colspan="2" style="width:'.$col1_w.'px">'.$i18n->title( 'remote_ip' ).'</th>'."\n";
+echo '<tr><th class="first" colspan="2" style="width:'.$col1_w.'px">'.$i18n->title( 'remote_ip' ).'/'.$i18n->title( 'resource' ).'</th>'."\n";
 echo '<th class="center" style="width:'.$col2_w.'px">When</th>'."\n";
 if ( !$is_handheld ) {
 	echo '<th class="center" style="width:'.$col3_w.'px">'.$i18n->title( 'browser' ).'</th>'."\n";
@@ -65,6 +69,7 @@ echo '</tr></thead></table>'."\n";
 
 echo '<div class="tbody"><table><tbody>'."\n";
 
+$prev_dy = '';
 foreach ( $visits as $visit ) {
 	$start_ts = -1;
 	$end_ts = -1;
@@ -93,15 +98,15 @@ foreach ( $visits as $visit ) {
 		}
 	}
 	
+	$dy_label = strftime( '%e %b', $start_ts );
+	
 	$start_ts = date( 'H:i', $start_ts );
 	$end_ts = date( 'H:i', $end_ts );
 	
 	echo '<tr>'."\n".'<td class="first accent" colspan="2" style="width:'.$col1_w.'px; max-width:'.$col1_w.'px">';
 	echo '<a class="external" title="'.str_replace( '%i', $visit['remote_ip'], $config->whoisurl ).'" href="'.str_replace( '%i', $visit['remote_ip'], $config->whoisurl ).'" rel="nofollow">&rarr;</a> ';
 	echo htmlspecialchars( $visit['remote_ip'] ).'</td>'."\n";
-	echo '<td class="center accent" style="width:'.$col2_w.'px; max-width:'.$col2_w.'px">';
-	echo ( ( $start_ts == $end_ts ) ? $start_ts : $start_ts.'–'.$end_ts );
-	echo '</td>'."\n";
+	echo '<td class="center accent" style="width:'.$col2_w.'px; max-width:'.$col2_w.'px">'.$dy_label.'</td>'."\n";
 	if ( $is_handheld ) {
 		echo '</tr><tr>';
 	}
@@ -133,9 +138,9 @@ foreach ( $visits as $visit ) {
 			echo htmlspecialchars( $resource );
 		}
 		echo '</a></span></td>'."\n";
-		$dt_label = date( 'H:i', $dt );
-		if ( ( $prev_ts == '' && $dt_label != $start_ts ) || ( $prev_ts != '' && $dt_label != $prev_ts ) ) {
-			echo '<td class="center">'.$dt_label.'</td>'."\n";
+		$ts_label = strftime( '%H:%M', $dt );
+		if ( $ts_label != $prev_ts ) {
+			echo '<td class="center">'.$ts_label.'</td>'."\n";
 		} else {
 			echo '<td class="center">&nbsp;</td>'."\n";
 		}
@@ -160,8 +165,10 @@ foreach ( $visits as $visit ) {
 		}
 		echo '</tr>'."\n";
 		
-		$prev_ts = $dt_label;
+		$prev_ts = $ts_label;
 	}
+	
+	$prev_dy = $dy_label;
 }
 
 echo '</tbody></table></div>'."\n";

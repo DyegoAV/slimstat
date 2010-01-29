@@ -55,12 +55,6 @@ $(function() {
 		
 		return false;
 	});
-		
-	// handle scrolling
-	$(window).scroll(function() {
-		positionSidebar();
-	});
-	positionSidebar();
 	
 	// ajax activity indicator
 	$('body').append('<div id="ajaxindicator"><img src="./_img/loading.gif" width="16" height="16" alt="Activity indicator" /></div>');
@@ -74,6 +68,12 @@ $(function() {
 		width: '16px',
 		'z-index': '20'
 	});
+	
+	// handle scrolling
+	$(window).scroll(function() {
+		positionSidebar();
+	});
+	positionSidebar();
 
 	// show/hide ajax activity indicator
 	$(document).ajaxStart(function() { 

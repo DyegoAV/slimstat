@@ -39,8 +39,16 @@ echo '<div id="content" class="grid12"><div class="grid12">';
 
 // get requests
 
+$page_size = 50;
+$offset = 0;
+
+if ( array_key_exists( 'offset', $_GET ) ) {
+	$offset = abs( intval( $_GET['offset'] ) );
+	$offset = round( $offset / $page_size ) * $page_size;
+}
+
 $query = 'SELECT * FROM `'.SlimStat::esc( $config->db_database ).'`.`'.SlimStat::esc( $config->tbl_visits ).'`';
-$query .= ' ORDER BY `start_yr` DESC, `start_mo` DESC, `start_dy` DESC, `start_hr` DESC, `start_mi` DESC LIMIT 50';
+$query .= ' ORDER BY `start_yr` DESC, `start_mo` DESC, `start_dy` DESC, `start_hr` DESC, `start_mi` DESC LIMIT '.$offset.','.$page_size;
 
 $visits = array();
 if ( $result = mysql_query( $query, $connection ) ) {
@@ -186,10 +194,26 @@ function resizePathsTbody() {
 
 $(function() {
 	resizePathsTbody();
+	$('.tbody').scroll(function() {
+		var jthis = $(this);
+		var scrollTop = jthis.scrollTop();
+		var clientHeight = jthis.height();
+		var scrollHeight = jthis.find('table').height();
+		if (scrollTop + clientHeight == scrollHeight && offset < pageSize * 10) {
+			offset += pageSize;
+			$.get('./?page=paths&offset=' + offset, function(data) {
+				var jdata = $(data).find('.tbody table > *');
+				$('.tbody table').append(jdata);
+			});
+		}
+	});
 });
 $(window).resize(function() {
 	resizePathsTbody();
 });
+
+var offset = <?= $offset; ?>;
+var pageSize = <?= $page_size; ?>;
 </script>
 <?php
 

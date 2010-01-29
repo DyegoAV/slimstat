@@ -318,14 +318,20 @@ th.last, td.last {
 		overflow: hidden; }
 	#menu li a {
 		background: url('../_img/menu_li_left.png') no-repeat left top;
+		color: #999;
 		display: block;
+		font-weight: bold;
+		height: 1.6667em;
+		line-height: 1.6667;
 		padding: 0 10px;
-		text-align: center; }
+		text-align: center;
+		text-shadow: #fff 0 1px 0; }
 	#menu li:hover, #menu li.selected {
 		background-position: right -40px; }
 	#menu li a:hover, #menu li.selected a {
 		background-position: 0 -40px;
-		color: #fff; }
+		color: #fff;
+		text-shadow: #666 0 1px 0; }
 #title {
 	background-color: #fff;
 	height: 1.1111em;

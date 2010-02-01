@@ -216,5 +216,8 @@ function sp2nb( $_str ) {
 }
 
 function is_handheld() {
-	return strstr( $_SERVER['HTTP_USER_AGENT'], 'iPhone' ) || strstr( $_SERVER['HTTP_USER_AGENT'], 'MobileSafari' );
+	return strstr( $_SERVER['HTTP_USER_AGENT'], 'iPod' )
+	    || strstr( $_SERVER['HTTP_USER_AGENT'], 'iPhone' )
+	    || strstr( $_SERVER['HTTP_USER_AGENT'], 'MobileSafari' )
+	    || strstr( $_SERVER['HTTP_USER_AGENT'], 'Android' );
 }

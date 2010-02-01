@@ -402,9 +402,15 @@ class SlimStatRecord {
 		// platform
 		if ( preg_match( '/Win/', $_ua ) ) {
 			$browser['platform'] = 'Windows';
+		} elseif ( preg_match( '/iPod/', $_ua ) ) {
+			$browser['platform'] = 'iPod';
+		} elseif ( preg_match( '/iPad/', $_ua ) ) {
+			$browser['platform'] = 'iPad';
 		} elseif ( preg_match( '/iPhone/', $_ua ) ) {
 			$browser['platform'] = 'iPhone';
-		} elseif ( preg_match( '/Symbian/', $_ua ) ) {
+		} elseif ( preg_match( '/Android/', $_ua ) ) {
+			$browser['platform'] = 'Android';
+		} elseif ( preg_match( '/Symbian/', $_ua ) || preg_match( '/SymbOS/', $_ua ) ) {
 			$browser['platform'] = 'Symbian';
 		} elseif ( preg_match( '/Nintendo Wii/', $_ua ) ) {
 			$browser['platform'] = 'Nintendo Wii';

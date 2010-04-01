@@ -467,9 +467,10 @@ class SlimStatRecord {
 				array( 'Thunderbird', 'Thunderbird', "Thunderbird/([[:digit:]\.]+)",  1 ),
 				array( 'Netscape', 'Netscape', "Netscape[0-9]?/([[:digit:]\.]+)", 1 ),
 				array( 'OmniWeb', 'OmniWeb', "OmniWeb/([[:digit:]\.]+)", 1 ),
+				array( 'Iron', 'Iron', "Iron/([[:digit:]\.]+)", 1 ),
 				array( 'Chrome', 'Chrome', "Chrome/([[:digit:]\.]+)", 1 ),
 				array( 'Chromium', 'Chromium', "Chromium/([[:digit:]\.]+)", 1 ),
-				array( 'Safari', 'Safari', "Safari/([[:digit:]\.]+)", 1 ),
+				array( 'Safari', 'Safari', "Version/([[:digit:]\.]+)", 1 ),
 				array( 'iCab', 'iCab', "iCab/([[:digit:]\.]+)", 1 ),
 				array( 'Konqueror', 'Konqueror', "Konqueror/([[:digit:]\.]+)", 1, 'Linux' ),
 				array( 'Midori', 'Midori', "Midori/([[:digit:]\.]+)",  1 ),
@@ -484,10 +485,12 @@ class SlimStatRecord {
 			);
 			
 			foreach ( $sniffs as $sniff ) {
-				if ( mb_ereg( $sniff[0], $_ua ) ) {
+				if ( mb_strpos( $_ua, $sniff[0] ) !== false ) {
 					$browser['browser'] = $sniff[1];
 					mb_ereg( $sniff[2], $_ua, $b );
-					$browser['version'] = $b[ $sniff[3] ];
+					if ( sizeof( $b ) > $sniff[3] ) {
+						$browser['version'] = $b[ $sniff[3] ];
+					}
 					if ( sizeof( $sniff ) == 5 ) {
 						$browser['platform'] = $sniff[4];
 					}

@@ -24,9 +24,11 @@
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>SlimStat<?php
-	if ( $config->sitename != '' ) {
-		echo ' for '.htmlspecialchars( $config->sitename );
+	<title><?php
+	if ( $config->sitename == '' ) {
+		echo 'SlimStat';
+	} else {
+		echo $i18n->hsc( 'core', 'title', $config->sitename );
 	}
 	?></title>
 	<?php
@@ -46,9 +48,11 @@
 <div id="container">
 
 <div id="head">
-<h1><a href="./">SlimStat<?php
-if ( $config->sitename != '' ) {
-	echo ' for '.htmlspecialchars( $config->sitename );
+<h1><a href="./"><?php
+if ( $config->sitename == '' ) {
+	echo 'SlimStat';
+} else {
+	echo $i18n->hsc( 'core', 'title', $config->sitename );
 }
 ?></a></h1>
 </div>
@@ -59,16 +63,16 @@ echo '<ul id="menu">'."\n";
 
 if ( $config->slimstat_use_auth && $query_string_page != 'setup' ) {
 	if ( check_login() ) {
-		echo '<li><a href="?logout">Log out</a></li>';
+		echo '<li><a href="?logout">'.$i18n->hsc( 'login', 'logout' ).'</a></li>';
 	} else {
-		echo '<li class="selected"><a href="?login">Log in</a></li>';
+		echo '<li class="selected"><a href="?login">'.$i18n->hsc( 'login', 'menu' ).'</a></li>';
 	}
 }
 
 if ( $query_string_page == 'setup' ) {
 	echo '<li class="selected"><a href="?setup">Setup</a></li>';
 } elseif ( $query_string_page == 'welcome' ) {
-	echo '<li class="selected"><a href="?welcome">Welcome</a></li>';
+	echo '<li class="selected"><a href="?welcome">'.$i18n->hsc( 'welcome', 'menu' ).'</a></li>';
 } elseif ( $config->slimstat_use_auth && !check_login() ) {
 	// do nothing
 } elseif ( $page_dir_handle = opendir( realpath( dirname( __FILE__ ) ) ) ) {
@@ -95,7 +99,11 @@ if ( $query_string_page == 'setup' ) {
 					echo '<a href="?page='.htmlspecialchars( $page_dir_file ).$filter_url.'">';
 				}
 			}
-			echo ucwords( htmlspecialchars( $page_dir_file ) ).'</a></li>';
+			$title = $i18n->hsc( $page_dir_file, 'menu' );
+			if ( $title == 'menu' ) {
+				$title = $page_dir_file;
+			}
+			echo ucwords( $title ).'</a></li>';
 		}
 	}
 	closedir( $page_dir_handle );

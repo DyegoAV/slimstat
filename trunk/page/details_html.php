@@ -24,10 +24,11 @@ function render_page_html() {
 	
 	page_head();
 	
-	$curr_date_label = htmlspecialchars( date_label( $filters ) );
-	$prev_date_label = htmlspecialchars( date_label( $prev_filters ) );
+	$curr_date_label = hsc( date_label( $filters ) );
+	$prev_date_label = hsc( date_label( $prev_filters ) );
 	
-	echo '<h2 id="title" class="grid16">'.$curr_date_label.' <span class="prev">compared with '.$prev_date_label.'</span></h2>'."\n";
+	echo '<h2 id="title" class="grid16">'.$curr_date_label;
+	echo ' <span class="prev">'.$i18n->hsc( 'details', 'compared_with', $prev_date_label ).'</span></h2>'."\n";
 
 	// main
 
@@ -43,15 +44,15 @@ function render_page_html() {
 	
 	if ( $is_handheld ) {
 		if ( $has_filters ) {
-			echo '<h2>Filters</h2>';
+			echo '<h2>'.$i18n->hsc( 'details', 'filters' ).'</h2>';
 	
 			foreach ( array_merge( $hit_fields, $visit_fields ) as $key ) {
 				if ( array_key_exists( $key, $filters ) ) {
 					$new_filters = $filters;
 					unset( $new_filters[$key] );
-					echo '<div class="grid3"><h3>'.htmlspecialchars( $i18n->title( $key ) ).'</h3>'."\n";
+					echo '<div class="grid3"><h3>'.$i18n->hsc( 'titles', $key ).'</h3>'."\n";
 					echo '<p class="text"><a href="./'.filter_url( $new_filters ).'">';
-					echo htmlspecialchars( $i18n->label( $key, $filters[$key] ) );
+					echo hsc( $i18n->label( $key, $filters[$key] ) );
 					echo '</a></p></div>'."\n";
 				}
 			}
@@ -63,13 +64,13 @@ function render_page_html() {
 		filter_select( 'mo' );
 		filter_select( 'dy' );
 	
-		echo '<h2>Content</h2>';
+		echo '<h2>'.$i18n->hsc( 'details', 'content' ).'</h2>';
 	
 		filter_select( 'resource' );
 		filter_select( 'start_resource' );
 		filter_select( 'end_resource' );
 	
-		echo '<h2>Visitors</h2>';
+		echo '<h2>'.$i18n->hsc( 'details', 'visitors' ).'</h2>';
 	
 		filter_select( 'remote_ip' );
 		filter_select( 'browser' );
@@ -78,7 +79,7 @@ function render_page_html() {
 		filter_select( 'country' );
 		filter_select( 'language' );
 	
-		echo '<h2>Referrers</h2>';
+		echo '<h2>'.$i18n->hsc( 'details', 'referrers' ).'</h2>';
 	
 		filter_select( 'search_terms' );
 		filter_select( 'domain' );
@@ -109,7 +110,7 @@ function render_page_html() {
 		table_resource_summary();
 	}
 
-	echo '<h2 class="grid12">Content</h2>';
+	echo '<h2 class="grid12">'.$i18n->hsc( 'details', 'content' ).'</h2>';
 
 	if ( array_key_exists( 'dy', $filters ) ) {
 		chart_hours();
@@ -135,10 +136,8 @@ function render_page_html() {
 	} else {	
 		table_percent( 'prev_resource' );
 	}
-
-
-
-	echo '<h2 class="grid12">Visitors</h2>';
+	
+	echo '<h2 class="grid12">'.$i18n->hsc( 'details', 'visitors' ).'</h2>';
 	
 	if ( !array_key_exists( 'remote_ip', $filters ) ) {
 		table_total( 'remote_ip' );
@@ -165,7 +164,7 @@ function render_page_html() {
 		table_percent( 'language' );
 	}
 
-	echo '<h2 class="grid12">Referrers</h2>';
+	echo '<h2 class="grid12">'.$i18n->hsc( 'details', 'referrers' ).'</h2>';
 
 	if ( !array_key_exists( 'search_terms', $filters ) ) {
 		table_total( 'search_terms' );
@@ -196,7 +195,7 @@ function filter_select( $_key ) {
 	}
 	echo '><select name="filter_'.$_key.'" style="width:100%">';
 	if ( !in_array( $_key, $time_fields ) ) {
-		echo '<option value="">— '.htmlspecialchars( $i18n->title( $_key ) ).' —</option>';
+		echo '<option value="">— '.$i18n->hsc( 'titles', $_key ).' —</option>';
 	}
 	
 	if ( $_key == 'yr' ) {
@@ -226,9 +225,9 @@ function filter_select( $_key ) {
 		$x = 0;
 		foreach ( array_keys( $unfiltered_curr_data[$_key] ) as $value ) {
 			if ( $value == $filters[$_key] ) {
-				echo '<option value="'.htmlspecialchars( $value ).'" selected="true">'.htmlspecialchars( $i18n->label( $_key, $value ) ).'</option>';
+				echo '<option value="'.hsc( $value ).'" selected="true">'.hsc( $i18n->label( $_key, $value ) ).'</option>';
 			} else {
-				echo '<option value="'.htmlspecialchars( $value ).'">'.htmlspecialchars( $i18n->label( $_key, $value ) ).'</option>';
+				echo '<option value="'.hsc( $value ).'">'.hsc( $i18n->label( $_key, $value ) ).'</option>';
 			}
 			$x++;
 			if ( $x == 50 ) { break; }
@@ -236,7 +235,7 @@ function filter_select( $_key ) {
 	} else {
 		$x = 0;
 		foreach ( array_keys( $curr_data[$_key] ) as $value ) {
-			echo '<option value="'.htmlspecialchars( $value ).'">'.htmlspecialchars( $i18n->label( $_key, $value ) ).'</option>';
+			echo '<option value="'.hsc( $value ).'">'.hsc( $i18n->label( $_key, $value ) ).'</option>';
 			$x++;
 			if ( $x == 50 ) { break; }
 		}
@@ -245,7 +244,7 @@ function filter_select( $_key ) {
 }
 
 function table_summary() {
-	global $filters, $prev_filters, $curr_data, $prev_data, $curr_date_label, $prev_date_label, $is_handheld;
+	global $i18n, $filters, $prev_filters, $curr_data, $prev_data, $curr_date_label, $prev_date_label, $is_handheld;
 	
 	$curr_hits = array_sum( $curr_data['yr'] );
 	$prev_hits = array_sum( $prev_data['yr'] );
@@ -290,14 +289,14 @@ function table_summary() {
 	}
 	
 	echo '<div class="grid12" id="summary">';
-	echo '<h3>Summary</h3>';
+	echo '<h3>'.$i18n->hsc( 'details', 'summary' ).'</h3>';
 	echo '<div class="tbody">'."\n";
 	
 	// hits
 	
 	echo '<table><tbody><tr>';
 	echo '<td class="center numeric" title="'.$curr_date_label.'">'.format_number( $curr_hits, 0 ).'</td>';
-	echo '<td><span class="text">hits</span></td>';
+	echo '<td><span class="text">'.$i18n->hsc( 'details', 'hits' ).'</span></td>';
 	echo '</tr><tr>';
 	echo '<td class="center numeric prev" title="'.$prev_date_label.'">'.format_number( $prev_hits, 0 ).'</td>';
 	echo '<td class="numeric">';
@@ -315,7 +314,7 @@ function table_summary() {
 	
 	echo '<table><tbody><tr>';
 	echo '<td class="center numeric" title="'.$curr_date_label.'">'.format_number( $curr_visits, 0 ).'</td>';
-	echo '<td><span class="text">visits</span></td>';
+	echo '<td><span class="text">'.$i18n->hsc( 'details', 'visits' ).'</span></td>';
 	echo '</tr><tr>';
 	echo '<td class="center numeric prev" title="'.$prev_date_label.'">'.format_number( $prev_visits, 0 ).'</td>';
 	echo '<td class="numeric">';
@@ -333,7 +332,7 @@ function table_summary() {
 	
 	echo '<table><tbody><tr>';
 	echo '<td class="center numeric" title="'.$curr_date_label.'">'.format_number( $curr_ips, 0 ).'</td>';
-	echo '<td><span class="text">unique IPs</span></td>';
+	echo '<td><span class="text">'.$i18n->hsc( 'details', 'unique_ips' ).'</span></td>';
 	echo '</tr><tr>';
 	echo '<td class="center numeric prev" title="'.$prev_date_label.'">'.format_number( $prev_ips, 0 ).'</td>';
 	echo '<td class="numeric">';
@@ -351,7 +350,9 @@ function table_summary() {
 	
 	echo '<table><tbody><tr>';
 	echo '<td class="center numeric" title="'.$curr_date_label.'">'.format_number( $curr_hits_per ).'</td>';
-	echo '<td><span class="text">hits ∕ '.( ( array_key_exists( 'dy', $filters ) ) ? 'hour' : 'day' ).'</span></td>';
+	echo '<td><span class="text">'.$i18n->hsc( 'details', 'hits' ).' ∕ ';
+	echo $i18n->hsc( 'details', ( array_key_exists( 'dy', $filters ) ) ? 'hour' : 'day' );
+	echo '</span></td>';
 	echo '</tr><tr>';
 	echo '<td class="center numeric prev" title="'.$prev_date_label.'">'.format_number( $prev_hits_per ).'</td>';
 	echo '<td class="numeric">';
@@ -369,7 +370,9 @@ function table_summary() {
 	
 	echo '<table><tbody><tr>';
 	echo '<td class="center numeric" title="'.$curr_date_label.'">'.format_number( $curr_visits_per ).'</td>';
-	echo '<td class="last"><span class="text">visits ∕ '.( ( array_key_exists( 'dy', $filters ) ) ? 'hour' : 'day' ).'</span></td>';
+	echo '<td class="last"><span class="text">'.$i18n->hsc( 'details', 'visits' ).' ∕ ';
+	echo $i18n->hsc( 'details', ( array_key_exists( 'dy', $filters ) ) ? 'hour' : 'day' );
+	echo '</span></td>';
 	echo '</tr><tr>';
 	echo '<td class="center numeric prev" title="'.$prev_date_label.'">'.format_number( $prev_visits_per ).'</td>';
 	echo '<td class="numeric last">';
@@ -455,14 +458,14 @@ function table_resource_summary() {
 	$prev_exit_rate = ( $prev_hits > 0 ) ? to1dp( $prev_end_hits / $prev_hits * 100 ) : to1dp( 0 );
 	
 	echo '<div class="grid12 summary">';
-	echo '<h3>'.htmlspecialchars( $i18n->label( 'resource', $filters['resource'] ) ).'</h3>';
+	echo '<h3>'.hsc( $i18n->label( 'resource', $filters['resource'] ) ).'</h3>';
 	echo '<div class="tbody">';
 	
 	// hits
 	
 	echo '<table><tbody><tr>';
 	echo '<td class="center numeric">'.format_number( $curr_hits, 0 ).'</td>';
-	echo '<td><span class="text">hits</span></td>';
+	echo '<td><span class="text">'.$i18n->hsc( 'details', 'hits' ).'</span></td>';
 	echo '</tr><tr>';
 	echo '<td class="center numeric prev">'.format_number( $prev_hits, 0 ).'</td>';
 	echo '<td class="numeric">';
@@ -480,7 +483,7 @@ function table_resource_summary() {
 	
 	echo '<table><tbody><tr>';
 	echo '<td class="center numeric">'.format_number( $curr_start_hits, 0 ).'</td>';
-	echo '<td><span class="text">as entry page</span></td>';
+	echo '<td><span class="text">'.$i18n->hsc( 'details', 'as_entry_page' ).'</span></td>';
 	echo '</tr><tr>';
 	echo '<td class="center numeric prev">'.format_number( $prev_start_hits, 0 ).'</td>';
 	echo '<td class="numeric">';
@@ -498,7 +501,7 @@ function table_resource_summary() {
 	
 	echo '<table><tbody><tr>';
 	echo '<td class="center numeric">'.format_number( $curr_end_hits, 0 ).'</td>';
-	echo '<td><span class="text">as exit page</span></td>';
+	echo '<td><span class="text">'.$i18n->hsc( 'details', 'as_exit_page' ).'</span></td>';
 	echo '</tr><tr>';
 	echo '<td class="center numeric prev">'.format_number( $prev_end_hits, 0 ).'</td>';
 	echo '<td class="numeric">';
@@ -516,7 +519,7 @@ function table_resource_summary() {
 	
 	echo '<table><tbody><tr>';
 	echo '<td class="center numeric">'.format_percent( $curr_bounce_rate ).'%</td>';
-	echo '<td><span class="text">bounce rate</span></td>';
+	echo '<td><span class="text">'.$i18n->hsc( 'details', 'bounce_rate' ).'</span></td>';
 	echo '</tr><tr>';
 	echo '<td class="center numeric prev">'.format_percent( $prev_bounce_rate ).'%</td>';
 	echo '<td class="numeric">';
@@ -534,7 +537,7 @@ function table_resource_summary() {
 	
 	echo '<table><tbody><tr>';
 	echo '<td class="center numeric">'.format_percent( $curr_exit_rate ).'%</td>';
-	echo '<td class="last"><span class="text">exit rate</span></td>';
+	echo '<td class="last"><span class="text">'.$i18n->hsc( 'details', 'exit_rate' ).'</span></td>';
 	echo '</tr><tr>';
 	echo '<td class="center numeric prev">'.format_percent( $prev_exit_rate ).'%</td>';
 	echo '<td class="numeric last">';
@@ -582,12 +585,12 @@ function table_total( $_field ) {
 	} else {
 		echo '6';
 	}
-	echo ' filter filter_'.htmlspecialchars( $_field ).' table"><table>';
+	echo ' filter filter_'.hsc( $_field ).' table"><table>';
 	echo '<thead><tr>';
-	echo '<th class="first"><span class="text">'.htmlspecialchars( $i18n->title( $_field ) );
+	echo '<th class="first"><span class="text">'.$i18n->hsc( 'titles', $_field );
 	echo ' ('.$curr_size.')';
 	echo '</span></th>';
-	echo '<th class="center">'.( in_array( $_field, $hit_fields ) ? 'Hits' : 'Visits' ).'</th>';
+	echo '<th class="center">'.ucfirst( $i18n->hsc( 'details', ( in_array( $_field, $hit_fields ) ? 'hits' : 'visits' ) ) ).'</th>';
 	echo '<th class="center">&nbsp;</th>';
 	echo '<th class="center last">&plusmn;</th>';
 	echo '</tr></thead></table>'."\n";
@@ -599,14 +602,14 @@ function table_total( $_field ) {
 		
 		echo '<tr>';
 		// echo '<td>'.( $pos + 1 ).'</td>';
-		echo '<td class="first" title="'.htmlspecialchars( $key ).'"><span class="text">';
+		echo '<td class="first" title="'.hsc( $key ).'"><span class="text">';
 		if ( $_field == 'referrer' ) {
-			echo '<a class="external" title="'.htmlspecialchars( $key ).'" href="'.htmlspecialchars( $key ).'" rel="nofollow">&rarr;</a> ';
+			echo '<a class="external" title="'.hsc( $key ).'" href="'.hsc( $key ).'" rel="nofollow">&rarr;</a> ';
 		} elseif ( $_field == 'remote_ip' ) {
 			echo '<a class="external" title="'.str_replace( '%i', $key, $config->whoisurl ).'" href="'.str_replace( '%i', $key, $config->whoisurl ).'" rel="nofollow">&rarr;</a> ';
 		}
 		echo '<a href="./'.filter_url( $new_filters ).'">';
-		echo htmlspecialchars( $i18n->label( $_field, $key ) );
+		echo hsc( $i18n->label( $_field, $key ) );
 		echo '</a></span></td>';
 		echo '<td class="center" title="'.$curr_date_label.'">'.format_number( $hits, 0 ).'</td>';
 		echo '<td class="center prev" title="'.$prev_date_label.'">';
@@ -627,7 +630,7 @@ function table_total( $_field ) {
 				echo '<span class="dn">↓ '.( $pos - $prev_pos ).'</span>';
 			}
 		} else {
-			echo '<span class="up">new</span>';
+			echo '<span class="up">'.$i18n->hsc( 'details', 'new' ).'</span>';
 		}
 		echo '</td>';
 		echo '</tr>'."\n";
@@ -673,9 +676,9 @@ function table_percent( $_field ) {
 		$prev_total += $hits;
 	}
 	
-	echo '<div class="grid6 filter filter_'.htmlspecialchars( $_field ).' table"><table>';
+	echo '<div class="grid6 filter filter_'.hsc( $_field ).' table"><table>';
 	echo '<thead><tr>';
-	echo '<th class="first"><span class="text">'.htmlspecialchars( $i18n->title( $_field ) );
+	echo '<th class="first"><span class="text">'.$i18n->hsc( 'titles', $_field );
 	echo ' ('.$curr_size.')';
 	echo '</span></th>';
 	echo '<th class="center">%</th>';
@@ -713,10 +716,10 @@ function table_percent( $_field ) {
 		}
 		if ( $key != '' || ( $_field != 'prev_resource' && $_field != 'next_resource' ) ) {
 			echo '<a href="./'.filter_url( $new_filters ).'">';
-			echo htmlspecialchars( $i18n->label( $_field, $key ) );
+			echo hsc( $i18n->label( $_field, $key ) );
 			echo '</a>';
 		} else {	
-			echo htmlspecialchars( $i18n->label( $_field, $key ) );
+			echo hsc( $i18n->label( $_field, $key ) );
 		}
 		echo '</span></td>';
 		echo '<td class="center" title="'.$curr_date_label.'">'.format_number( $curr_pct ).'</td>';
@@ -731,7 +734,7 @@ function table_percent( $_field ) {
 				echo '<span class="dn">↓ '.format_number( $prev_pct - $curr_pct ).'</span>';
 			}
 		} else {
-			echo '<span class="up">new</span>';
+			echo '<span class="up">'.$i18n->hsc( 'details', 'new' ).'</span>';
 		}
 		echo '</td>';
 		echo '</tr>'."\n";
@@ -759,7 +762,7 @@ function table_percent( $_field ) {
 				
 				echo '<tr class="detail detail_browser_'.preg_replace( '/[^a-z]/', '', mb_strtolower( $key ) ).'">';
 				// echo '<td>'.( $pos + 1 ).'</td>';
-				echo '<td class="first"><span class="text">'.htmlspecialchars( $i18n->label( 'version', $key2 ) ).'</span></td>';
+				echo '<td class="first"><span class="text">'.hsc( $i18n->label( 'version', $key2 ) ).'</span></td>';
 				echo '<td class="center">'.format_number( $curr_pct ).'</td>';
 				echo '<td class="center prev">'.format_number( $prev_pct ).'</td>';
 				echo '<td class="center last">';
@@ -772,7 +775,7 @@ function table_percent( $_field ) {
 						echo '<span class="dn">↓ '.format_number( $prev_pct - $curr_pct ).'</span>';
 					}
 				} else {
-					echo '<span class="up">new</span>';
+					echo '<span class="up">'.$i18n->hsc( 'details', 'new' ).'</span>';
 				}
 				echo '</td>';
 				echo '</tr>'."\n";
@@ -787,7 +790,7 @@ function table_percent( $_field ) {
 }
 
 function map() {
-	global $curr_data, $is_handheld;
+	global $i18n, $curr_data, $is_handheld;
 	
 	// map
 	$first_value = -1;
@@ -825,18 +828,18 @@ function map() {
 	
 	echo '<div class="grid6" id="map">';
 	if ( $is_handheld ) {
-		echo '<h3>Map</h3>';
+		echo '<h3>'.$i18n->hsc( 'details', 'map' ).'</h3>';
 	} else {
 		echo '<h3>';
 		echo '<form style="float:right"><select name="region">';
-		echo '<option value="africa">Africa</option>';
-		echo '<option value="asia">Asia</option>';
-		echo '<option value="europe">Europe</option>';
-		echo '<option value="middle_east">Middle East</option>';
-		echo '<option value="south_america">South America</option>';
-		echo '<option value="world" selected="true">World</option>';
+		echo '<option value="africa">'.$i18n->hsc( 'details', 'africa' ).'</option>';
+		echo '<option value="asia">'.$i18n->hsc( 'details', 'asia' ).'</option>';
+		echo '<option value="europe">'.$i18n->hsc( 'details', 'europe' ).'</option>';
+		echo '<option value="middle_east">'.$i18n->hsc( 'details', 'middle_east' ).'</option>';
+		echo '<option value="south_america">'.$i18n->hsc( 'details', 'south_america' ).'</option>';
+		echo '<option value="world" selected="true">'.$i18n->hsc( 'details', 'world' ).'</option>';
 		echo '</select></form>';
-		echo 'Map</h3>';
+		echo $i18n->hsc( 'details', 'map' ).'</h3>';
 		echo '<script type="text/javascript">'."\n";
 		echo 'var mapRegion = "world";'."\n";
 	    echo 'var mapSrc = "'.$map_src.'";'."\n";
@@ -850,8 +853,8 @@ function map() {
 		echo '</script>';
 	}
 	echo '<div class="tbody">';
-	echo '<img src="'.htmlspecialchars( $map_src ).'world" alt="" width="340" height="170" style="margin: 4px 0" />';
-	echo '<table><tbody><tr><td class="first">Visits ';
+	echo '<img src="'.hsc( $map_src ).'world" alt="" width="340" height="170" style="margin: 4px 0" />';
+	echo '<table><tbody><tr><td class="first">'.ucfirst( $i18n->hsc( 'details', 'hits' ) ).' ';
 	echo format_number( $min_value, 0 ).' <span>&nbsp;</span> '.format_number( $max_value, 0 );
 	echo '</td></tr></tbody></table>';
 	echo '</div></div>';
@@ -860,7 +863,7 @@ function map() {
 }
 
 function sources() {
-	global $curr_data, $prev_data;
+	global $i18n, $curr_data, $prev_data;
 	
 	// sources
 	$curr_total_visits = max( 1, array_sum( $curr_data['source'] ) );
@@ -874,7 +877,7 @@ function sources() {
 	$prev_referrer_visits = $prev_data['source']['referrer'] / $prev_total_visits * 100;
 
 	echo '<div class="grid6">';
-	echo '<h3>Visit source</h3>';
+	echo '<h3>'.$i18n->hsc( 'details', 'visit_source' ).'</h3>';
 	echo '<div class="tbody">';
 	echo '<img src="http://chart.apis.google.com/chart?';
 	echo 'chs=340x160';
@@ -883,9 +886,9 @@ function sources() {
 	echo '&amp;chl=';//.urlencode( '('.format_number( $prev_search_visits ).'%)' );
 	echo '|';//.urlencode( '('.format_number( $prev_direct_visits ).'%)' );
 	echo '|';//.urlencode( '('.format_number( $prev_referrer_visits ).'%)' );
-	echo '|Search '.urlencode( '('.format_number( $curr_search_visits ).'%)' );
-	echo '|Direct '.urlencode( '('.format_number( $curr_direct_visits ).'%)' );
-	echo '|Referred '.urlencode( '('.format_number( $curr_referrer_visits ).'%)' );
+	echo '|'.$i18n->hsc( 'details', 'search' ).' '.urlencode( '('.format_number( $curr_search_visits ).'%)' );
+	echo '|'.$i18n->hsc( 'details', 'direct' ).' '.urlencode( '('.format_number( $curr_direct_visits ).'%)' );
+	echo '|'.$i18n->hsc( 'details', 'referred' ).' '.urlencode( '('.format_number( $curr_referrer_visits ).'%)' );
 	echo '&amp;chp=4.7124';
 	// echo '&amp;chp=2.3662';
 	echo '&amp;chco=CCCCCC,333333';
@@ -895,7 +898,7 @@ function sources() {
 }
 
 function resolutions() {
-	global $curr_data, $prev_data;
+	global $i18n, $curr_data, $prev_data;
 
 	// resolutions
 	$max_hits = reset( array_values( $curr_data['resolution'] ) );
@@ -924,7 +927,7 @@ function resolutions() {
 	sort( $height_labels );
 
 	echo '<div class="grid6">';
-	echo '<h3>Screen sizes</h3>';
+	echo '<h3>'.$i18n->hsc( 'titles', 'resolution' ).'</h3>';
 	echo '<div class="tbody">';
 	echo '<img src="http://chart.apis.google.com/chart?';
 	echo 'chs=340x160';
@@ -944,7 +947,7 @@ function resolutions() {
 }
 
 function chart_hits() {
-	global $filters, $curr_data, $prev_data, $curr_date_label, $prev_date_label;
+	global $i18n, $filters, $curr_data, $prev_data, $curr_date_label, $prev_date_label;
 	
 	$curr = $curr_data['hits'];
 	$prev = $prev_data['hits'];
@@ -1002,7 +1005,7 @@ function chart_hits() {
 	}
 	
 	echo '<div class="grid6" id="hits">';
-	echo '<h3>Pages viewed</h3>';
+	echo '<h3>'.$i18n->hsc( 'details', 'pages_viewed' ).'</h3>';
 	echo '<div class="tbody">';
 	echo '<img src="http://chart.apis.google.com/chart?';
 	echo 'chs=340x198';
@@ -1228,7 +1231,7 @@ function chart_days() {
 }
 
 function calendar_widget() {
-	global $filters;
+	global $i18n, $filters;
 	
 	$start_offset = gmdate( 'w', gmmktime( 12, 0, 0, $filters['mo'], 1, $filters['yr'] ) );
 	$days_in_month = days_in_month( $filters['mo'], $filters['yr'] );
@@ -1276,13 +1279,10 @@ function calendar_widget() {
 	echo '</tr>';
 	echo '</thead>';
 	echo '<tr>'."\n";
-	echo '<th abbr="Sunday">S</th>';
-	echo '<th abbr="Monday">M</th>';
-	echo '<th abbr="Tuesday">T</th>';
-	echo '<th abbr="Wednesday">W</th>';
-	echo '<th abbr="Thursday">T</th>';
-	echo '<th abbr="Friday">F</th>';
-	echo '<th abbr="Saturday">S</th>';
+	foreach ( array( 'sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday' ) as $day ) {
+		$i18n_day = $i18n->hsc( 'datetime', $day );
+		echo '<th abbr="'.$i18n_day.'">'.mb_strtoupper( mb_substr( $i18n_day, 0, 1 ) ).'</th>';
+	}
 	echo "</tr>\n";
 	
 	$actual_dy = intval( date( 'd' ) );

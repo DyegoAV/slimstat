@@ -309,7 +309,7 @@ function save_cache_data( $_filters, $_data ) {
 }
 
 function load_data( $_filters ) {
-	global $config, $i18n;
+	global $config, $i18n, $hit_fields, $visit_fields;
 	
 	$data = null;
 	
@@ -325,7 +325,47 @@ function load_data( $_filters ) {
 	
 	// if data is not cached, get data manually
 	if ( !$have_cache_data ) {
-		$data = array_merge( load_hit_data( $_filters ), load_visit_data( $_filters ) );
+		if ( array_key_exists( 'dy', $_filters ) ) { // day
+			$data = array_merge( load_hit_data( $_filters ), load_visit_data( $_filters ) );
+		} else { // month	
+			$data = array();
+			$max_dy = valid_dy( 31, $_filters['mo'], $_filters['yr'] );
+			for ( $dy = 1; $dy <= $max_dy; $dy++ ) {
+				$dy_data = load_data( array_merge( $_filters, array( 'dy' => $dy ) ) );
+				
+				foreach ( $dy_data as $field => $field_data ) {
+					if ( !array_key_exists( $field, $data ) ) {
+						$data[$field] = array();
+					}
+					if ( $field == 'title' ) {
+						$data[$field] = array_merge( $data[$field], $field_data );
+					} elseif ( $field == 'version' ) {
+						foreach ( $field_data as $browser => $version_data ) {
+							if ( !array_key_exists( $browser, $data[$field] ) ) {
+								$data[$field][$browser] = array();
+							}
+							foreach ( $version_data as $key => $value ) {
+								if ( array_key_exists( $key, $data[$field][$browser] ) ) {
+									$data[$field][$browser][$key] += $value;
+								} else {
+									$data[$field][$browser][$key] = $value;
+								}
+							}
+						}
+					} else {
+						foreach ( $field_data as $key => $value ) {
+							if ( array_key_exists( $key, $data[$field] ) ) {
+								$data[$field][$key] += $value;
+							} else {
+								$data[$field][$key] = $value;
+							}
+						}
+					}
+				}
+			}
+			
+			sort_data( $data, array_merge( $hit_fields, $visit_fields ), true );
+		}
 	}
 	
 	if ( array_key_exists( 'title', $data ) ) {
@@ -526,28 +566,34 @@ function parse_data( $_result, $_fields, $_filters, $_init_time_fields=false ) {
 		}
 	}
 	
-	foreach ( $time_fields as $field ) {
-		if ( array_key_exists( $field, $data ) ) {
-			ksort( $data[$field] );
-		} elseif ( $_init_time_fields ) {
-			$data[$field] = array();
-		}
-	}
-	foreach ( array_merge( $_fields, array( 'prev_resource', 'next_resource' ) ) as $field ) {
-		if ( array_key_exists( $field, $data ) ) {
-			if ( $field == 'version' ) {
-				foreach ( array_keys( $data[$field] ) as $browser ) {
-					arsort( $data[$field][$browser] );
-				}
-			} else {
-				arsort( $data[$field] );
-			}
-		}
-	}
+	sort_data( $data, $_fields, $_init_time_fields );
 	
 	// echo '</pre>'."\n";
 	
 	return $data;
+}
+
+function sort_data( &$_data, $_fields, $_init_time_fields=false ) {
+	global $time_fields;
+	
+	foreach ( $time_fields as $field ) {
+		if ( array_key_exists( $field, $_data ) ) {
+			ksort( $_data[$field] );
+		} elseif ( $_init_time_fields ) {
+			$_data[$field] = array();
+		}
+	}
+	foreach ( array_merge( $_fields, array( 'prev_resource', 'next_resource' ) ) as $field ) {
+		if ( array_key_exists( $field, $_data ) ) {
+			if ( $field == 'version' ) {
+				foreach ( array_keys( $_data[$field] ) as $browser ) {
+					arsort( $_data[$field][$browser] );
+				}
+			} else {
+				arsort( $_data[$field] );
+			}
+		}
+	}
 }
 
 function parse_next_prev_resources( &$_data, &$_visit_resource, &$_resource ) {

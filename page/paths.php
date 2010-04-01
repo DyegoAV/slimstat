@@ -21,7 +21,7 @@
 
 page_head();
 
-echo '<h2 id="title" class="grid16">Paths taken by recent visitors</h2>'."\n";
+echo '<h2 id="title" class="grid16">'.$i18n->hsc( 'paths', 'title' ).'</h2>'."\n";
 
 // main
 
@@ -31,7 +31,7 @@ echo '<div id="main" class="grid16">';
 
 if ( !$is_handheld ) {
 	echo '<div id="side" class="grid4"><div id="sideinner" class="grid3 first">'."\n";
-	echo '<p class="first">Your visitors’ detailed navigation on your website.</p>'."\n";
+	echo '<p class="first">'.$i18n->hsc( 'paths', 'side' ).'</p>'."\n";
 	echo '</div></div>'."\n";
 }
 
@@ -66,12 +66,12 @@ $col4_w = ( $is_handheld ) ? 115 : 145;
 $col5_w = ( $is_handheld ) ?  88 : 100;
 
 echo '<table><thead>'."\n";
-echo '<tr><th class="first" colspan="2" style="width:'.$col1_w.'px">'.$i18n->title( 'remote_ip' ).'/'.$i18n->title( 'resource' ).'</th>'."\n";
-echo '<th class="center" style="width:'.$col2_w.'px">When</th>'."\n";
+echo '<tr><th class="first" colspan="2" style="width:'.$col1_w.'px">'.$i18n->hsc( 'titles', 'remote_ip' ).'/'.$i18n->hsc( 'titles', 'resource' ).'</th>'."\n";
+echo '<th class="center" style="width:'.$col2_w.'px">'.$i18n->hsc( 'paths', 'when' ).'</th>'."\n";
 if ( !$is_handheld ) {
-	echo '<th class="center" style="width:'.$col3_w.'px">'.$i18n->title( 'browser' ).'</th>'."\n";
-	echo '<th class="center" style="width:'.$col4_w.'px">'.$i18n->title( 'platform' ).'</th>'."\n";
-	echo '<th class="center last" style="width:'.$col5_w.'px">'.$i18n->title( 'country' ).'</th>';
+	echo '<th class="center" style="width:'.$col3_w.'px">'.$i18n->hsc( 'titles', 'browser' ).'</th>'."\n";
+	echo '<th class="center" style="width:'.$col4_w.'px">'.$i18n->hsc( 'titles', 'platform' ).'</th>'."\n";
+	echo '<th class="center last" style="width:'.$col5_w.'px">'.$i18n->hsc( 'titles', 'country' ).'</th>';
 }
 echo '</tr></thead></table>'."\n";
 

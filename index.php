@@ -19,9 +19,6 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-// set to E_ALL for debugging
-error_reporting( 0 );
-
 require_once( realpath( dirname( __FILE__ ) ).'/_lib/config.php' );
 require_once( realpath( dirname( __FILE__ ) ).'/_lib/i18n.php' );
 require_once( realpath( dirname( __FILE__ ) ).'/_lib/functions.php' );
@@ -41,7 +38,7 @@ if ( $query_string_page == 'js' ) {
 }
 
 $config =& SlimStatConfig::get_instance();
-$i18n = SlimStatI18n::get_instance();
+$i18n =& SlimStatI18n::get_instance();
 
 $is_handheld = is_handheld();
 
@@ -79,7 +76,7 @@ if ( function_exists( 'render_page' ) ) {
 }
 
 function page_head() {
-	global $config, $filters, $query_string_page;
+	global $config, $i18n, $filters, $query_string_page;
 	
 	include( realpath( dirname( __FILE__ ) ).'/page/_head.php' );
 }
@@ -121,10 +118,12 @@ function filter_url( $_filters, $_first_separator='?' ) {
 
 function format_number( $_number, $_dp=1 ) {
 	$i18n =& SlimStatI18n::get_instance();
-	$str = number_format( $_number, $_dp, $i18n->decimal_point, $i18n->thousands_separator );
-	if ( $str == '0'.$i18n->decimal_point.'0' && $_dp == 1 ) {
-		$str2 = number_format( $_number, 2, $i18n->decimal_point, $i18n->thousands_separator );
-		if ( $str2 != '0'.$i18n->decimal_point.'00' ) {
+	$decimal = $i18n->_( 'core', 'decimal_point' );
+	$thousands = $i18n->_( 'core', 'thousands_separator' );
+	$str = number_format( $_number, $_dp, $decimal, $thousands );
+	if ( $str == '0'.$decimal.'0' && $_dp == 1 ) {
+		$str2 = number_format( $_number, 2, $decimal, $thousands );
+		if ( $str2 != '0'.$decimal.'00' ) {
 			return $str2;
 		}
 	}

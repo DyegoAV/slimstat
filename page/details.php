@@ -86,7 +86,7 @@ $prev_data = load_data( $prev_filters );
 // go
 
 function render_page() {
-	global $curr_data, $prev_data;
+	global $i18n, $curr_data, $prev_data;
 	
 	if ( array_key_exists( 'format', $_GET ) && $_GET['format'] == 'xml' ) {
 		include( realpath( dirname( __FILE__ ) ).'/details_xml.php' );
@@ -369,7 +369,9 @@ function load_data( $_filters ) {
 	}
 	
 	if ( array_key_exists( 'title', $data ) ) {
-		$i18n->labels['resource'] = array_merge( $i18n->labels['resource'], $data['title'] );
+		foreach ( $data['title'] as $key => $value ) {
+			$i18n->data['labels']['resource.'.$key] = $value;
+		}
 	}
 	
 	// save data to cache
@@ -747,4 +749,8 @@ function format_percent( $_percent ) {
 
 function to1dp( $_number ) {
 	return number_format( $_number, 1, '.', '' );
+}
+
+function hsc( $_str ) {
+	return htmlspecialchars( $_str );
 }

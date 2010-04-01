@@ -20,10 +20,12 @@
  */
 
 function render_page() {
+	global $i18n;
+	
 	page_head();
 	
 	?>
-<h2 id="title" class="grid16">Log in</h2>
+<h2 id="title" class="grid16"><?php echo $i18n->hsc( 'login', 'title' ); ?></h2>
 
 <div id="main" class="grid16">
 
@@ -35,14 +37,14 @@ function render_page() {
 <div id="content" class="grid12">
 
 <form action="./" method="post" class="grid6">
-<h3>Please enter your login details</h3>
+<h3><?php echo $i18n->hsc( 'login', 'please_login' ); ?></h3>
 
 <fieldset class="tbody">
-<p><label for="username">User name</label><input type="text" name="username" value="" class="input" /></p>
+<p><label for="username"><?php echo $i18n->hsc( 'login', 'username' ); ?></label><input type="text" name="username" value="" class="input" /></p>
 
-<p><label for="password">Password</label><input type="password" name="password" value="" class="input" /></p>
+<p><label for="password"><?php echo $i18n->hsc( 'login', 'password' ); ?></label><input type="password" name="password" value="" class="input" /></p>
 
-<p><input type="submit" value="Log in" /></p>
+<p><input type="submit" value="<?php echo $i18n->hsc( 'login', 'submit' ); ?>" /></p>
 </fieldset>
 </form>
 

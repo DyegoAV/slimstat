@@ -55,11 +55,12 @@ class SlimStatConfig {
 	var $slimstat_username = '';
 	var $slimstat_password = '';
 	
-	/** Timezone */
+	/** Timezone. Must be one of PHP's supported timezones.
+	  * See http://php.net/manual/en/timezones.php for a list. */
 	var $timezone = 'Europe/London';
-	// var $timezone = 'America/New_York';
 	
-	/** Which language to use. Default is 'en-gb' */
+	/** Which language to use. Default is 'en-gb'.
+	  * There must be a corresponding ini file in the _i18n directory. */
 	var $language = 'en-gb';
 	
 	/** Which URL to use for WHOIS lookups */
@@ -90,17 +91,24 @@ class SlimStatConfig {
 	function SlimStatConfig() {
 		SlimStat::set_timezone( $this->timezone );
 		
-		if ( file_exists( realpath( dirname( dirname( __FILE__ ) ) ).'/_i18n/'.preg_replace( "[^A-Za-z\-]", '', $this->language ).'.php' ) ) {
-			require_once( realpath( dirname( dirname( __FILE__ ) ) ).'/_i18n/'.preg_replace( "[^A-Za-z\-]", '', $this->language ).'.php' );
-		} else { // fall back on en-gb
+		// check if i18n file exists
+		
+		if ( !file_exists( realpath( dirname( dirname( __FILE__ ) ) ).'/_i18n/'.preg_replace( "[^A-Za-z\-]", '', $this->language ).'.ini' ) ) {
 			$this->language = 'en-gb';
-			require_once( realpath( dirname( dirname( __FILE__ ) ) ).'/_i18n/en-gb.php' );
 		}
 		
+		require_once( realpath( dirname( __FILE__ ) ).'/i18n.php' );
+		
+		// set locale
+		
 		if ( mb_strlen( $this->language ) == 5 ) {
-			setlocale( LC_ALL, mb_substr( $this->language, 0, 2 ).'_'.mb_strtoupper( mb_substr( $this->language, 3, 2 ) ).'.utf8' );
+			$locale = mb_substr( $this->language, 0, 2 ).'_'.mb_strtoupper( mb_substr( $this->language, 3, 2 ) );
 		} else {
-			setlocale( LC_ALL, mb_substr( $this->language, 0, 2 ).'_'.mb_strtoupper( mb_substr( $this->language, 0, 2 ) ).'.utf8' );
+			$locale = mb_substr( $this->language, 0, 2 ).'_'.mb_strtoupper( mb_substr( $this->language, 0, 2 ) );
+		}
+		
+		if ( setlocale( LC_ALL, $locale.'.utf8' ) === false ) {
+			setlocale( LC_ALL, $locale );
 		}
 	}
 	

@@ -357,6 +357,12 @@ th.last, td.last {
 	margin-top: 0;
 	padding: 0 0 3.3333em;
 	width: 720px; }
+#disabled p {
+	background-color: #c00;
+	color: #fff;
+	font-weight: bold;
+	margin: 0;
+	text-align: center; }
 #summary td, .summary td {
 	height: 3.1667em;
 	line-height: 3.1667;

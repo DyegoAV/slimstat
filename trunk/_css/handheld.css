@@ -293,6 +293,12 @@ td.first {
 	width: 360px; }
 	#content div:first-child {
 		margin-top: 0; }
+#disabled p {
+	background-color: #c00;
+	color: #fff;
+	font-weight: bold;
+	margin: 0;
+	text-align: center; }
 #summary td, .summary td {
 	height: 3.1667em;
 	line-height: 3.1667;

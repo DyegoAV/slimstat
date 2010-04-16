@@ -103,6 +103,10 @@ function render_page_html() {
 	// content
 	
 	echo '<div id="content" class="grid12">';
+	
+	if ( !$config->enabled ) {
+		echo '<div class="grid12" id="disabled"><p>'.$i18n->hsc( 'details', 'disabled' ).'</p></div>'."\n";
+	}
 
 	table_summary();
 

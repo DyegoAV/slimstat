@@ -32,12 +32,17 @@ class SlimStatRecord {
 			return;
 		}
 		
+		// ignore hits from users who are logged in to slimstat
+		if ( isset( $_COOKIE['slimstatuser'] ) &&
+		     $_COOKIE['slimstatuser'] == sha1( $this->config->slimstat_username.' '.$this->config->slimstat_password.' '.$_SERVER['REMOTE_ADDR'] ) ) {
+			return;
+		}
+		
 		$data = array();
 		$data['remote_ip'] = mb_substr( $this->_determine_remote_ip(), 0, 15 );
 		// check whether to ignore this hit
 		foreach ( $this->config->ignored_ips as $ip ) {
 			if ( mb_strpos( $data['remote_ip'], $ip ) === 0 ) {
-				error_log( 'ignored ip '.$ip.' '.$data['remote_ip'] );
 				return;
 			}
 		}

@@ -455,6 +455,7 @@ class SlimStatRecord {
 		} else {
 			$sniffs = array( // name regexp, name for display, version regexp, version match, platform (optional)
 				array( 'Opera Mini', 'Opera Mini', "Opera Mini( |/)([[:digit:]\.]+)", 2 ),
+				array( 'Opera', 'Opera', "Version/([[:digit:]\.]+)", 1 ),
 				array( 'Opera', 'Opera', "Opera( |/)([[:digit:]\.]+)", 2 ),
 				array( 'MSIE', 'Internet Explorer', "MSIE ([[:digit:]\.]+)", 1 ),
 				array( 'Epiphany', 'Epiphany', "Epiphany/([[:digit:]\.]+)",  1 ),
@@ -476,6 +477,7 @@ class SlimStatRecord {
 				array( 'Chrome', 'Chrome', "Chrome/([[:digit:]\.]+)", 1 ),
 				array( 'Chromium', 'Chromium', "Chromium/([[:digit:]\.]+)", 1 ),
 				array( 'Safari', 'Safari', "Version/([[:digit:]\.]+)", 1 ),
+				array( 'Safari', 'Safari', "Safari/([[:digit:]\.]+)", 1 ),
 				array( 'iCab', 'iCab', "iCab/([[:digit:]\.]+)", 1 ),
 				array( 'Konqueror', 'Konqueror', "Konqueror/([[:digit:]\.]+)", 1, 'Linux' ),
 				array( 'Midori', 'Midori', "Midori/([[:digit:]\.]+)",  1 ),
@@ -495,11 +497,11 @@ class SlimStatRecord {
 					mb_ereg( $sniff[2], $_ua, $b );
 					if ( sizeof( $b ) > $sniff[3] ) {
 						$browser['version'] = $b[ $sniff[3] ];
+						if ( sizeof( $sniff ) == 5 ) {
+							$browser['platform'] = $sniff[4];
+						}
+						break;
 					}
-					if ( sizeof( $sniff ) == 5 ) {
-						$browser['platform'] = $sniff[4];
-					}
-					break;
 				}
 			}
 		}

@@ -159,9 +159,11 @@ foreach ( $visits as $visit ) {
 			echo ' title="'.htmlspecialchars( $visit['referrer'] ).'">&rarr;</a>';
 			echo '<span class="text truncate">';
 			if ( $visit['search_terms'] != '' ) {
-				echo '“<a href="./'.filter_url( array( 'search_terms' => $visit['search_terms'] ) );
+				echo $i18n->hsc( 'core', 'open_quote' );
+				echo '<a href="./'.filter_url( array( 'search_terms' => $visit['search_terms'] ) );
 				echo '" title="'.htmlspecialchars( $visit['search_terms'] ).'"';
-				echo '>'.htmlspecialchars( $visit['search_terms'] ).'</a>”';
+				echo '>'.htmlspecialchars( $visit['search_terms'] ).'</a>';
+				echo $i18n->hsc( 'core', 'close_quote' );
 			} else {
 				echo '<a href="./'.filter_url( array( 'domain' => $visit['domain'] ) );
 				echo '" title="'.htmlspecialchars( $visit['domain'] ).'"';

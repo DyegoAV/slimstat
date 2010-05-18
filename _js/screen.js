@@ -30,7 +30,7 @@ $(function() {
 			var sel = $(this);
 			if (sel.attr('selectedIndex') > 0) {
 				href += separator;
-				href += sel.attr('name') + '=' + escape(sel.val());
+				href += sel.attr('name') + '=' + encodeURI(sel.val());
 				separator = '&';
 			}
 		});
@@ -47,7 +47,7 @@ $(function() {
 		
 		var value = $(this).attr('href');
 		value = value.substring(value.indexOf(field) + field.length + 1);
-		value = unescape(value);
+		value = decodeURI(value);
 		// var value = $(this).parent().parent().attr('title');
 		
 		var sel = $('select[name="'+field+'"]');

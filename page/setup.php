@@ -129,7 +129,7 @@ function check_table_fields_exist( $_table, $_fields ) {
 	$result = @mysql_query( $query, $connection );
 	if ( $result ) {
 		$existing_fields = array();
-		while ( $datum = mysql_fetch_assoc( $result ) ) {
+		while ( $datum = @mysql_fetch_assoc( $result ) ) {
 			$existing_fields[ $datum['Field'] ] = $datum;
 		}
 	

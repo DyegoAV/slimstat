@@ -141,10 +141,10 @@ function load_cache_data( $_filters ) {
 		}
 	}
 	// echo htmlspecialchars( $query )."<br />\n";
-	$result = mysql_query( $query, $connection );
+	$result = @mysql_query( $query, $connection );
 	// echo htmlspecialchars( mysql_error() );
-	if ( mysql_num_rows( $result ) > 0 ) {
-		list( $data_serialized ) = mysql_fetch_row( $result );
+	if ( @mysql_num_rows( $result ) > 0 ) {
+		list( $data_serialized ) = @mysql_fetch_row( $result );
 		return unserialize( gzinflate( $data_serialized ) );
 	}
 	return null;
@@ -217,7 +217,7 @@ function load_hit_data( $_filters ) {
 	}
 	
 	// echo htmlspecialchars( $query )."<br />\n";
-	$result = mysql_query( $query, $connection );
+	$result = @mysql_query( $query, $connection );
 	// echo htmlspecialchars( mysql_error() );
 	
 	return parse_data( $result, $hit_fields, $_filters, true );
@@ -261,7 +261,7 @@ function load_visit_data( $_filters ) {
 	}
 	
 	// echo htmlspecialchars( $query )."<br />\n";
-	$result = mysql_query( $query, $connection );
+	$result = @mysql_query( $query, $connection );
 	// echo htmlspecialchars( mysql_error() );
 	if ( $is_filtering_visits_only ) {
 		return parse_data( $result, array_merge( $visit_fields, $hit_fields ), $_filters, true );
@@ -304,7 +304,7 @@ function save_cache_data( $_filters, $_data ) {
 	}
 	$query .= '\''.SlimStat::esc( gzdeflate( serialize( $_data ) ) ).'\' )';
 	// echo htmlspecialchars( mb_substr( $query, 0, 400 ) )."<br />\n";
-	mysql_query( $query, $connection );
+	@mysql_query( $query, $connection );
 	// echo htmlspecialchars( mysql_error() );
 }
 
@@ -394,7 +394,7 @@ function parse_data( $_result, $_fields, $_filters, $_init_time_fields=false ) {
 	
 	// echo '<pre>';
 	
-	while ( $row = mysql_fetch_assoc( $_result ) ) {
+	while ( $row = @mysql_fetch_assoc( $_result ) ) {
 		if ( $is_filtering_visits_only ) {
 			$local_start_time = SlimStat::local_time_fields( array( 'yr' => $row['start_yr'], 'mo' => $row['start_mo'], 'dy' => $row['start_dy'], 'hr' => $row['start_hr'], 0, 0 ) );
 			

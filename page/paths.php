@@ -51,8 +51,8 @@ $query = 'SELECT * FROM `'.SlimStat::esc( $config->db_database ).'`.`'.SlimStat:
 $query .= ' ORDER BY `start_yr` DESC, `start_mo` DESC, `start_dy` DESC, `start_hr` DESC, `start_mi` DESC LIMIT '.$offset.','.$page_size;
 
 $visits = array();
-if ( $result = mysql_query( $query, $connection ) ) {
-	while ( $assoc = mysql_fetch_assoc( $result ) ) {
+if ( $result = @mysql_query( $query, $connection ) ) {
+	while ( $assoc = @mysql_fetch_assoc( $result ) ) {
 		$visits[] = $assoc;
 	}
 }

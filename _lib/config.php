@@ -77,6 +77,10 @@ class SlimStatConfig {
 	/** Don’t log hits from these IP ranges */
 	var $ignored_ips = array();// '192.168.', '10.', '127.' );
 	
+	/** Anonymise IPs with a mask. 255.255.255.255 means no masking.
+	0.0.0.0 will disable tracking IPs. **/
+	var $anonymise_ip_mask = '255.255.255.0';
+	
 	/** Whether to record user-agent strings in the database. The database
 	will be smaller if this is disabled */
 	var $log_user_agents = true;

@@ -34,7 +34,7 @@ class SlimStatRecord {
 		
 		// ignore hits from users who are logged in to slimstat
 		if ( isset( $_COOKIE['slimstatuser'] ) &&
-		     $_COOKIE['slimstatuser'] == sha1( $this->config->slimstat_username.' '.$this->config->slimstat_password.' '.$_SERVER['REMOTE_ADDR'] ) ) {
+		     $_COOKIE['slimstatuser'] == sha1( $this->config->slimstat_username.' '.$this->config->slimstat_password.' '.SlimStat::anonymise_ip( $_SERVER['REMOTE_ADDR'], '255.255.255.0' ) ) ) {
 			return;
 		}
 		
@@ -302,6 +302,10 @@ class SlimStatRecord {
 			// this is the client closest to our upstream proxy.
 			$remote_addrs = explode( ', ', $_SERVER['HTTP_X_FORWARDED_FOR'] );
 			$remote_addr = $remote_addrs[0];
+		}
+		
+		if ( $this->config->anonymise_ip_mask != '' && $this->config->anonymise_ip_mask != '255.255.255.255' ) {
+			$remote_addr = SlimStat::anonymise_ip( $remote_addr, $this->config->anonymise_ip_mask );
 		}
 		
 		return $remote_addr;

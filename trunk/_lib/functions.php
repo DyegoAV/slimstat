@@ -60,9 +60,9 @@ class SlimStat {
 	
 	function esc( $_str ) {
 		if ( version_compare( phpversion(), '4.3.0', '>=' ) ) {
-			return mysql_real_escape_string( $_str );
+			return @mysql_real_escape_string( $_str );
 		} else {
-			return mysql_escape_string( $_str );
+			return @mysql_escape_string( $_str );
 		}
 	}
 	
@@ -101,6 +101,10 @@ class SlimStat {
 		} else {
 			return iconv( $encoding, 'UTF-8', $_str );
 		}
+	}
+	
+	function build_cookie( $_username, $_password ) {
+		return sha1( $_username.' '.$_password.' '.SlimStat::anonymise_ip( $_SERVER['REMOTE_ADDR'], '255.255.255.0' ) );
 	}
 	
 	/**

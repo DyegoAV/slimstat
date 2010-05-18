@@ -34,7 +34,7 @@ class SlimStatRecord {
 		
 		// ignore hits from users who are logged in to slimstat
 		if ( isset( $_COOKIE['slimstatuser'] ) &&
-		     $_COOKIE['slimstatuser'] == sha1( $this->config->slimstat_username.' '.$this->config->slimstat_password.' '.SlimStat::anonymise_ip( $_SERVER['REMOTE_ADDR'], '255.255.255.0' ) ) ) {
+		     $_COOKIE['slimstatuser'] == SlimStat::build_cookie( $this->config->slimstat_username, $this->config->slimstat_password ) ) {
 			return;
 		}
 		
@@ -150,7 +150,7 @@ class SlimStatRecord {
 		@mysql_query( $query, $connection );
 		// error_log( mysql_error( $connection ) );
 		
-		if ( mysql_affected_rows( $connection ) == 0 ) {
+		if ( @mysql_affected_rows( $connection ) == 0 ) {
 			$query = 'INSERT INTO `'.SlimStat::esc( $this->config->db_database ).'`.`'.SlimStat::esc( $this->config->tbl_hits ).'` ( `';
 			$query .= implode( '`, `', array_keys( $data ) ).'`, `'.implode( '`, `', array_keys( $time ) ).'`, `hits` ) VALUES ( ';
 			foreach ( array_values( $data ) as $value ) {
@@ -216,7 +216,7 @@ class SlimStatRecord {
 		@mysql_query( $query, $connection );
 		// error_log( mysql_error( $connection ) );
 		
-		if ( mysql_affected_rows( $connection ) == 0 && $data['domain'] == mb_eregi_replace( '^www.', '', $_SERVER['SERVER_NAME'] ) ) {
+		if ( @mysql_affected_rows( $connection ) == 0 && $data['domain'] == mb_eregi_replace( '^www.', '', $_SERVER['SERVER_NAME'] ) ) {
 			list( $a, $b, $c, $d ) = explode( '.', $data['remote_ip'], 4 );
 			$subnet_ip = $a.'.'.$b.'.'.$c.'.';
 			
@@ -251,7 +251,7 @@ class SlimStatRecord {
 			// error_log( mysql_error( $connection ) );
 		}
 		
-		if ( mysql_affected_rows( $connection ) == 0 ) {
+		if ( @mysql_affected_rows( $connection ) == 0 ) {
 			$query = 'INSERT INTO `'.SlimStat::esc( $this->config->db_database ).'`.`'.SlimStat::esc( $this->config->tbl_visits ).'` ( ';
 			foreach ( array_keys( $data ) as $key ) {
 				if ( $key == 'title' ) {

@@ -156,7 +156,7 @@ function check_login() {
 	}
 	
 	if ( isset( $_COOKIE['slimstatuser'] ) &&
-	     $_COOKIE['slimstatuser'] == sha1( $config->slimstat_username.' '.$config->slimstat_password.' '.$_SERVER['REMOTE_ADDR'] ) ) {
+	     $_COOKIE['slimstatuser'] == sha1( $config->slimstat_username.' '.$config->slimstat_password.' '.SlimStat::anonymise_ip( $_SERVER['REMOTE_ADDR'], '255.255.255.0' ) ) {
 		$_SESSION['slimstatuser'] = true;
 		set_login_cookie();
 	} elseif ( isset( $_SERVER['PHP_AUTH_USER'] ) && $_SERVER['PHP_AUTH_USER'] == $config->slimstat_username &&

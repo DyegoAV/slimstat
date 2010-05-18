@@ -102,4 +102,18 @@ class SlimStat {
 			return iconv( $encoding, 'UTF-8', $_str );
 		}
 	}
+	
+	/**
+	 * Anonymise an IP address.
+	 * @param $_addr An IP address in string format, e.g. '192.168.1.1'.
+	 * @param @_mask A mask in string format, e.g. '255.255.255.0'.
+	 * @return IP address as string, masked with zeroes, e.g. '192.168.1.0'.
+	 */
+	function anonymise_ip( $_addr, $_mask ) {
+		$addr = long2ip( ip2long( $_addr ) & ip2long( $_mask ) );
+		if ( $addr == '0.0.0.0' ) {
+			$addr = '';
+		}
+		return $addr;
+	}
 }

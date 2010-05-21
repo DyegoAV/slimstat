@@ -6,7 +6,33 @@ function positionSidebar() {
 	}
 }
 
+function handleHashChange() {
+	if ($('body').attr('id') != 'detailspage') {
+		return;
+	}
+	
+	var href = location.href.substr(0, location.href.indexOf('#'));
+	href += (href.indexOf('?') > -1) ? '&' : '?';
+	href += 'ajax=1&';
+	href += location.hash.substr(1);
+
+	$.get(href, function(data) {
+		$('#title').html($(data).find('#title').html());
+		$('#main').html($(data).find('#main').html());
+		positionSidebar();
+	});
+}
+
+function createAjaxCookie() {
+	var date = new Date();
+	date.setTime(date.getTime() + (365*24*60*60*1000));
+	document.cookie = 'slimstatajax=1; expires=' + date.toGMTString() + '; path=/';
+}
+
 $(function() {
+	// let the server know that we support ajax
+	createAjaxCookie();
+	
 	// handle clicks on toggle links
 	$('a.toggle').live('click', function() {
 		var toggle = $(this);
@@ -24,19 +50,33 @@ $(function() {
 	
 	// handle filters changing
 	$('#filters select').live('change', function() {
-		var href = './';
-		var separator = '?';
+		var currentDate = new Date();
+		var isCurrentYr = ($('#filters select[name="filter_yr"]').val() == currentDate.getFullYear());
+		var isCurrentMo = isCurrentYr && ($('#filters select[name="filter_mo"]').val() == currentDate.getMonth() + 1);
+		
+		var hash = '';
+		var separator = '#';
 		$('#filters select').each(function() {
 			var sel = $(this);
-			if (sel.attr('selectedIndex') > 0) {
-				href += separator;
-				href += sel.attr('name') + '=' + encodeURI(sel.val());
-				separator = '&';
+			if (sel.attr('name') == 'filter_yr' && isCurrentYr) {
+				return;
+			} else if (sel.attr('name') == 'filter_mo' && isCurrentMo) {
+				return;
+			} else {
+				if (this.selectedIndex > 0) {
+					hash += separator;
+					hash += sel.attr('name') + '=' + encodeURIComponent(sel.val());
+					separator = '&';
+				}
 			}
 		});
-		$('#main').load(href + ' #main > *', function() {
-			positionSidebar();
-		});
+		
+		location.hash = hash;
+	});
+	
+	// handle window.onhashchange
+	$(window).bind('hashchange', function() {
+		handleHashChange();
 	});
 	
 	// handle details page links being clicked
@@ -47,12 +87,51 @@ $(function() {
 		
 		var value = $(this).attr('href');
 		value = value.substring(value.indexOf(field) + field.length + 1);
-		value = decodeURI(value);
+		value = decodeURIComponent(value);
 		// var value = $(this).parent().parent().attr('title');
 		
 		var sel = $('select[name="'+field+'"]');
 		sel.val(value).trigger('change');
 		
+		return false;
+	});
+	
+	// handle calendar month links being clicked
+	$('#detailspage table.calendar thead a').live('click', function() {
+		var value = $(this).attr('href');
+		value = (value.indexOf('?') > -1) ? value.substr(value.indexOf('?') + 1) : '';
+		
+		var changedYr = false;
+		var changedMo = false;
+		var vars = value.split('&');
+		for (var i=0; i<vars.length; i++) {
+			var param = vars[i].split('=');
+			if (param[0] == 'filter_yr') {
+				$('select[name="filter_yr"]').val(param[1]);
+				changedYr = true;
+			} else if (param[0] == 'filter_mo') {
+				$('select[name="filter_mo"]').val(param[1]);
+				changedMo = true;
+			}
+		}
+		
+		var currentDate = new Date();
+		if (!changedYr) {
+			$('#filters select[name="filter_yr"]').val(currentDate.getFullYear());
+		}
+		if (!changedMo) {
+			$('#filters select[name="filter_mo"]').val(currentDate.getMonth() + 1);
+		}
+		
+		$('select[name="filter_dy"] option').removeAttr('selected');
+		$('select[name="filter_dy"]').trigger('change');
+		return false;
+	});
+	
+	// handle calendar day links being clicked
+	$('#detailspage table.calendar tbody a').live('click', function() {
+		var value = $(this).html();
+		$('select[name="filter_dy"]').val(value).trigger('change');
 		return false;
 	});
 	
@@ -81,5 +160,6 @@ $(function() {
 	}).ajaxStop(function() { 
 		$('#ajaxindicator').hide();
 	});
-
+	
+	setTimeout('handleHashChange()', 10);
 });

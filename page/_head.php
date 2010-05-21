@@ -38,7 +38,8 @@
 	} else {
 		echo "\t".'<link rel="stylesheet" href="_css/screen.css" type="text/css" />'."\n";
 		echo "\t".'<!--[if lt IE 8]><link rel="stylesheet" href="_css/ie.css" type="text/css" /><![endif]-->'."\n";
-		echo "\t".'<script type="text/javascript" src="_js/jquery-1.3.2.min.js"></script>'."\n";
+		echo "\t".'<script type="text/javascript" src="_js/jquery-1.4.2.min.js"></script>'."\n";
+		echo "\t".'<script type="text/javascript" src="_js/jquery-hashchange-1.2.min.js"></script>'."\n";
 		echo "\t".'<script type="text/javascript" src="_js/screen.js"></script>'."\n";
 	}
 	?>

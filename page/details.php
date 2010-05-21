@@ -19,6 +19,11 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+// detect whether this is an ajax request
+
+$ajax_capable = ( array_key_exists( 'slimstatajax', $_COOKIE ) && $_COOKIE['slimstatajax'] == 1 );
+$ajax_request = ( array_key_exists( 'ajax', $_REQUEST ) && $_REQUEST['ajax'] == 1 );
+
 // set up fields
 
 $time_fields = array( 'yr', 'mo', 'dy', 'hr', 'mi' );
@@ -74,8 +79,14 @@ foreach ( $visit_fields as $key ) {
 }
 
 $prev_filters = prev_period( $filters );
-$curr_data = load_data( $filters );
-$prev_data = load_data( $prev_filters );
+
+if ( $ajax_request || !$ajax_capable ) {
+	$curr_data = load_data( $filters );
+	$prev_data = load_data( $prev_filters );
+} else {
+	$curr_data = array();
+	$prev_data = array();
+}
 
 // echo '<textarea style="width:960px; height:400px; margin:20px 10px; font-size:1.0256em">';
 // print_r( $curr_data );
@@ -96,8 +107,8 @@ function render_page() {
 		render_page_rss();
 	} else {
 		if ( ( !array_key_exists( 'QUERY_STRING', $_SERVER ) || $_SERVER['QUERY_STRING'] == '' ) &&
-		     array_sum( $curr_data['yr'] ) == 0 &&
-		     array_sum( $prev_data['yr'] ) == 0 ) {
+		     ( array_key_exists( 'yr', $curr_data ) && array_sum( $curr_data['yr'] ) == 0 ) &&
+		     ( array_key_exists( 'yr', $prev_data ) && array_sum( $prev_data['yr'] ) == 0 ) ) {
 			include( realpath( dirname( __FILE__ ) ).'/welcome.php' );
 			exit;
 		} else {

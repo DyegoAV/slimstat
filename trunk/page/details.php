@@ -78,34 +78,33 @@ foreach ( $visit_fields as $key ) {
 	}
 }
 
-$prev_filters = prev_period( $filters );
-
-if ( $ajax_request || !$ajax_capable ) {
-	$curr_data = load_data( $filters );
-	$prev_data = load_data( $prev_filters );
-} else {
-	$curr_data = array();
-	$prev_data = array();
-}
-
-// echo '<textarea style="width:960px; height:400px; margin:20px 10px; font-size:1.0256em">';
-// print_r( $curr_data );
-// print_r( $prev_data );
-// echo '</textarea>';
-
-
 // go
 
 function render_page() {
-	global $i18n, $curr_data, $prev_data;
+	global $i18n, $curr_data, $prev_data, $ajax_request, $ajax_capable, $filters, $prev_filters;
 	
 	if ( array_key_exists( 'format', $_GET ) && $_GET['format'] == 'xml' ) {
+		
+		$curr_data = load_data( $filters );
 		include( realpath( dirname( __FILE__ ) ).'/details_xml.php' );
 		render_page_xml();
+		
 	} elseif ( array_key_exists( 'format', $_GET ) && $_GET['format'] == 'rss' ) {
+		
 		include( realpath( dirname( __FILE__ ) ).'/details_rss.php' );
 		render_page_rss();
+		
 	} else {
+		
+		if ( $ajax_request || !$ajax_capable ) {
+			$prev_filters = prev_period( $filters );
+			$curr_data = load_data( $filters );
+			$prev_data = load_data( $prev_filters );
+		} else {
+			$curr_data = array();
+			$prev_data = array();
+		}
+		
 		if ( ( !array_key_exists( 'QUERY_STRING', $_SERVER ) || $_SERVER['QUERY_STRING'] == '' ) &&
 		     ( array_key_exists( 'yr', $curr_data ) && array_sum( $curr_data['yr'] ) == 0 ) &&
 		     ( array_key_exists( 'yr', $prev_data ) && array_sum( $prev_data['yr'] ) == 0 ) ) {
@@ -115,6 +114,7 @@ function render_page() {
 			include( realpath( dirname( __FILE__ ) ).'/details_html.php' );
 			render_page_html();
 		}
+		
 	}
 }
 

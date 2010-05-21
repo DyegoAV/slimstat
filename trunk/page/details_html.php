@@ -20,15 +20,19 @@
  */
 
 function render_page_html() {
-	global $config, $i18n, $filters, $prev_filters, $has_filters, $curr_data, $time_fields, $hit_fields, $visit_fields, $is_handheld;
+	global $config, $i18n, $filters, $prev_filters, $has_filters, $curr_data, $time_fields, $hit_fields, $visit_fields, $is_handheld, $ajax_capable, $ajax_request;
 	
 	page_head();
 	
 	$curr_date_label = hsc( date_label( $filters ) );
 	$prev_date_label = hsc( date_label( $prev_filters ) );
 	
-	echo '<h2 id="title" class="grid16">'.$curr_date_label;
-	echo ' <span class="prev">'.$i18n->hsc( 'details', 'compared_with', $prev_date_label ).'</span></h2>'."\n";
+	echo '<h2 id="title" class="grid16">';
+	if ( $ajax_request || !$ajax_capable ) {
+		echo $curr_date_label;
+		echo ' <span class="prev">'.$i18n->hsc( 'details', 'compared_with', $prev_date_label ).'</span>';
+	}
+	echo '</h2>'."\n";
 
 	// main
 
@@ -37,151 +41,157 @@ function render_page_html() {
 	// side
 
 	echo '<div id="side" class="grid4"><div id="sideinner" class="grid3 first">';
-
-	calendar_widget();
-
-	echo '<div id="filters" class="grid3">'."\n";
 	
-	if ( $is_handheld ) {
-		if ( $has_filters ) {
-			echo '<h2>'.$i18n->hsc( 'details', 'filters' ).'</h2>';
+	if ( $ajax_request || !$ajax_capable ) {
+		calendar_widget();
+
+		echo '<div id="filters" class="grid3">'."\n";
 	
-			foreach ( array_merge( $hit_fields, $visit_fields ) as $key ) {
-				if ( array_key_exists( $key, $filters ) ) {
-					$new_filters = $filters;
-					unset( $new_filters[$key] );
-					echo '<div class="grid3"><h3>'.$i18n->hsc( 'titles', $key ).'</h3>'."\n";
-					echo '<p class="text"><a href="./'.filter_url( $new_filters ).'">';
-					echo hsc( $i18n->label( $key, $filters[$key] ) );
-					echo '</a></p></div>'."\n";
+		if ( $is_handheld ) {
+			if ( $has_filters ) {
+				echo '<h2>'.$i18n->hsc( 'details', 'filters' ).'</h2>';
+	
+				foreach ( array_merge( $hit_fields, $visit_fields ) as $key ) {
+					if ( array_key_exists( $key, $filters ) ) {
+						$new_filters = $filters;
+						unset( $new_filters[$key] );
+						echo '<div class="grid3"><h3>'.$i18n->hsc( 'titles', $key ).'</h3>'."\n";
+						echo '<p class="text"><a href="./'.filter_url( $new_filters ).'">';
+						echo hsc( $i18n->label( $key, $filters[$key] ) );
+						echo '</a></p></div>'."\n";
+					}
 				}
 			}
-		}
-	} else {
-		echo '<form id="filtersform">'."\n";
+		} else {
+			echo '<form id="filtersform">'."\n";
 
-		filter_select( 'yr' );
-		filter_select( 'mo' );
-		filter_select( 'dy' );
+			filter_select( 'yr' );
+			filter_select( 'mo' );
+			filter_select( 'dy' );
 	
-		echo '<h2>'.$i18n->hsc( 'details', 'content' ).'</h2>';
+			echo '<h2>'.$i18n->hsc( 'details', 'content' ).'</h2>';
 	
-		filter_select( 'resource' );
-		filter_select( 'start_resource' );
-		filter_select( 'end_resource' );
+			filter_select( 'resource' );
+			filter_select( 'start_resource' );
+			filter_select( 'end_resource' );
 	
-		echo '<h2>'.$i18n->hsc( 'details', 'visitors' ).'</h2>';
+			echo '<h2>'.$i18n->hsc( 'details', 'visitors' ).'</h2>';
 	
-		filter_select( 'remote_ip' );
-		filter_select( 'browser' );
-		filter_select( 'platform' );
-		filter_select( 'resolution' );
-		filter_select( 'country' );
-		filter_select( 'language' );
+			filter_select( 'remote_ip' );
+			filter_select( 'browser' );
+			filter_select( 'platform' );
+			filter_select( 'resolution' );
+			filter_select( 'country' );
+			filter_select( 'language' );
 	
-		echo '<h2>'.$i18n->hsc( 'details', 'referrers' ).'</h2>';
+			echo '<h2>'.$i18n->hsc( 'details', 'referrers' ).'</h2>';
 	
-		filter_select( 'search_terms' );
-		filter_select( 'domain' );
-		filter_select( 'referrer' );
+			filter_select( 'search_terms' );
+			filter_select( 'domain' );
+			filter_select( 'referrer' );
 	
-		echo '</form>'."\n";
-	}
-	
-	echo '<h2 id="api"><a href="./?format=xml'.filter_url( $filters, '&amp;' ).'">XML format</a></h2>'."\n";
-	
-	$rss_filters = $filters;
-	foreach ( $time_fields as $time_field ) {
-		if ( array_key_exists( $time_field, $rss_filters ) ) {
-			unset( $rss_filters[$time_field] );
+			echo '</form>'."\n";
 		}
-	}
-	echo '<h2 id="feed"><a href="./?format=rss'.filter_url( $rss_filters, '&amp;' ).'">RSS format</a></h2>'."\n";
+	
+		echo '<h2 id="api"><a href="./?format=xml'.filter_url( $filters, '&amp;' ).'">XML format</a></h2>'."\n";
+	
+		$rss_filters = $filters;
+		foreach ( $time_fields as $time_field ) {
+			if ( array_key_exists( $time_field, $rss_filters ) ) {
+				unset( $rss_filters[$time_field] );
+			}
+		}
+		echo '<h2 id="feed"><a href="./?format=rss'.filter_url( $rss_filters, '&amp;' ).'">RSS format</a></h2>'."\n";
 
-	echo '</div></div></div>'."\n"; // side
+		echo '</div>'."\n";
+	} // ajax
+	
+	echo '</div></div>'."\n"; // side
 
 	// content
 	
 	echo '<div id="content" class="grid12">';
 	
-	if ( !$config->enabled ) {
-		echo '<div class="grid12" id="disabled"><p>'.$i18n->hsc( 'details', 'disabled' ).'</p></div>'."\n";
-	}
+	if ( $ajax_request || !$ajax_capable ) {
+		if ( !$config->enabled ) {
+			echo '<div class="grid12" id="disabled"><p>'.$i18n->hsc( 'details', 'disabled' ).'</p></div>'."\n";
+		}
 
-	table_summary();
+		table_summary();
 
-	if ( array_key_exists( 'resource', $filters ) && !array_key_exists( 'start_resource', $filters ) && !array_key_exists( 'end_resource', $filters ) ) {
-		table_resource_summary();
-	}
+		if ( array_key_exists( 'resource', $filters ) && !array_key_exists( 'start_resource', $filters ) && !array_key_exists( 'end_resource', $filters ) ) {
+			table_resource_summary();
+		}
 
-	echo '<h2 class="grid12">'.$i18n->hsc( 'details', 'content' ).'</h2>';
+		echo '<h2 class="grid12">'.$i18n->hsc( 'details', 'content' ).'</h2>';
 
-	if ( array_key_exists( 'dy', $filters ) ) {
-		chart_hours();
-	} else {
-		chart_days();
-	}
+		if ( array_key_exists( 'dy', $filters ) ) {
+			chart_hours();
+		} else {
+			chart_days();
+		}
 
-	if ( !array_key_exists( 'resource', $filters ) ) {
-		table_total( 'resource' );
-	} else {
-		table_percent( 'prev_resource' );
-		table_percent( 'next_resource' );
-	}
+		if ( !array_key_exists( 'resource', $filters ) ) {
+			table_total( 'resource' );
+		} else {
+			table_percent( 'prev_resource' );
+			table_percent( 'next_resource' );
+		}
 	
-	if ( !array_key_exists( 'start_resource', $filters ) ) {
-		table_total( 'start_resource' );
-	} else {	
-		table_percent( 'next_resource' );
-	}
+		if ( !array_key_exists( 'start_resource', $filters ) ) {
+			table_total( 'start_resource' );
+		} else {	
+			table_percent( 'next_resource' );
+		}
 	
-	if ( !array_key_exists( 'end_resource', $filters ) ) {
-		table_total( 'end_resource' );
-	} else {	
-		table_percent( 'prev_resource' );
-	}
+		if ( !array_key_exists( 'end_resource', $filters ) ) {
+			table_total( 'end_resource' );
+		} else {	
+			table_percent( 'prev_resource' );
+		}
 	
-	echo '<h2 class="grid12">'.$i18n->hsc( 'details', 'visitors' ).'</h2>';
+		echo '<h2 class="grid12">'.$i18n->hsc( 'details', 'visitors' ).'</h2>';
 	
-	if ( !array_key_exists( 'remote_ip', $filters ) ) {
-		table_total( 'remote_ip' );
-	}
-	if ( !array_key_exists( 'hits', $filters ) ) {
-		chart_hits();
-		// table_percent( 'hits' );
-	}
-	if ( !array_key_exists( 'browser', $filters ) ) {
-		table_percent( 'browser' );
-	}
-	if ( !array_key_exists( 'platform', $filters ) ) {
-		table_percent( 'platform' );
-	}
-	if ( !array_key_exists( 'resolution', $filters ) ) {
-		table_percent( 'resolution' );
-		// resolutions();
-	}
-	if ( !array_key_exists( 'country', $filters ) && SlimStat::is_geoip_installed() ) {
-		table_percent( 'country' );
-		map();
-	}
-	if ( !array_key_exists( 'language', $filters ) ) {
-		table_percent( 'language' );
-	}
+		if ( !array_key_exists( 'remote_ip', $filters ) ) {
+			table_total( 'remote_ip' );
+		}
+		if ( !array_key_exists( 'hits', $filters ) ) {
+			chart_hits();
+			// table_percent( 'hits' );
+		}
+		if ( !array_key_exists( 'browser', $filters ) ) {
+			table_percent( 'browser' );
+		}
+		if ( !array_key_exists( 'platform', $filters ) ) {
+			table_percent( 'platform' );
+		}
+		if ( !array_key_exists( 'resolution', $filters ) ) {
+			table_percent( 'resolution' );
+			// resolutions();
+		}
+		if ( !array_key_exists( 'country', $filters ) && SlimStat::is_geoip_installed() ) {
+			table_percent( 'country' );
+			map();
+		}
+		if ( !array_key_exists( 'language', $filters ) ) {
+			table_percent( 'language' );
+		}
 
-	echo '<h2 class="grid12">'.$i18n->hsc( 'details', 'referrers' ).'</h2>';
+		echo '<h2 class="grid12">'.$i18n->hsc( 'details', 'referrers' ).'</h2>';
 
-	if ( !array_key_exists( 'search_terms', $filters ) ) {
-		table_total( 'search_terms' );
-	}
-	if ( !array_key_exists( 'domain', $filters ) ) {
-		table_total( 'domain' );
-	}
-	if ( !array_key_exists( 'referrer', $filters ) ) {
-		table_total( 'referrer' );
-	}
-	if ( !array_key_exists( 'search_terms', $filters ) ) {
-		sources();
-	}
+		if ( !array_key_exists( 'search_terms', $filters ) ) {
+			table_total( 'search_terms' );
+		}
+		if ( !array_key_exists( 'domain', $filters ) ) {
+			table_total( 'domain' );
+		}
+		if ( !array_key_exists( 'referrer', $filters ) ) {
+			table_total( 'referrer' );
+		}
+		if ( !array_key_exists( 'search_terms', $filters ) ) {
+			sources();
+		}
+	} // ajax
 	
 	echo '</div>'."\n"; // main
 

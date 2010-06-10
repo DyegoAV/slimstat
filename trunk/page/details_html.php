@@ -207,7 +207,7 @@ function filter_select( $_key ) {
 	if ( in_array( $_key, $time_fields ) ) {
 		echo ' style="display:none"';
 	}
-	echo '><select name="filter_'.$_key.'" style="width:100%">';
+	echo '><select name="filter_'.$_key.'">';
 	if ( !in_array( $_key, $time_fields ) ) {
 		echo '<option value="">— '.$i18n->hsc( 'titles', $_key ).' —</option>';
 	}

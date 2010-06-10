@@ -465,7 +465,8 @@ th.last, td.last {
 		background-color: #ffc;
 		color: #06c; }
 	#filters select {
-		margin: 0; }
+		margin: 0;
+		width: 100%; }
 #api, #api a {
 	background: transparent url('../_img/xml.gif') no-repeat;
 	display: block;

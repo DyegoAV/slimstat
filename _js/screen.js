@@ -62,12 +62,10 @@ $(function() {
 				return;
 			} else if (sel.attr('name') == 'filter_mo' && isCurrentMo) {
 				return;
-			} else {
-				if (this.selectedIndex > 0) {
-					hash += separator;
-					hash += sel.attr('name') + '=' + encodeURIComponent(sel.val());
-					separator = '&';
-				}
+			} else if (sel.val() != '' && sel.val() != null) {
+				hash += separator;
+				hash += sel.attr('name') + '=' + encodeURIComponent(sel.val());
+				separator = '&';
 			}
 		});
 		
@@ -161,5 +159,7 @@ $(function() {
 		$('#ajaxindicator').hide();
 	});
 	
-	setTimeout('handleHashChange()', 10);
+	$(window).load(function() {
+		handleHashChange();
+	});
 });

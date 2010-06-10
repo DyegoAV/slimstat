@@ -22,7 +22,7 @@
 @header( 'Content-Type: text/html; charset=UTF-8' );
 
 ?><!DOCTYPE html>
-<html lang="en">
+<html lang="<?php echo $config->language; ?>">
 <head>
 	<title><?php
 	if ( $config->sitename == '' ) {

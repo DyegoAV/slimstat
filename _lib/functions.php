@@ -120,4 +120,19 @@ class SlimStat {
 		}
 		return $addr;
 	}
+	
+	/**
+	 * Determines the language used by the visitor’s browser.
+	 */
+	function determine_language() {
+		if ( isset( $_SERVER['HTTP_ACCEPT_LANGUAGE'] ) ) {
+			// Capture up to the first delimiter (comma found in Safari)
+			preg_match( "/([^,;]*)/", $_SERVER['HTTP_ACCEPT_LANGUAGE'], $langs );
+			$lang_choice = $langs[0];
+		} else {
+			$lang_choice = '';
+		}
+		
+		return strtolower( $lang_choice );
+	}
 }

@@ -59,9 +59,10 @@ class SlimStatConfig {
 	  * See http://php.net/manual/en/timezones.php for a list. */
 	var $timezone = 'Europe/London';
 	
-	/** Which language to use. Default is 'en-gb'.
-	  * There must be a corresponding ini file in the _i18n directory. */
-	var $language = 'en-gb';
+	/** Which language to use, e.g. 'en-gb'.
+	  * There must be a corresponding ini file in the _i18n directory.
+	  * If left blank, SlimStat will use the browser’s language. */
+	var $language = '';
 	
 	/** Which URL to use for WHOIS lookups */
 	var $whoisurl = 'http://whois.domaintools.com/%i';
@@ -81,12 +82,12 @@ class SlimStatConfig {
 	0.0.0.0 will disable tracking IPs. **/
 	var $anonymise_ip_mask = '255.255.255.0';
 	
-	/** Whether to record user-agent strings in the database. The database
-	will be smaller if this is disabled */
+	/** Whether to record user-agent strings in the database.
+	  * The database will be smaller if this is disabled */
 	var $log_user_agents = true;
 	
-	/** Whether to log hits from crawlers. The database will be smaller if
-	this is disabled */
+	/** Whether to log hits from crawlers.
+	  * The database will be smaller if this is disabled */
 	var $log_crawlers = false;
 	
 	/** Maximum number of minutes between hits in a visit */
@@ -94,6 +95,28 @@ class SlimStatConfig {
 	
 	function SlimStatConfig() {
 		SlimStat::set_timezone( $this->timezone );
+		
+		// detect language if necessary
+		
+		if ( $this->language == '' ) {
+			$language = SlimStat::determine_language();
+			if ( strlen( $language ) == 5 ) {
+				$this->language = $language;
+			} else {
+				if ( $handle = opendir( realpath( dirname( dirname( __FILE__ ) ) ).'/_i18n' ) ) {
+					while ( false !== ( $file = readdir( $handle ) ) ) {
+						if ( $file{0} != '.' && strstr( $file, '.' ) ) {
+							list( $filename, $extn ) = explode( '.', $file, 2 );
+							if ( $extn == 'ini' && strtolower( substr( $filename, 0, 2 ) ) == $language ) {
+								$this->language = $filename;
+								break;
+							}
+						}
+					}
+					closedir( $handle );
+				}
+			}
+		}
 		
 		// check if i18n file exists
 		

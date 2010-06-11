@@ -52,7 +52,7 @@ class SlimStatRecord {
 		$data['referrer'] = mb_substr( SlimStat::utf8_encode( $data['referrer'] ), 0, 255 );
 		
 		$data['country']  = $this->_determine_country( $data['remote_ip'] ); // always 2 chars, no need to truncate
-		$data['language'] = mb_substr( $this->_determine_language(), 0, 255 );
+		$data['language'] = mb_substr( SlimStat::determine_language(), 0, 255 );
 		$data['domain']   = ( isset( $url['host'] ) ) ? mb_eregi_replace( '^www.', '', $url['host'] ) : '';
 		$data['domain']   = mb_substr( $data['domain'], 0, 255 );
 		
@@ -323,23 +323,6 @@ class SlimStatRecord {
 		} else {
 			return '';
 		}
-	}
-	
-	/**
-	 * Determines the language used by the visitor’s browser.
-	 */
-	function _determine_language() {
-		global $_SERVER;
-		
-		if ( isset( $_SERVER['HTTP_ACCEPT_LANGUAGE'] ) ) {
-			// Capture up to the first delimiter (comma found in Safari)
-			preg_match( "/([^,;]*)/", $_SERVER['HTTP_ACCEPT_LANGUAGE'], $langs );
-			$lang_choice = $langs[0];
-		} else {
-			$lang_choice = '';
-		}
-		
-		return strtolower( $lang_choice );
 	}
 	
 	/**

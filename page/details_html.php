@@ -20,7 +20,7 @@
  */
 
 function render_page_html() {
-	global $config, $i18n, $filters, $prev_filters, $has_filters, $curr_data, $time_fields, $hit_fields, $visit_fields, $is_handheld, $ajax_capable, $ajax_request;
+	global $config, $i18n, $curr_date_label, $prev_date_label, $filters, $prev_filters, $has_filters, $curr_data, $time_fields, $hit_fields, $visit_fields, $is_handheld, $ajax_capable, $ajax_request;
 	
 	page_head();
 	

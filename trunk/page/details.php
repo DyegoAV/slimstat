@@ -96,8 +96,8 @@ function render_page() {
 		
 	} else {
 		
+		$prev_filters = prev_period( $filters );
 		if ( $ajax_request || !$ajax_capable ) {
-			$prev_filters = prev_period( $filters );
 			$curr_data = load_data( $filters );
 			$prev_data = load_data( $prev_filters );
 		} else {

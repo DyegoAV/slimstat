@@ -225,8 +225,13 @@ function filter_select( $_key ) {
 			}
 		}
 	} elseif ( $_key == 'dy' ) {
+		if ( !array_key_exists( 'dy', $filters ) ) {
+			echo '<option value="" selected="true"></option>';
+		} else {
+			echo '<option value=""></option>';
+		}
 		for ( $dy=1; $dy<32; $dy++ ) {
-			if ( $dy == $filters['dy'] ) {
+			if ( array_key_exists( 'dy', $filters ) && $dy == $filters['dy'] ) {
 				echo '<option value="'.$dy.'" selected="true">'.$dy.'</option>';
 			} else {
 				echo '<option value="'.$dy.'">'.$dy.'</option>';

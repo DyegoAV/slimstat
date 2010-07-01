@@ -142,7 +142,12 @@ class SlimStatConfig {
 	function &get_instance() {
 		static $instance = array();
 		if ( empty( $instance ) ) {
-			$instance[] =& new SlimStatConfig();
+			// Assigning the return value of new by reference is deprecated in PHP 5.3
+			if ( version_compare( PHP_VERSION, '5.3.0' ) >= 0 ) {
+				$instance[] = new SlimStatConfig();
+			} else {
+				$instance[] =& new SlimStatConfig();
+			}
 		}
 		return $instance[0];
 	}

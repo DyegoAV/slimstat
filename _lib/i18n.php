@@ -33,7 +33,12 @@ class SlimStatI18n {
 	function &get_instance() {
 		static $i18n_instance = array();
 		if ( empty( $i18n_instance ) ) {
-			$i18n_instance[] =& new SlimStatI18n();
+			// Assigning the return value of new by reference is deprecated in PHP 5.3
+			if ( version_compare( PHP_VERSION, '5.3.0' ) >= 0 ) {
+				$i18n_instance[] = new SlimStatI18n();
+			} else {
+				$i18n_instance[] =& new SlimStatI18n();
+			}
 		}
 		return $i18n_instance[0];
 	}

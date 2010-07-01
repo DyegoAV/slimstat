@@ -206,8 +206,20 @@ function filter_select( $_key ) {
 	echo '<p';
 	if ( in_array( $_key, $time_fields ) ) {
 		echo ' style="display:none"';
+	} elseif ( array_key_exists( $_key, $filters ) ) {
+		echo ' class="activefilter"';
 	}
-	echo '><select name="filter_'.$_key.'">';
+	echo '>';
+	if ( !in_array( $_key, $time_fields ) ) {
+		if ( array_key_exists( $_key, $filters ) ) {
+			$new_filters = $filters;
+			unset( $new_filters[$_key] );
+			echo '<a href="./'.filter_url( $new_filters ).'">⌦</a>';
+		} else {	
+			echo '<a href="./'.filter_url( $filters ).'">>⌦</a>';
+		}
+	}
+	echo '<select name="filter_'.$_key.'">';
 	if ( !in_array( $_key, $time_fields ) ) {
 		echo '<option value="">— '.$i18n->hsc( 'titles', $_key ).' —</option>';
 	}

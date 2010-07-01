@@ -89,7 +89,17 @@ $(function() {
 		// var value = $(this).parent().parent().attr('title');
 		
 		var sel = $('select[name="'+field+'"]');
+		sel.closest('p').addClass('activefilter');
 		sel.val(value).trigger('change');
+		
+		return false;
+	});
+	
+	// handle filters being reset
+	$('#filtersform a').live('click', function() {
+		var a = $(this);
+		a.closest('p').removeClass('activefilter');
+		a.parent().children().filter('select').attr('selectedIndex',0).trigger('change');
 		
 		return false;
 	});

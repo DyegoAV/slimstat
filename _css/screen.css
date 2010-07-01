@@ -277,7 +277,7 @@ td.first {
 th.last, td.last {
 	padding-right: 18px; }
 .input {
-	width: 44%; }
+	width: 95%; }
 
 /*********************************************************************** =ids */
 
@@ -286,7 +286,7 @@ th.last, td.last {
 	left: 50%;
 	margin: 0 0 0 -490px;
 	padding: 0;
-	position: absolute;
+	position: relative;
 	top: 0;
 	width: 980px;
 	z-index: 5; }
@@ -452,22 +452,26 @@ th.last, td.last {
 	#filters p {
 		margin: 0;
 		min-height: 1.6666em; }
-	#filters p.text {
+#filtersform { }
+	#filtersform a {
 		background: transparent url('../_img/delete.gif') no-repeat;
-		border-bottom: solid 1px #d2d2c8;
+		display: none;
+		float: left;
 		line-height: 1.5833;
-		margin: 0;
+		margin-left: -18px;
 		min-height: 1.5833em;
-		padding: 0 3px;
-		text-align: left; }
-	#filters p.text a {
-		padding-left: 15px; }
-	#filters p.text:hover {
-		background-color: #ffc;
-		color: #06c; }
-	#filters select {
+		overflow: hidden;
+		padding: 0;
+		text-indent: 1000px;
+		vertical-align: bottom;
+		width: 15px; }
+	#filtersform .activefilter a {
+		display: block; }
+	#filtersform select {
 		margin: 0;
 		width: 100%; }
+	#filtersform .activefilter select {
+		float: left; }
 #api, #api a {
 	background: transparent url('../_img/xml.gif') no-repeat;
 	display: block;

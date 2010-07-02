@@ -29,6 +29,12 @@ function createAjaxCookie() {
 	document.cookie = 'slimstatajax=1; expires=' + date.toGMTString() + '; path=/';
 }
 
+function activateFilter(field, value) {
+	var sel = $('select[name="'+field+'"]');
+	sel.closest('p').addClass('activefilter');
+	sel.val(value).trigger('change');
+}
+
 $(function() {
 	// let the server know that we support ajax
 	createAjaxCookie();
@@ -86,11 +92,21 @@ $(function() {
 		var value = $(this).attr('href');
 		value = value.substring(value.indexOf(field) + field.length + 1);
 		value = decodeURIComponent(value);
-		// var value = $(this).parent().parent().attr('title');
 		
-		var sel = $('select[name="'+field+'"]');
-		sel.closest('p').addClass('activefilter');
-		sel.val(value).trigger('change');
+		activateFilter(field, value);
+		
+		return false;
+	});
+	
+	// handle imagemap areas being clicked
+	$('#detailspage #content area[href^="./?filter_"]').live('click', function() {
+		var field = 'filter_dy';
+		
+		var value = $(this).attr('href');
+		value = value.substring(value.indexOf(field) + field.length + 1);
+		value = decodeURIComponent(value);
+		
+		activateFilter(field, value);
 		
 		return false;
 	});

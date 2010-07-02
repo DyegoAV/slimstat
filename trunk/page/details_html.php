@@ -1052,7 +1052,7 @@ function chart_hits() {
 }
 
 function chart_hours() {
-	global $filters, $curr_data, $prev_data, $is_handheld;
+	global $i18n, $filters, $curr_data, $prev_data, $is_handheld;
 	
 	$width = ( $is_handheld ) ? 340 : 700;
 	
@@ -1142,8 +1142,7 @@ function chart_hours() {
 		$x = round( $hr / 24 * $width );
 		$y = round( ( $max - $point ) / ( $max - $min ) * 181 );
 		
-		echo '<area shape="circle" coords="'.$x.','.$y.',15" title="'.$point;
-		echo ( $point == 1 ) ? ' hit' : ' hits';
+		echo '<area shape="circle" coords="'.$x.','.$y.',15" title="'.$point.' '.$i18n->hsc( 'details', 'hits' );
 		echo '" href="./'.filter_url( $filters /*array_merge( $filters, array( 'hr' => ( $hr - 1 ) ) )*/ ).'" />'."\n";
 		
 		$hr++;
@@ -1152,7 +1151,7 @@ function chart_hours() {
 }
 
 function chart_days() {
-	global $filters, $curr_data, $prev_data, $is_handheld;
+	global $i18n, $filters, $curr_data, $prev_data, $is_handheld;
 	
 	$width = ( $is_handheld ) ? 340 : 700;
 	
@@ -1252,8 +1251,7 @@ function chart_days() {
 		$x = round( $dy / $n_points * $width );
 		$y = round( ( $scale_max - $point ) / ( $scale_max - $scale_min ) * 181 );
 		
-		echo '<area shape="circle" coords="'.$x.','.$y.',15" title="'.$point;
-		echo ( $point == 1 ) ? ' hit' : ' hits';
+		echo '<area shape="circle" coords="'.$x.','.$y.',15" title="'.$point.' '.$i18n->hsc( 'details', 'hits' );
 		echo '" href="./'.filter_url( array_merge( $filters, array( 'dy' => $dy ) ) ).'" />'."\n";
 		
 		$dy++;

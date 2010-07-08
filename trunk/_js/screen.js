@@ -36,6 +36,9 @@ function activateFilter(field, value) {
 }
 
 $(function() {
+	// focus username field on login page
+	$('#loginpage .input[name="username"]').focus();
+	
 	// let the server know that we support ajax
 	createAjaxCookie();
 	

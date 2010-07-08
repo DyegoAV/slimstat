@@ -1115,7 +1115,7 @@ function chart_hours() {
 	$max = max( 5, ceil( $max * 1.05 ) );
 	
 	echo '<div class="grid12">';
-	echo '<h3>Hits ∕ hour</h3>';
+	echo '<h3>'.$i18n->hsc( 'titles', 'hits' ).' ∕ '.$i18n->hsc( 'details', 'hour' ).'</h3>';
 	echo '<div class="tbody">';
 	echo '<img src="http://chart.apis.google.com/chart?';
 	echo 'chs='.$width.'x198';
@@ -1220,7 +1220,7 @@ function chart_days() {
 	$scale_max = max( 5, ceil( $max * 1.05 ) );
 	
 	echo '<div class="grid12">';
-	echo '<h3>Hits ∕ day</h3>';
+	echo '<h3>'.$i18n->hsc( 'titles', 'hits' ).' ∕ '.$i18n->hsc( 'details', 'day' ).'</h3>';
 	echo '<div class="tbody">';
 	echo '<img src="http://chart.apis.google.com/chart?';
 	echo 'chs='.$width.'x198';

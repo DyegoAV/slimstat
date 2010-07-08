@@ -40,11 +40,11 @@ function render_page() {
 <h3><?php echo $i18n->hsc( 'login', 'please_login' ); ?></h3>
 
 <fieldset class="tbody">
-<p><label for="username"><?php echo $i18n->hsc( 'login', 'username' ); ?></label><input type="text" name="username" value="" class="input" /></p>
+<p><label for="username"><?php echo $i18n->hsc( 'login', 'username' ); ?></label><input type="text" name="username" value="" tabindex="1" class="input" /></p>
 
-<p><label for="password"><?php echo $i18n->hsc( 'login', 'password' ); ?></label><input type="password" name="password" value="" class="input" /></p>
+<p><label for="password"><?php echo $i18n->hsc( 'login', 'password' ); ?></label><input type="password" name="password" value="" tabindex="2" class="input" /></p>
 
-<p><input type="submit" value="<?php echo $i18n->hsc( 'login', 'submit' ); ?>" /></p>
+<p><input type="submit" value="<?php echo $i18n->hsc( 'login', 'submit' ); ?>" tabindex="3" /></p>
 </fieldset>
 </form>
 

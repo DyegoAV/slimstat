@@ -53,13 +53,13 @@ function render_page_rss() {
 		echo '<link>http://'.$_SERVER['SERVER_NAME'].dirname( $_SERVER['PHP_SELF'] ).'/'.filter_url( $filters ).'</link>'."\n";
 		echo '<description>';
 		if ( array_key_exists( 'yr', $data ) ) {
-			echo 'Hits: '.array_sum( $data['yr'] ).'&lt;br /&gt;';
+			echo ucfirst( $i18n->hsc( 'details', 'hits' ) ).': '.array_sum( $data['yr'] ).'&lt;br /&gt;';
 		}
 		if ( array_key_exists( 'hits', $data ) ) {
-			echo 'Visits: '.array_sum( $data['hits'] ).'&lt;br /&gt;';
+			echo ucfirst( $i18n->hsc( 'details', 'visits' ) ).': '.array_sum( $data['hits'] ).'&lt;br /&gt;';
 		}
 		if ( array_key_exists( 'remote_ip', $data ) ) {
-			echo 'Unique IPs: '.sizeof( $data['remote_ip'] ).'&lt;br /&gt;';
+			echo ucfirst( $i18n->hsc( 'details', 'unique_ips' ) ).': '.sizeof( $data['remote_ip'] ).'&lt;br /&gt;';
 		}
 		
 		echo '</description>'."\n";

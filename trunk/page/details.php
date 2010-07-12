@@ -46,7 +46,9 @@ foreach ( array_merge( $hit_fields, $visit_fields ) as $key ) {
 	}
 }
 
-if ( array_key_exists( 'QUERY_STRING', $_SERVER ) && $_SERVER['QUERY_STRING'] == 'today' ) {
+if ( array_key_exists( 'QUERY_STRING', $_SERVER ) &&
+     ( ( $ajax_request == false && $_SERVER['QUERY_STRING'] == 'today' ) ||
+       ( $ajax_request == true && $_SERVER['QUERY_STRING'] == 'ajax=1&today' ) ) ) {
 	$filters['yr'] = date( 'Y' );
 	$filters['mo'] = date( 'n' );
 	$filters['dy'] = date( 'j' );

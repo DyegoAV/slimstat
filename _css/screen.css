@@ -397,6 +397,15 @@ th.last, td.last {
 	height: 11px;
 	vertical-align: middle;
 	width: 70px; }
+#timechart { }
+#timechart .tbody {
+	position: relative; }
+#timechart a {
+	display: block;
+	height: 15px;
+	margin: 0;
+	position: absolute;
+	width: 15px; }
 #side {
 	background: url('../_img/filters.png') no-repeat;
 	left: 50%;

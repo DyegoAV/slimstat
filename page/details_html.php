@@ -1114,7 +1114,7 @@ function chart_hours() {
 	$min = max( 0, floor( $min - ( $max * 0.05 ) ) );
 	$max = max( 5, ceil( $max * 1.05 ) );
 	
-	echo '<div class="grid12">';
+	echo '<div class="grid12 filter_dy table" id="timechart">';
 	echo '<h3>'.$i18n->hsc( 'titles', 'hits' ).' ∕ '.$i18n->hsc( 'details', 'hour' ).'</h3>';
 	echo '<div class="tbody">';
 	echo '<img src="http://chart.apis.google.com/chart?';
@@ -1130,24 +1130,24 @@ function chart_hours() {
 	echo '&amp;chxl=0:|00|01|02|03|04|05|06|07|08|09|10|11|12|13|14|15|16|17|18|19|20|21|22|23';
 	echo '&amp;chxr=1,'.$min.','.$max;
 	echo '&amp;cht=lc';
-	echo '" alt="" width="'.$width.'" height="198" usemap="#hoursmap" />';
-	echo '</div></div>';
-	echo '<map name="hoursmap">'."\n";
-	$hr = 1;
-	foreach ( $curr_points as $point ) {
-		if ( $point == -1 ) {
-			continue;
+	echo '" alt="'.$i18n->hsc( 'titles', 'hits' ).' ∕ '.$i18n->hsc( 'details', 'hour' ).'" width="'.$width.'" />';
+	if ( !$is_handheld ) {
+		$hr = 1;
+		foreach ( $curr_points as $point ) {
+			if ( $point == -1 ) {
+				continue;
+			}
+		
+			$x = round( $hr / 24 * $width ) - 7;
+			$y = round( ( $max - $point ) / ( $max - $min ) * 181 ) - 6;
+		
+			echo '<a style="left: '.$x.'px; top: '.$y.'px" title="'.$point.' '.$i18n->hsc( 'details', 'hits' );
+			echo '" href="./'.filter_url( $filters /*array_merge( $filters, array( 'hr' => ( $hr - 1 ) ) )*/ ).'" />'."\n";
+		
+			$hr++;
 		}
-		
-		$x = round( $hr / 24 * $width );
-		$y = round( ( $max - $point ) / ( $max - $min ) * 181 );
-		
-		echo '<area shape="circle" coords="'.$x.','.$y.',15" title="'.$point.' '.$i18n->hsc( 'details', 'hits' );
-		echo '" href="./'.filter_url( $filters /*array_merge( $filters, array( 'hr' => ( $hr - 1 ) ) )*/ ).'" />'."\n";
-		
-		$hr++;
 	}
-	echo '</map>'."\n";
+	echo '</div></div>'."\n";
 }
 
 function chart_days() {
@@ -1219,7 +1219,7 @@ function chart_days() {
 	$scale_min = max( 0, floor( $min - ( $max * 0.05 ) ) );
 	$scale_max = max( 5, ceil( $max * 1.05 ) );
 	
-	echo '<div class="grid12">';
+	echo '<div class="grid12 filter_dy table" id="timechart">';
 	echo '<h3>'.$i18n->hsc( 'titles', 'hits' ).' ∕ '.$i18n->hsc( 'details', 'day' ).'</h3>';
 	echo '<div class="tbody">';
 	echo '<img src="http://chart.apis.google.com/chart?';
@@ -1238,25 +1238,25 @@ function chart_days() {
 	}
 	echo '&amp;chxr=1,'.$scale_min.','.$scale_max;
 	echo '&amp;cht=lc';
-	echo '" alt="" width="'.$width.'" height="198" usemap="#daysmap" />';
-	echo '</div></div>';
-	echo '<map name="daysmap">'."\n";
-	$dy = 1;
-	$n_points = max( sizeof( $prev_points ), sizeof( $curr_points ) );
-	foreach ( $curr_points as $point ) {
-		if ( $point == -1 ) {
-			continue;
+	echo '" alt="'.$i18n->hsc( 'titles', 'hits' ).' ∕ '.$i18n->hsc( 'details', 'day' ).'" width="'.$width.'" height="198" />'."\n";
+	if ( !$is_handheld ) {
+		$dy = 1;
+		$n_points = max( sizeof( $prev_points ), sizeof( $curr_points ) );
+		foreach ( $curr_points as $point ) {
+			if ( $point == -1 ) {
+				continue;
+			}
+			
+			$x = round( $dy / $n_points * $width ) - 7;
+			$y = round( ( $scale_max - $point ) / ( $scale_max - $scale_min ) * 181 ) - 6;
+			
+			echo '<a style="left: '.$x.'px; top: '.$y.'px" title="'.htmlspecialchars( date_label( array_merge( $filters, array( 'dy' => $dy ) ) ) ).': '.$point.' '.$i18n->hsc( 'details', 'hits' );
+			echo '" href="./'.filter_url( array_merge( $filters, array( 'dy' => $dy ) ) ).'" />'."\n";
+		
+			$dy++;
 		}
-		
-		$x = round( $dy / $n_points * $width );
-		$y = round( ( $scale_max - $point ) / ( $scale_max - $scale_min ) * 181 );
-		
-		echo '<area shape="circle" coords="'.$x.','.$y.',15" title="'.$point.' '.$i18n->hsc( 'details', 'hits' );
-		echo '" href="./'.filter_url( array_merge( $filters, array( 'dy' => $dy ) ) ).'" />'."\n";
-		
-		$dy++;
 	}
-	echo '</map>'."\n";
+	echo '</div></div>'."\n";
 }
 
 function calendar_widget() {

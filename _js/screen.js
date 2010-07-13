@@ -92,18 +92,9 @@ $(function() {
 		field = field.substring(field.indexOf('filter_'));
 		field = field.substring(0, field.indexOf(' '));
 		
-		var value = $(this).attr('href');
-		value = value.substring(value.indexOf(field) + field.length + 1);
-		value = decodeURIComponent(value);
-		
-		activateFilter(field, value);
-		
-		return false;
-	});
-	
-	// handle imagemap areas being clicked
-	$('#detailspage #content area[href^="./?filter_"]').live('click', function() {
-		var field = 'filter_dy';
+		if (field == 'filter_prev_resource' || field == 'filter_next_resource') {
+			field = 'filter_resource';
+		}
 		
 		var value = $(this).attr('href');
 		value = value.substring(value.indexOf(field) + field.length + 1);

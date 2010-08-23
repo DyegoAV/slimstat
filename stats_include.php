@@ -430,6 +430,7 @@ class SlimStatRecord {
 		     mb_eregi( 'larbin', $_ua ) ||
 		     mb_eregi( 'mediapartners', $_ua ) ||
 		     mb_eregi( 'metaspinner', $_ua ) ||
+		     mb_eregi( 'mobile goo', $_ua ) || // http://help.goo.ne.jp/help/article/1142/
 		     mb_eregi( 'searchmonkey', $_ua ) ||
 		     mb_eregi( 'slurp', $_ua ) ||
 		     mb_eregi( 'spider', $_ua ) ||

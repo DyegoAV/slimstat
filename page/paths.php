@@ -119,7 +119,7 @@ foreach ( $visits as $visit ) {
 		echo '</tr><tr>';
 	}
 	echo '<td class="center accent" style="width:'.$col3_w.'px; max-width:'.$col3_w.'px">'.htmlspecialchars( $visit['browser'] );
-	if ( $visit['version'] != $i18n->indeterminable ) {
+	if ( $visit['version'] != $i18n->data['core']['indeterminable'] ) {
 		echo ' '.htmlspecialchars( $visit['version'] );
 	}
 	echo '</td>'."\n".'<td class="center accent" style="width:'.$col4_w.'px; max-width:'.$col4_w.'px">'.htmlspecialchars( $visit['platform'] ).'</td>'."\n";

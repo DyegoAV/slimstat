@@ -634,7 +634,7 @@ function table_total( $_field ) {
 		echo '<tr>';
 		// echo '<td>'.( $pos + 1 ).'</td>';
 		echo '<td class="first" title="'.hsc( $key ).'"><span class="text">';
-		if ( $_field == 'referrer' ) {
+		if ( $_field == 'resource' || $_field == 'referrer' ) {
 			echo '<a class="external" title="'.hsc( $key ).'" href="'.hsc( $key ).'" rel="nofollow">&rarr;</a> ';
 		} elseif ( $_field == 'remote_ip' ) {
 			echo '<a class="external" title="'.str_replace( '%i', $key, $config->whoisurl ).'" href="'.str_replace( '%i', $key, $config->whoisurl ).'" rel="nofollow">&rarr;</a> ';
